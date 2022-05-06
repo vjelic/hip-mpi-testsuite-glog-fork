@@ -18,9 +18,10 @@ Usage: executable_name -s <sendBufType> -r <recvBufType> -n <elements> -t <sleep
             sleepTime: time in seconds to sleep
 ```
 
-To run all tests in the testsuite 
+To compile and run all tests in the testsuite 
 
 ```
+./configure CXX=mpiCC --with-rocm=/opt/rocm
 make
 ./run_all.sh
 ```
