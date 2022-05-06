@@ -7,7 +7,7 @@ and UCX compiled with rocm support.
 All tests take the same set of optional arguments:
 
 ```
-Usage: benchmark -s <sendBufType> -r <recvBufType> -n <elements> -t <sleepTime>
+Usage: executable_name -s <sendBufType> -r <recvBufType> -n <elements> -t <sleepTime>
        with sendBufType and recvBufType being :
                   D      Device memory (i.e. hipMalloc) - default if not specified
                   H      Host memory (i.e. malloc)
