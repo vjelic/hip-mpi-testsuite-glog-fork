@@ -76,6 +76,21 @@ AC_CHECK_HEADER([getopt.h],
 AC_LANG_POP([C])
 AC_LANG_PUSH([C++])
 
+perfresults=no
+AC_ARG_ENABLE(perf-timing,
+[  --enable-perf-timing    enable measuring performance of operation (default=no)],
+[perfresults=yes])
+
+AC_MSG_CHECKING([whether to enable performance measurements of operations])
+AC_MSG_RESULT($perfresults)
+
+let hip_mpitest_perfresults=0
+if [ test "$perfresults" = "yes" ] ; then
+    hip_mpitest_perfresults=1
+fi	
+AC_SUBST(hip_mpitest_perfresults)
+
+
 echo " "
 AC_MSG_NOTICE(creating final output files)
 
@@ -84,4 +99,4 @@ AC_SUBST(CXX)
 AC_SUBST(CC)
 AC_SUBST(CFLAGS)
 AC_SUBST(CXXFLAGS)
-AC_OUTPUT(Makefile.defs)
+AC_OUTPUT(src/hip_mpitest_config.h Makefile.defs)

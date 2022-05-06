@@ -14,6 +14,7 @@
 #include <getopt.h>
 
 #include <hip/hip_runtime.h>
+#include "hip_mpitest_config.h"
 #include "hip_mpitest_buffer.h"
 #include "mpi.h"
 

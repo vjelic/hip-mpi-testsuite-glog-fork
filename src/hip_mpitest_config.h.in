@@ -1,0 +1,11 @@
+/* -*- Mode: C; c-basic-offset:4 ; indent-tabs-mode:nil -*- */
+/*
+** Copyright (c) 2022 Advanced Micro Devices, Inc. All rights reserved.
+*/
+
+#ifndef __HIP_MPITEST_CONFIG__
+#define __HIP_MPITEST_CONFIG__
+
+#define HIP_MPITEST_PERFRESULTS @hip_mpitest_perfresults@
+
+#endif

@@ -39,3 +39,10 @@ hip_type_resized_long
 hip_type_resized_short
 hip_type_struct_long
 hip_type_struct_short
+
+#other files
+Makefile.defs
+autom4te.cache/
+config.log
+config.status
+src/hip_mpitest_config.h
