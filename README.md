@@ -7,7 +7,7 @@ and UCX compiled with rocm support.
 All tests take the same set of optional arguments:
 
 ```
-Usage: benchmark <sendBufType> <recvBufType> <elements> <sleepTime>
+Usage: benchmark -s <sendBufType> -r <recvBufType> -n <elements> -t <sleepTime>
        with sendBufType and recvBufType being :
                   D      Device memory (i.e. hipMalloc) - default if not specified
                   H      Host memory (i.e. malloc)
@@ -17,8 +17,6 @@ Usage: benchmark <sendBufType> <recvBufType> <elements> <sleepTime>
             elements:  number of elements to send/recv
             sleepTime: time in seconds to sleep
 ```
-
-Arguments are optional, but have to be specified at the moment in the exact order shown here.
 
 To run all tests in the testsuite 
 
