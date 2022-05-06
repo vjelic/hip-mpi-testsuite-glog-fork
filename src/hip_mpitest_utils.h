@@ -3,7 +3,6 @@
 ** Copyright (c) 2022 Advanced Micro Devices, Inc. All rights reserved.
 */
 
-
 #ifndef __HIP_MPITEST_UTILS__
 #define __HIP_MPITEST_UTILS__
 
@@ -12,6 +11,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <execinfo.h>
+#include <getopt.h>
 
 #include <hip/hip_runtime.h>
 #include "hip_mpitest_buffer.h"
@@ -26,7 +26,7 @@
     }
 
 
-#define ALLOCATE_MEMBUF(_bufchar, _membuf, _argc, _argv, _comm) {  \
+#define SET_MEMBUF_TYPE(_bufchar, _membuf, _argc, _argv, _comm) {  \
    if (strncmp(_bufchar, "D", 1) == 0 ){                     \
        _membuf = new hip_mpitest_buffer_device;              \
    }                                                         \
@@ -60,7 +60,7 @@ static void print_help (int argc, char **argv)
     MPI_Comm_rank (MPI_COMM_WORLD, &rank);
     if (0 == rank) {
         // print help message
-        printf("Usage: %s <sendBufType> <recvBufType> <elements> <sleepTime>\n", argv[0]);
+        printf("Usage: %s -s <sendBufType> -r <recvBufType> -n <elements> -t <sleepTime>\n", argv[0]);
         printf("   with sendBufType and recvBufType being : \n"
                "         D      Device memory (i.e. hipMalloc) - default if not specified \n"
                "         H      Host memory (i.e. malloc)\n"
@@ -78,44 +78,62 @@ extern int elements;
 
 static void parse_args ( int argc, char **argv, MPI_Comm comm )
 {
-    if (argc > 1) {
-        if (strncmp (argv[1], "-h", 2)==0) {
+    static struct option longopts[] = {
+        {"sendbuftype", required_argument, 0, 's'},
+        {"recvbuftype", required_argument, 0, 'r'},
+        {"elements",    required_argument, 0, 'n'},
+        {"sleeptime",   required_argument, 0, 't'},
+        {"help",        no_argument,       0, 'h'}
+    };
+
+    int longindex, stime=0;
+    while (1) {
+        int c;
+        c = getopt_long(argc, argv, "s:r:n:t:h", longopts, &longindex);
+
+        if (c == -1)
+            break;
+        
+        switch(c) {
+        case 'h' :
             print_help(argc, argv);
             MPI_Finalize();
             exit(0);
+            break;
+        case 's' :
+            SET_MEMBUF_TYPE(optarg, sendbuf, argc, argv, comm);
+            break;
+        case 'r' :
+            SET_MEMBUF_TYPE(optarg, recvbuf, argc, argv, comm);
+            break;
+        case 'n' :
+            elements = atoi(optarg);
+            break;
+        case 't' :
+            stime = atoi(optarg);
+            if (stime > 0) {
+                // give time to attach with a debugger
+                sleep (stime);
+            }
+            break;
+        default :
+            print_help(argc, argv);
+            MPI_Finalize();
+            exit(0);        
         }
-        else {
-            ALLOCATE_MEMBUF(argv[1], sendbuf, argc, argv, comm);
-        }
     }
 
-    if (argc > 2) {
-        ALLOCATE_MEMBUF(argv[2], recvbuf, argc, argv, comm);
-    }
-
-    if (argc > 3) {
-        elements = atoi(argv[3]);
-    }
-
-    if (argc > 4) {
-        int time = atoi(argv[4]);
-        if (time > 0) {
-            // give time to attach with a debugger
-            sleep (time);
-        }
-    }
-
-    if ( sendbuf == NULL) {
-        ALLOCATE_MEMBUF("D", sendbuf, argc, argv, comm);
+    if (sendbuf == NULL) {
+        SET_MEMBUF_TYPE("D", sendbuf, argc, argv, comm);
     }
     if (recvbuf == NULL) {
-        ALLOCATE_MEMBUF("D", recvbuf, argc, argv, comm);
+        SET_MEMBUF_TYPE("D", recvbuf, argc, argv, comm);
     }
 
     signal(SIGABRT, sig_handler);
-    signal(SIGILL, sig_handler);
-    signal(SIGBUS, sig_handler);
-    signal(SIGFPE, sig_handler);
+    signal(SIGILL,  sig_handler);
+    signal(SIGBUS,  sig_handler);
+    signal(SIGFPE,  sig_handler);
     signal(SIGSEGV, sig_handler);
     return;
 }

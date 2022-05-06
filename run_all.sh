@@ -11,7 +11,7 @@ ExecTest() {
 	for MEM1 in $4 ; do
 	    for MEM2 in $4 ; do
 		let COUNTER=COUNTER+1
-		mpirun $OPTIONS -np $2 ./src/$1 $MEM1 $MEM2 $NUMELEMS
+		mpirun $OPTIONS -np $2 ./src/$1 -s $MEM1 -r $MEM2 -n $NUMELEMS
 		if [ $? -eq 0 ]
 		then
 		    let SUCCESS=SUCCESS+1

@@ -27,6 +27,15 @@
 *.lib
 
 # Executables
-*.exe
-*.out
-*.app
+hip_allreduce
+hip_alltoall
+hip_alltoallv
+hip_osc_get
+hip_osc_put
+hip_pt2pt_nb
+hip_query_test
+hip_sendtoself
+hip_type_resized_long
+hip_type_resized_short
+hip_type_struct_long
+hip_type_struct_short
