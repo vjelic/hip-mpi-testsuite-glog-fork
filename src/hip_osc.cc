@@ -7,7 +7,6 @@
 #include "mpi.h"
 
 #include <hip/hip_runtime.h>
-#include <hip/hip_runtime.h>
 
 #include "hip_mpitest_utils.h"
 #include "hip_mpitest_buffer.h"
@@ -59,7 +58,7 @@ int main (int argc, char *argv[])
     MPI_Init      (&argc, &argv);
     MPI_Comm_size (MPI_COMM_WORLD, &nProcs);
     MPI_Comm_rank (MPI_COMM_WORLD, &rank);
-    
+
     bind_device();
     parse_args(argc, argv, MPI_COMM_WORLD);
 
@@ -67,11 +66,11 @@ int main (int argc, char *argv[])
     // Initialise send buffer
     ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, int, elements, sizeof(int),
                         rank, MPI_COMM_WORLD, init_sendbuf);
-    
+
     // Initialize recv buffer
     ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, int, nProcs*elements, sizeof(int),
                         rank, MPI_COMM_WORLD, init_recvbuf);
-    
+
     //execute one-sided operations
     int res = type_osc_test (sendbuf->get_buffer(), recvbuf->get_buffer(),
                              elements, MPI_INT, root, MPI_COMM_WORLD);
@@ -102,8 +101,8 @@ int main (int argc, char *argv[])
 
     delete (sendbuf);
     delete (recvbuf);
-    
-    MPI_Finalize ();    
+
+    MPI_Finalize ();
     return fret ? 0 : 1;
 }
 
@@ -114,11 +113,11 @@ int type_osc_test (void *sbuf, void *rbuf, int count,
     int size, rank, ret;
     MPI_Win win;
     int tsize;
-    
+
     MPI_Comm_size (comm, &size);
     MPI_Comm_rank (comm, &rank);
     MPI_Type_size (datatype, &tsize);
-    
+
     if (rank == root) {
         ret = MPI_Win_create (rbuf, count*tsize*size, tsize, MPI_INFO_NULL, comm, &win);
     }
@@ -128,7 +127,7 @@ int type_osc_test (void *sbuf, void *rbuf, int count,
     if (MPI_SUCCESS != ret) {
         return ret;
     }
-    
+
     ret = MPI_Win_fence (0, win);
     if (MPI_SUCCESS != ret) {
         return ret;
@@ -157,7 +156,7 @@ int type_osc_test (void *sbuf, void *rbuf, int count,
     }
 #endif
     MPI_Barrier(comm);
-    
+
     ret = MPI_Win_fence (0, win);
     if (MPI_SUCCESS != ret) {
         return ret;

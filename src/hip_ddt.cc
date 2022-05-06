@@ -27,12 +27,11 @@ int main (int argc, char *argv[])
 {
     int res, rank, size;
     MPI_Comm comm = MPI_COMM_WORLD;
-    
-    
+
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    
+
     bind_device();
     parse_args(argc, argv, comm);
 
@@ -42,7 +41,7 @@ int main (int argc, char *argv[])
     // Initialise send buffer
     ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, char, elements, dat->get_extent(),
                         rank, comm, dat->init_sendbuf);
-    
+
     // Initialize recv buffer
     ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, char, elements, dat->get_extent(),
                         rank, comm, dat->init_recvbuf);
@@ -82,16 +81,16 @@ int main (int argc, char *argv[])
     bool fret = report_testresult(argv[0], comm, sendbuf->get_memchar(), recvbuf->get_memchar(), ret);
     report_performance (argv[0], comm, sendbuf->get_memchar(), recvbuf->get_memchar(), elements,
                         (size_t)(elements * dat->get_size()), NITER, t1);
-        
+
     //Free buffers
     FREE_BUFFER(sendbuf, tmp_sendbuf);
     FREE_BUFFER(recvbuf, tmp_recvbuf);
-    
+
     delete (sendbuf);
     delete (recvbuf);
     delete (dat);
 
-    MPI_Finalize ();    
+    MPI_Finalize ();
     return fret ? 0 : 1;
 }
 

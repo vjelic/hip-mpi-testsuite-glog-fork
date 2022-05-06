@@ -33,7 +33,7 @@ static bool check_recvbuf (int *recvbuf, int nProcs, int rank, int count)
 {
     bool res=true;
     int  l=0;
-    
+
     for (int recvrank=0; recvrank < nProcs; recvrank++) {
         if (recvrank == rank) {
             l += count;
@@ -58,11 +58,11 @@ int main (int argc, char *argv[])
 {
     int rank, nProcs;
     int root = 0;
-    
+
     MPI_Init      (&argc, &argv);
     MPI_Comm_size (MPI_COMM_WORLD, &nProcs);
     MPI_Comm_rank (MPI_COMM_WORLD, &rank);
-    
+
     bind_device();
     parse_args(argc, argv, MPI_COMM_WORLD);
 
@@ -70,7 +70,7 @@ int main (int argc, char *argv[])
     // Initialise send buffer
     ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, int, nProcs*elements, sizeof(int),
                         rank, MPI_COMM_WORLD, init_sendbuf);
-    
+
     // Initialize recv buffer
     ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, int, nProcs*elements, sizeof(int),
                         rank, MPI_COMM_WORLD, init_recvbuf);
@@ -96,7 +96,7 @@ int main (int argc, char *argv[])
     bool fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), ret);
     report_performance (argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), elements,
                         (size_t)(elements *sizeof(int)), 0, 0.0);
-                                
+
     //Cleanup dynamic buffers
     FREE_BUFFER(sendbuf, tmp_sendbuf);
     FREE_BUFFER(recvbuf, tmp_recvbuf);
@@ -104,7 +104,7 @@ int main (int argc, char *argv[])
     delete (sendbuf);
     delete (recvbuf);
 
-    MPI_Finalize ();    
+    MPI_Finalize ();
     return fret ? 0 : 1;
 }
 
@@ -116,7 +116,7 @@ int type_p2p_nb_test (int *sbuf, int *rbuf, int count, MPI_Comm comm)
     MPI_Request *reqs;
     int *sendbuf;
     int *recvbuf;
-    
+
     MPI_Comm_size (comm, &size);
     MPI_Comm_rank (comm, &rank);
 
@@ -125,7 +125,7 @@ int type_p2p_nb_test (int *sbuf, int *rbuf, int count, MPI_Comm comm)
         printf("4. Could not allocate memory. Aborting\n");
         MPI_Abort(comm, 1);
     }
-    
+
     for (int i=0; i<size; i++) {
         if (i == rank) {
             // No send-to-self for the moment

@@ -70,7 +70,7 @@ hip_query_test: hip_query_test.cc
 
 
 clean:
-	$(RM) *.o *~ 
+	$(RM) *.o *~
 	$(RM) hip_pt2pt_nb hip_sendtoself
 	$(RM) hip_allreduce hip_alltoall hip_alltoallv
 	$(RM) hip_type_resized_short hip_type_struct_short

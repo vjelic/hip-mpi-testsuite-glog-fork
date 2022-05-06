@@ -60,23 +60,23 @@ int main (int argc, char *argv[])
     int root = 0;
 
     bind_device();
-    
+
     MPI_Init      (&argc, &argv);
     MPI_Comm_size (MPI_COMM_WORLD, &size);
     MPI_Comm_rank (MPI_COMM_WORLD, &rank);
-    
+
     parse_args(argc, argv, MPI_COMM_WORLD);
 
     double *tmp_sendbuf=NULL, *tmp_recvbuf=NULL;
-    
+
     // Initialise send buffer
     ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, double, elements, sizeof(double),
                         rank, MPI_COMM_WORLD, init_sendbuf);
-    
+
     // Initialize recv buffer
     ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, double, elements, sizeof(double),
                         rank, MPI_COMM_WORLD, init_recvbuf);
-    
+
     //Warmup
     res = allreduce_test (sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
                           MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD, 1);
@@ -96,7 +96,7 @@ int main (int argc, char *argv[])
         MPI_Abort (MPI_COMM_WORLD, 1);
         return 1;
     }
-    auto t1e = std::chrono::high_resolution_clock::now();    
+    auto t1e = std::chrono::high_resolution_clock::now();
     double t1 = std::chrono::duration<double>(t1e-t1s).count();
 
     // verify results 
@@ -119,7 +119,7 @@ int main (int argc, char *argv[])
 
     delete (sendbuf);
     delete (recvbuf);
-    
+
     MPI_Finalize ();    
     return fret ? 0 : 1;
 }

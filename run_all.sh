@@ -7,7 +7,7 @@ OPTIONS="--mca pml ucx --mca osc ucx --mca btl ^openib"
 
 ExecTest() {
 
-    for NUMELEMS in $3 ; do 
+    for NUMELEMS in $3 ; do
 	for MEM1 in $4 ; do
 	    for MEM2 in $4 ; do
 		let COUNTER=COUNTER+1
@@ -20,7 +20,7 @@ ExecTest() {
 		fi
 	    done
 	done
-    done	    
+    done
 }
 
 let COUNTER=0

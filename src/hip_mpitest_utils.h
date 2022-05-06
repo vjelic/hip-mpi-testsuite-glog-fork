@@ -86,7 +86,7 @@ static void parse_args ( int argc, char **argv, MPI_Comm comm )
         }
         else {
             ALLOCATE_MEMBUF(argv[1], sendbuf, argc, argv, comm);
-        }          
+        }
     }
 
     if (argc > 2) {
@@ -144,7 +144,7 @@ static void report_buffertype (MPI_Comm comm, const char *name, hip_mpitest_buff
         printf("%s is of type %c %s address %p\n",
                name, buf->get_memchar(), buf->get_memname(), buf->get_buffer());
     }
-#endif    
+#endif
 }
 
 
@@ -174,8 +174,7 @@ static void report_performance (char *exec, MPI_Comm comm, char sendtype, char r
                    basename(exec), sendtype, recvtype, elements, nBytesMB);
         }
     }
-    
-    
+
     if ( time != 0.0 ) {
         MPI_Reduce(&time, &t1_sum, 1, MPI_DOUBLE, MPI_SUM, 0, comm);    
         if ( rank == 0) {
