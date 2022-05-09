@@ -170,7 +170,7 @@ static void report_buffertype (MPI_Comm comm, const char *name, hip_mpitest_buff
 static void report_performance (char *exec, MPI_Comm comm, char sendtype, char recvtype,
                                 int elements, long nBytes, int niter, double time)
 {
-#ifdef HIP_MPITEST_PERFRESULTS
+#if HIP_MPITEST_PERFRESULTS
     int rank, size;
     double t1_sum=0.0;
     size_t nBytesKB = nBytes/1024;
