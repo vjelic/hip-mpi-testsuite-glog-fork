@@ -1,8 +1,7 @@
 # hip-mpi-testsuite
 
 The hip-mpi-testsuite contains a collection of MPI tests capable of utilizing arbitray combinations of different memory types.
-The code requires a rocm enabled implementation of Open MPI, i.e. compiled with --with-rocm available in Open MPI starting 05/06/2022,
-and UCX compiled with rocm support.
+The code requires a rocm enabled implementation of Open MPI, and UCX compiled with rocm support.
 
 All tests take the same set of optional arguments:
 
