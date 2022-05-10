@@ -91,6 +91,18 @@ fi
 AC_SUBST(hip_mpitest_perfresults)
 
 
+AC_CHECK_DECL([MPIX_Query_rocm_support], [HAVE_MPIX_QUERY_ROCM=1], [HAVE_MPIX_QUERY_ROCM=0],
+   [ #include "mpi.h"
+     #include "mpi-ext.h"],
+   [] )
+
+HIP_QUERY_TEST=""
+if [ test "x$HAVE_MPIX_QUERY_ROCM" = "x1" ] ; then
+   HIP_QUERY_TEST="hip_query_test"
+fi
+AC_SUBST(HIP_QUERY_TEST)   
+AC_SUBST(HAVE_MPIX_QUERY_ROCM)
+
 echo " "
 AC_MSG_NOTICE(creating final output files)
 
@@ -99,4 +111,4 @@ AC_SUBST(CXX)
 AC_SUBST(CC)
 AC_SUBST(CFLAGS)
 AC_SUBST(CXXFLAGS)
-AC_OUTPUT(src/hip_mpitest_config.h Makefile.defs)
+AC_OUTPUT(src/hip_mpitest_config.h src/Makefile Makefile.defs run_all_impl.sh)
