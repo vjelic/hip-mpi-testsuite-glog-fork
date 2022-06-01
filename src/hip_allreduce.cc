@@ -103,9 +103,15 @@ int main (int argc, char *argv[])
     bool ret = true;
     if (recvbuf->NeedsStagingBuffer()) {
         HIP_CHECK(recvbuf->CopyFrom(tmp_recvbuf, elements*sizeof(double)));
+#ifdef HIP_MPITEST_REDUCE
+        if (rank == 0)
+#endif
         ret = check_recvbuf(tmp_recvbuf, size, rank, elements);
     }
     else {
+#ifdef HIP_MPITEST_REDUCE
+        if (rank == 0)
+#endif
         ret = check_recvbuf((double*) recvbuf->get_buffer(), size, rank, elements);
     }
 
@@ -132,7 +138,11 @@ int allreduce_test ( void *sendbuf, void *recvbuf, int count,
     int ret;
 
     for (int i=0; i<niterations; i++) {
-        ret = MPI_Allreduce (sendbuf, recvbuf, count, datatype, op,  comm);
+#ifdef HIP_MPITEST_REDUCE
+        ret = MPI_Reduce (sendbuf, recvbuf, count, datatype, op, 0, comm);
+#else
+        ret = MPI_Allreduce (sendbuf, recvbuf, count, datatype, op, comm);
+#endif
         if (MPI_SUCCESS != ret) {
             return ret;
         }

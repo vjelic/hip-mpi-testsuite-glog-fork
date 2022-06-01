@@ -14,6 +14,7 @@ EXECS = hip_pt2pt_nb           \
 	hip_type_resized_short \
 	hip_type_resized_long  \
 	hip_allreduce          \
+	hip_reduce             \
 	hip_alltoall           \
 	hip_alltoallv          \
 	hip_osc_put            \
@@ -30,6 +31,9 @@ hip_sendtoself: hip_sendtoself.cc $(HEADERS)
 
 hip_allreduce: hip_allreduce.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_allreduce hip_allreduce.cc $(LDFLAGS)
+
+hip_reduce: hip_allreduce.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_reduce hip_allreduce.cc -DHIP_MPITEST_REDUCE $(LDFLAGS)
 
 hip_alltoall: hip_alltoall.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_alltoall hip_alltoall.cc $(LDFLAGS)
@@ -66,5 +70,5 @@ clean:
 	$(RM) hip_allreduce hip_alltoall hip_alltoallv
 	$(RM) hip_type_resized_short hip_type_struct_short
 	$(RM) hip_type_resized_long hip_type_struct_long
-	$(RM) hip_osc_put hip_osc_get
+	$(RM) hip_osc_put hip_osc_get hip_reduce
 	$(RM) hip_query_test

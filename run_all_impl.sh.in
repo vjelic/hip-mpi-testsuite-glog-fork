@@ -39,6 +39,7 @@ ExecTest "hip_type_struct_long"   "2" "32"         "D H M O R"
 ExecTest "hip_osc_put"            "2" "32 1048576" "D H"
 ExecTest "hip_osc_get"            "2" "32 1048576" "D H"
 ExecTest "hip_allreduce"          "4" "32 1048576" "D H"
+ExecTest "hip_reduce"             "4" "32 1048576" "D H"
 ExecTest "hip_alltoall"           "4" "1024"       "D H"
 ExecTest "hip_alltoallv"          "4" "1024"       "D H"
 printf "\n Executed %d Tests (%d passed %d failed)\n" $COUNTER $SUCCESS $FAILED
