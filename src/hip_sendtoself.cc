@@ -61,11 +61,12 @@ int main (int argc, char *argv[])
     int rank, nProcs;
     int root = 0;
     
+    bind_device();
+
     MPI_Init      (&argc, &argv);
     MPI_Comm_size (MPI_COMM_WORLD, &nProcs);
     MPI_Comm_rank (MPI_COMM_WORLD, &rank);
     
-    bind_device();
     parse_args(argc, argv, MPI_COMM_WORLD);
 
     int *tmp_sendbuf=NULL, *tmp_recvbuf=NULL;

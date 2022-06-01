@@ -28,11 +28,12 @@ int main (int argc, char *argv[])
     int res, rank, size;
     MPI_Comm comm = MPI_COMM_WORLD;
 
+    bind_device();
+
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    bind_device();
     parse_args(argc, argv, comm);
 
     hip_mpitest_datatype *dat = new (TEST_DATATYPE);
