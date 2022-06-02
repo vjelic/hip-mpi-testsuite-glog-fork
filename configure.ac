@@ -103,6 +103,16 @@ fi
 AC_SUBST(HIP_QUERY_TEST)   
 AC_SUBST(HAVE_MPIX_QUERY_ROCM)
 
+ucc_support=no;
+HIP_UCC_SUPPORT=`ompi_info --parsable | grep coll | grep ucc | wc -l`
+  if [ test  "$HIP_UCC_SUPPORT" != "0" ] ; then
+    ucc_support=yes;
+  fi
+AC_MSG_CHECKING([for ucc support in Open MPI])
+AC_MSG_RESULT($ucc_support)
+AC_SUBST(HIP_UCC_SUPPORT)
+
+
 echo " "
 AC_MSG_NOTICE(creating final output files)
 
