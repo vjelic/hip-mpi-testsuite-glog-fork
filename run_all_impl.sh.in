@@ -51,4 +51,8 @@ else
 fi
 ExecTest "hip_alltoall"           "4" "1024"       "D H"
 ExecTest "hip_alltoallv"          "4" "1024"       "D H"
+ExecTest "hip_allgather"          "4" "1024"       "D H"
+ExecTest "hip_allgatherv"         "4" "1024"       "D H"
+ExecTest "hip_gather"             "4" "1024"       "D H"
+ExecTest "hip_gatherv"            "4" "1024"       "D H"
 printf "\n Executed %d Tests (%d passed %d failed)\n" $COUNTER $SUCCESS $FAILED

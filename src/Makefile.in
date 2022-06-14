@@ -17,6 +17,10 @@ EXECS = hip_pt2pt_nb           \
 	hip_reduce             \
 	hip_alltoall           \
 	hip_alltoallv          \
+	hip_allgather          \
+	hip_allgatherv         \
+	hip_gather             \
+	hip_gatherv            \
 	hip_osc_put            \
 	hip_osc_get   @HIP_QUERY_TEST@
 
@@ -40,6 +44,18 @@ hip_alltoall: hip_alltoall.cc $(HEADERS)
 
 hip_alltoallv: hip_alltoall.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_alltoallv hip_alltoall.cc -DHIP_MPITEST_ALLTOALLV $(LDFLAGS)
+
+hip_allgather: hip_allgather.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_allgather hip_allgather.cc $(LDFLAGS)
+
+hip_allgatherv: hip_allgather.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_allgatherv hip_allgather.cc -DHIP_MPITEST_ALLGATHERV $(LDFLAGS)
+
+hip_gather: hip_allgather.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_gather hip_allgather.cc -DHIP_MPITEST_GATHER $(LDFLAGS)
+
+hip_gatherv: hip_allgather.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_gatherv hip_allgather.cc -DHIP_MPITEST_GATHERV $(LDFLAGS)
 
 hip_osc_put: hip_osc.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_osc_put hip_osc.cc -DHIP_MPITEST_OSC_PUT $(LDFLAGS)
@@ -67,8 +83,9 @@ endif
 clean:
 	$(RM) *.o *~
 	$(RM) hip_pt2pt_nb hip_sendtoself
-	$(RM) hip_allreduce hip_alltoall hip_alltoallv
+	$(RM) hip_allreduce hip_reduce hip_alltoall hip_alltoallv
+	$(RM) hip_allgather hip_allgatherv hip_gather hip_gatherv
 	$(RM) hip_type_resized_short hip_type_struct_short
 	$(RM) hip_type_resized_long hip_type_struct_long
-	$(RM) hip_osc_put hip_osc_get hip_reduce
+	$(RM) hip_osc_put hip_osc_get 
 	$(RM) hip_query_test
