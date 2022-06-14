@@ -46,6 +46,10 @@ class hip_type_struct: public hip_mpitest_datatype {
         MPI_Type_free (&datatype);
     }
 
+    int get_num_elements() {
+        return 2*A_WIDTH;
+    }
+
     void init_sendbuf (void *sbuf, int count, int rank)
     {
         _s2 *sendbuf = (_s2 *) sbuf;

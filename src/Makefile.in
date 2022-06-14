@@ -9,6 +9,8 @@ HEADERS = hip_mpitest_utils.h hip_mpitest_buffer.h hip_mpitest_datatype.h
 
 EXECS = hip_pt2pt_nb           \
 	hip_sendtoself         \
+	hip_pack               \
+	hip_unpack             \
 	hip_type_struct_short  \
 	hip_type_struct_long   \
 	hip_type_resized_short \
@@ -32,6 +34,12 @@ hip_pt2pt_nb: hip_pt2pt_nb.cc $(HEADERS)
 
 hip_sendtoself: hip_sendtoself.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_sendtoself hip_sendtoself.cc $(LDFLAGS)
+
+hip_pack: hip_packunpack.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_pack hip_packunpack.cc -DHIP_TYPE_STRUCT -DA_WIDTH=1024 $(LDFLAGS)
+
+hip_unpack: hip_packunpack.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_unpack hip_packunpack.cc -DHIP_MPITEST_UNPACK -DHIP_TYPE_STRUCT -DA_WIDTH=1024 $(LDFLAGS)
 
 hip_allreduce: hip_allreduce.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_allreduce hip_allreduce.cc $(LDFLAGS)
@@ -82,7 +90,7 @@ endif
 
 clean:
 	$(RM) *.o *~
-	$(RM) hip_pt2pt_nb hip_sendtoself
+	$(RM) hip_pt2pt_nb hip_sendtoself hip_pack hip_unpack
 	$(RM) hip_allreduce hip_reduce hip_alltoall hip_alltoallv
 	$(RM) hip_allgather hip_allgatherv hip_gather hip_gatherv
 	$(RM) hip_type_resized_short hip_type_struct_short

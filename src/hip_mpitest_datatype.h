@@ -25,10 +25,10 @@ class hip_mpitest_datatype {
 	MPI_Type_size (datatype, &type_size);
 	return type_size;
     }
-
-    virtual void init_sendbuf  (void *sendbuf, int count, int mynode)=0;
-    virtual void init_recvbuf  (void *recvbuf, int count)=0;
-    virtual bool check_recvbuf (void *recvbuf, int numprocs, int rank, int count)=0;
+    virtual int get_num_elements()=0;
+    virtual void init_sendbuf   (void *sendbuf, int count, int mynode)=0;
+    virtual void init_recvbuf   (void *recvbuf, int count)=0;
+    virtual bool check_recvbuf  (void *recvbuf, int numprocs, int rank, int count)=0;
 };
 
 

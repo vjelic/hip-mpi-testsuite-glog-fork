@@ -44,6 +44,10 @@ class hip_type_resized: public hip_mpitest_datatype {
         MPI_Type_free (&datatype);
     }
 
+    int get_num_elements() {
+        return A_WIDTH;
+    }
+
     void init_sendbuf (void *sbuf, int count, int mynode)
     {
         _s2 *sendbuf = (_s2 *) sbuf;
