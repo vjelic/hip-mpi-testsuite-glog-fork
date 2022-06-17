@@ -5,6 +5,10 @@
 all:
 	cd src ; make
 
+bench:
+	cd benchmarks ; make
+
 clean:
-	cd src ; make clean 
+	cd src ; make clean
+	cd benchmarks ; make clean
 	rm -f *~ 

@@ -1,0 +1,30 @@
+#
+# Copyright (c) 2022      Advanced Micro Devices, Inc. All rights reserved.
+#
+
+include ../Makefile.defs
+
+HEADERS = ../src/hip_mpitest_utils.h ../src/hip_mpitest_buffer.h ../src/hip_mpitest_datatype.h
+
+
+EXECS = hip_alltoall_bench     \
+	hip_reduce_bench       \
+	hip_allreduce_bench
+
+LOCALCPPFLAGS=-I../src/
+
+all:	$(EXECS)
+
+hip_allreduce_bench: hip_allreduce_bench.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) $(LOCALCPPFLAGS) -o hip_allreduce_bench hip_allreduce_bench.cc $(LDFLAGS)
+
+hip_reduce_bench: hip_reduce_bench.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) $(LOCALCPPFLAGS) -o hip_reduce_bench hip_reduce_bench.cc $(LDFLAGS)
+
+hip_alltoall_bench: hip_alltoall_bench.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) $(LOCALCPPFLAGS) -o hip_alltoall_bench hip_alltoall_bench.cc $(LDFLAGS)
+
+
+clean:
+	$(RM) *.o *~
+	$(RM) hip_allreduce_bench hip_reduce_bench hip_alltoall_bench
