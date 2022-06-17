@@ -47,13 +47,14 @@ static bool check_recvbuf (int *recvbuf, int nProcs, int rank, int count)
     return res;
 }
 
-int type_osc_test ( void *sendbuf, void *recvbuf, int count,
-                    MPI_Datatype datatype, int root, MPI_Comm comm);
+static int type_osc_test ( void *sendbuf, void *recvbuf, int count,
+                           MPI_Datatype datatype, int root, MPI_Comm comm, MPI_Win win);
 
 int main (int argc, char *argv[])
 {
-    int rank, nProcs;
+    int rank, nProcs, status;
     int root = 0; //checkbuff will not work for any other root value right now
+    MPI_Win win;
     
     bind_device();
 
@@ -72,9 +73,23 @@ int main (int argc, char *argv[])
     ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, int, nProcs*elements, sizeof(int),
                         rank, MPI_COMM_WORLD, init_recvbuf);
 
+    //Create window
+    if (rank == root) {
+        status = MPI_Win_create (recvbuf->get_buffer(), nProcs*elements*sizeof(int), sizeof(int), MPI_INFO_NULL,
+                                 MPI_COMM_WORLD, &win);
+    }
+    else {
+        status = MPI_Win_create (sendbuf->get_buffer(), elements*sizeof(int), sizeof(int), MPI_INFO_NULL,
+                                 MPI_COMM_WORLD, &win);
+    }
+    if (MPI_SUCCESS != status) {
+        return status;
+    }
+
+
     //execute one-sided operations
     int res = type_osc_test (sendbuf->get_buffer(), recvbuf->get_buffer(),
-                             elements, MPI_INT, root, MPI_COMM_WORLD);
+                             elements, MPI_INT, root, MPI_COMM_WORLD, win);
     if (MPI_SUCCESS != res) {
         printf("Error in type_osc_test. Aborting\n");
         MPI_Abort (MPI_COMM_WORLD, 1);
@@ -97,6 +112,7 @@ int main (int argc, char *argv[])
                         (size_t)(elements *sizeof(int)), 0, 0.0);
 
     //Cleanup dynamic buffers
+    MPI_Win_free (&win);
     FREE_BUFFER(sendbuf, tmp_sendbuf);
     FREE_BUFFER(recvbuf, tmp_recvbuf);
 
@@ -109,61 +125,77 @@ int main (int argc, char *argv[])
 
 
 int type_osc_test (void *sbuf, void *rbuf, int count,
-                   MPI_Datatype datatype, int root, MPI_Comm comm)
+                   MPI_Datatype datatype, int root, MPI_Comm comm, MPI_Win win)
 {
     int size, rank, ret;
-    MPI_Win win;
     int tsize;
 
     MPI_Comm_size (comm, &size);
     MPI_Comm_rank (comm, &rank);
     MPI_Type_size (datatype, &tsize);
 
-    if (rank == root) {
-        ret = MPI_Win_create (rbuf, count*tsize*size, tsize, MPI_INFO_NULL, comm, &win);
-    }
-    else {
-        ret = MPI_Win_create (sbuf, tsize*size, tsize, MPI_INFO_NULL, comm, &win);
-    }
-    if (MPI_SUCCESS != ret) {
-        return ret;
-    }
-
+#ifdef HIP_MPITEST_OSC_FENCE
     ret = MPI_Win_fence (0, win);
     if (MPI_SUCCESS != ret) {
         return ret;
     }
+#endif
 
 #ifdef HIP_MPITEST_OSC_GET
     if (rank == root ) {
         char *r = (char *)rbuf;
         for (int i = 0; i < size; i ++) {
             if (i != root) {
+#ifdef HIP_MPITEST_OSC_LOCK
+                ret = MPI_Win_lock(MPI_LOCK_EXCLUSIVE, i, 0, win);
+                if (MPI_SUCCESS != ret) {
+                    return ret;
+                }                
+#endif
                 ret = MPI_Get (r, count, datatype, i, 0, count, datatype, win);
                 if (MPI_SUCCESS != ret) {
                     return ret;
                 }
+#ifdef HIP_MPITEST_OSC_LOCK
+                ret = MPI_Win_unlock(i, win);
+                if (MPI_SUCCESS != ret) {
+                    return ret;
+                }                
+#endif
             }
             r +=count*tsize;
         }
     }
-#elif defined HIP_MPITEST_OSC_PUT || 1
+#elif defined HIP_MPITEST_OSC_PUT
     if (rank != root) {
         MPI_Aint disp = rank * count;
+#ifdef HIP_MPITEST_OSC_LOCK
+        ret = MPI_Win_lock(MPI_LOCK_EXCLUSIVE, root, 0, win);
+        if (MPI_SUCCESS != ret) {
+            return ret;
+        }                
+#endif
         ret = MPI_Put(sbuf, count, datatype, root, disp, count, datatype, win);
         if (MPI_SUCCESS != ret) {
             return ret;
         }
+
+#ifdef HIP_MPITEST_OSC_LOCK
+        ret = MPI_Win_unlock(root, win);
+        if (MPI_SUCCESS != ret) {
+            return ret;
+        }                
+#endif
     }
 #endif
-    MPI_Barrier(comm);
 
+
+#ifdef HIP_MPITEST_OSC_FENCE
     ret = MPI_Win_fence (0, win);
     if (MPI_SUCCESS != ret) {
         return ret;
     }
-
-    ret = MPI_Win_free (&win);
-
+#endif
+    
     return MPI_SUCCESS;
 }
