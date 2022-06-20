@@ -11,6 +11,7 @@
 
 #include "hip_mpitest_utils.h"
 #include "hip_mpitest_buffer.h"
+#include "hip_mpitest_bench.h"
 
 #define NITER 25
 int elements=100;
@@ -69,6 +70,11 @@ int main (int argc, char *argv[])
     parse_args(argc, argv, MPI_COMM_WORLD);
 
     int max_elements = elements;
+    if (rank == 0 ) {
+        printf("Benchmark: %s %c %c - %d processes\n\n", argv[0],  sendbuf->get_memchar(), recvbuf->get_memchar(), size);
+        printf("No. of elems \t msg. length \t time\n");
+        printf("================================================================\n");
+    }
     
     for (elements = 1; elements <= max_elements; elements *= 2) {
         double *tmp_sendbuf=NULL, *tmp_recvbuf=NULL;
@@ -116,8 +122,8 @@ int main (int argc, char *argv[])
         
         bool fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), ret);
 #endif
-        report_performance (argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(),
-                            elements, (size_t)(elements * sizeof(double)), NITER, t1);
+        bench_performance (argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(),
+                           elements, (size_t)(elements * sizeof(double)), NITER, t1);
         
         //Free buffers
         FREE_BUFFER(sendbuf, tmp_sendbuf);

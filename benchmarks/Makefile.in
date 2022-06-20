@@ -4,14 +4,17 @@
 
 include ../Makefile.defs
 
-HEADERS = ../src/hip_mpitest_utils.h ../src/hip_mpitest_buffer.h ../src/hip_mpitest_datatype.h
+HEADERS = ../src/hip_mpitest_utils.h    \
+	  ../src/hip_mpitest_buffer.h   \
+	  ../src/hip_mpitest_datatype.h \
+	  ../src/hip_mpitest_bench.h
 
 
 EXECS = hip_alltoall_bench     \
 	hip_reduce_bench       \
 	hip_allreduce_bench
 
-LOCALCPPFLAGS=-I../src/
+LOCALCPPFLAGS=-I../src/ 
 
 all:	$(EXECS)
 
