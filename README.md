@@ -24,3 +24,10 @@ To compile and run all tests in the testsuite
 make
 ./run_all.sh
 ```
+
+To compile and run benchmarks use eg:
+
+```
+make bench
+mpirun --mca pml ucx -np 16 ./src/hip_allreduce_bench -s D -r D -n 1048576
+```

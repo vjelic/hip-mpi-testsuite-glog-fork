@@ -28,10 +28,23 @@
 
 # Executables
 hip_allreduce
+hip_allgather
+hip_allgatherv
 hip_alltoall
 hip_alltoallv
-hip_osc_get
-hip_osc_put
+hip_gather
+hip_gatherv
+hip_reduce
+hip_scatter
+hip_scatterv
+hip_reduce_scatter
+hip_broadcast
+hip_osc_get_fence
+hip_osc_get_lock
+hip_osc_put_fence
+hip_osc_put_lock
+hip_pack
+hip_unpack
 hip_pt2pt_nb
 hip_query_test
 hip_sendtoself
@@ -40,9 +53,17 @@ hip_type_resized_short
 hip_type_struct_long
 hip_type_struct_short
 
+hip_allreduce_bench
+hip_alltoall_bench
+hip_reduce_bench
+
+
 #other files
 Makefile.defs
 autom4te.cache/
 config.log
 config.status
+run_all_impl.sh
 src/hip_mpitest_config.h
+src/Makefile
+benchmarks/Makefile
