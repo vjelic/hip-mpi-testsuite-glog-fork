@@ -25,9 +25,9 @@ make
 ./run_all.sh
 ```
 
-To compile and run benchmarks use eg:
+To compile and run benchmarks execute:
 
 ```
 make bench
-mpirun --mca pml ucx -np 16 ./src/hip_allreduce_bench -s D -r D -n 1048576
+mpirun --mca pml ucx -x UCX_RNDV_THRESH=128 -np 16 ./src/hip_allreduce_bench -s D -r D -n 1048576
 ```
