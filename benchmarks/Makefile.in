@@ -12,7 +12,8 @@ HEADERS = ../src/hip_mpitest_utils.h    \
 
 EXECS = hip_alltoall_bench     \
 	hip_reduce_bench       \
-	hip_allreduce_bench
+	hip_allreduce_bench    \
+	hip_bcast_bench
 
 LOCALCPPFLAGS=-I../src/ 
 
@@ -24,10 +25,13 @@ hip_allreduce_bench: hip_allreduce_bench.cc $(HEADERS)
 hip_reduce_bench: hip_reduce_bench.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) $(LOCALCPPFLAGS) -o hip_reduce_bench hip_reduce_bench.cc $(LDFLAGS)
 
+hip_bcast_bench: hip_bcast_bench.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) $(LOCALCPPFLAGS) -o hip_bcast_bench hip_bcast_bench.cc $(LDFLAGS)
+
 hip_alltoall_bench: hip_alltoall_bench.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) $(LOCALCPPFLAGS) -o hip_alltoall_bench hip_alltoall_bench.cc $(LDFLAGS)
 
 
 clean:
 	$(RM) *.o *~
-	$(RM) hip_allreduce_bench hip_reduce_bench hip_alltoall_bench
+	$(RM) hip_allreduce_bench hip_reduce_bench hip_alltoall_bench hip_bcast_bench
