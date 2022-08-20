@@ -41,11 +41,19 @@ elif test "$compiler_vendor" = "intel" ; then
   CXXFLAGS="$CXXFLAGS -std=c++17"
 fi
 
+AC_PATH_PROG([MPICC], [$CXX], [notfound], [$PATH])
+if [ test "$MPICC" = "notfound" ] ; then
+   AC_MSG_WARN([$CXX not found.])
+   AC_MSG_ERROR([Aborting.])
+fi
+mpi_dir="$(dirname "${MPICC}")"
+
 PROG_CXX_MPI_HELPER([],[have_mpi_support])
 if [ test "x$have_mpi_support" = "xno" ] ; then
    AC_MSG_WARN([hip-mpi-testsuite requires an MPI installation.])
    AC_MSG_ERROR([Aborting.])
 fi
+AC_SUBST(mpi_dir)
 
 
 OPAL_CHECK_ROCM([hip_rocm],
@@ -56,6 +64,13 @@ if [ test "$rocm_happy" = "no" ] ; then
    AC_MSG_WARN([hip-mpi-testsuite requires a functional ROCm installation.])
    AC_MSG_ERROR([Aborting.])
 fi
+
+AC_PATH_PROG([HIPCC], [hipcc], [notfound], [$with_rocm/bin])
+if [ test "$HIPCC" = "notfound" ] ; then
+   AC_MSG_WARN([hipcc not found.])
+   AC_MSG_ERROR([Aborting.])
+fi
+AC_SUBST(HIPCC)
 
 # Checks for library functions.
 AC_LANG_POP([C++])

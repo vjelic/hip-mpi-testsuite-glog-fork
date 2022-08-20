@@ -13,7 +13,9 @@
 #include "hip_mpitest_buffer.h"
 #include "hip_mpitest_bench.h"
 
-#define NITER 1000
+#define NITER_LONG   50
+#define NITER_SHORT  500
+#define NITER_THRESH 131072
 int elements=100;
 hip_mpitest_buffer *sendbuf=NULL;
 hip_mpitest_buffer *recvbuf=NULL;
@@ -77,6 +79,7 @@ int main (int argc, char *argv[])
 
     for (elements=1; elements<=max_elements; elements *=2 ) {
         double *tmp_sendbuf=NULL, *tmp_recvbuf=NULL;
+        int niter = elements >= NITER_THRESH ? NITER_LONG : NITER_SHORT;
 
         // Initialise send buffer
         ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, double, elements, sizeof(double),
@@ -93,7 +96,7 @@ int main (int argc, char *argv[])
         // execute the allreduce test
         MPI_Barrier(MPI_COMM_WORLD);
         auto t1s = std::chrono::high_resolution_clock::now();
-        res = bcast_test (sendbuf->get_buffer(), elements, MPI_DOUBLE, MPI_COMM_WORLD, NITER);
+        res = bcast_test (sendbuf->get_buffer(), elements, MPI_DOUBLE, MPI_COMM_WORLD, niter);
         if (MPI_SUCCESS != res) {
             fprintf(stderr, "Error in bcast_test. Aborting\n");
             MPI_Abort (MPI_COMM_WORLD, 1);
@@ -116,7 +119,7 @@ int main (int argc, char *argv[])
         bool fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), ret);
 #endif
         bench_performance (argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(),
-                           elements, (size_t)(elements * sizeof(double)), NITER, t1);
+                           elements, (size_t)(elements * sizeof(double)), niter, t1);
         
         //Free buffers
         FREE_BUFFER(sendbuf, tmp_sendbuf);

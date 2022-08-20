@@ -12,10 +12,12 @@
 #include "hip_mpitest_utils.h"
 #include "hip_mpitest_buffer.h"
 #include "hip_mpitest_bench.h"
+#include "hip_mpitest_compute_kernel.h"
 
 #define NITER_LONG   25
 #define NITER_SHORT  200
 #define NITER_THRESH 131072
+#define COMPUTE_SAFETY_FACTOR 1.2
 int elements=100;
 hip_mpitest_buffer *sendbuf=NULL;
 hip_mpitest_buffer *recvbuf=NULL;
@@ -61,6 +63,7 @@ int main (int argc, char *argv[])
     int res;
     int rank, size;
     int root = 0;
+    hip_mpitest_compute_params_t params;
 
     bind_device();
 
@@ -85,11 +88,11 @@ int main (int argc, char *argv[])
         // Initialise send buffer
         ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, double, elements, sizeof(double),
                             rank, MPI_COMM_WORLD, init_sendbuf);
-        
+
         // Initialize recv buffer
         ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, double, elements, sizeof(double),
                             rank, MPI_COMM_WORLD, init_recvbuf);
-        
+
         //Warmup
         res = allreduce_test (sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
                               MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD, 1);
@@ -98,9 +101,29 @@ int main (int argc, char *argv[])
             MPI_Abort (MPI_COMM_WORLD, 1);
             return 1;
         }
-        
-        // execute the allreduce test
+        // Measure communication time without compute operation
         MPI_Barrier(MPI_COMM_WORLD);
+        auto tss = std::chrono::high_resolution_clock::now();
+        res = allreduce_test (sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
+                              MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD, niter);
+        if (MPI_SUCCESS != res ) {
+            fprintf(stderr, "Error in allreduce_test. Aborting\n");
+            MPI_Abort (MPI_COMM_WORLD, 1);
+            return 1;
+        }
+        auto tse = std::chrono::high_resolution_clock::now();
+        double ts = std::chrono::duration<double>(tse-tss).count();
+
+        // Determine parameters required to run compute operation for
+        // approx. the same time as it takes to execute communication
+        // benchmark
+        hip_mpitest_compute_init(params);
+        hip_mpitest_compute_set_params(params, (ts*COMPUTE_SAFETY_FACTOR));
+
+        MPI_Barrier(MPI_COMM_WORLD);
+        // launch compute operation
+        hip_mpitest_compute_launch(params);
+        // do communication benchmark
         auto t1s = std::chrono::high_resolution_clock::now();
         res = allreduce_test (sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
                               MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD, niter);
@@ -111,9 +134,10 @@ int main (int argc, char *argv[])
         }
         auto t1e = std::chrono::high_resolution_clock::now();
         double t1 = std::chrono::duration<double>(t1e-t1s).count();
-        
+        HIP_CHECK(hipStreamSynchronize(params.stream));
+        hip_mpitest_compute_fini(params);
 #if 0
-        // verify results 
+        // verify results
         bool ret = true;
         if (recvbuf->NeedsStagingBuffer()) {
             HIP_CHECK(recvbuf->CopyFrom(tmp_recvbuf, elements*sizeof(double)));
@@ -122,12 +146,12 @@ int main (int argc, char *argv[])
         else {
             ret = check_recvbuf((double*) recvbuf->get_buffer(), size, rank, elements);
         }
-        
+
         bool fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), ret);
 #endif
         bench_performance (argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(),
                            elements, (size_t)(elements * sizeof(double)), niter, t1);
-        
+
         //Free buffers
         FREE_BUFFER(sendbuf, tmp_sendbuf);
         FREE_BUFFER(recvbuf, tmp_recvbuf);
@@ -136,7 +160,7 @@ int main (int argc, char *argv[])
     delete (sendbuf);
     delete (recvbuf);
 
-    MPI_Finalize ();    
+    MPI_Finalize ();
     return 0;
 }
 
