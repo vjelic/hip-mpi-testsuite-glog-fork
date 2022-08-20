@@ -8,6 +8,13 @@ ROCM_INCLUDE_DIR = $(ROCM_DIR)/include
 ROCM_LIB_DIR     = $(ROCM_DIR)/lib
 ROCM_LIBS        = amdhip64
 
+HIPCC            = @HIPCC@
+
+MPI_BIN_DIR      = @mpi_dir@
+MPI_INCLUDE_DIR  = $(MPI_BIN_DIR)/../include
+MPI_LIB_DIR      = $(MPI_BIN_DIR)/../lib
+MPI_LIBS         = mpi
+
 CXX      = @CXX@
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS  = -L$(ROCM_LIB_DIR) -l$(ROCM_LIBS)

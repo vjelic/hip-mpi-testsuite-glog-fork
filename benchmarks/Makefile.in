@@ -10,18 +10,22 @@ HEADERS = ../src/hip_mpitest_utils.h    \
 	  ../src/hip_mpitest_bench.h
 
 
-EXECS = hip_alltoall_bench     \
-	hip_reduce_bench       \
-	hip_allreduce_bench    \
-	hip_allgather_bench    \
+EXECS = hip_alltoall_bench             \
+	hip_reduce_bench               \
+	hip_allreduce_bench            \
+	hip_allreduce_overlap_bench    \
+	hip_allgather_bench            \
 	hip_bcast_bench
 
-LOCALCPPFLAGS=-I../src/ 
+LOCALCPPFLAGS=-I../src/ -Wno-delete-abstract-non-virtual-dtor
 
 all:	$(EXECS)
 
 hip_allreduce_bench: hip_allreduce_bench.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) $(LOCALCPPFLAGS) -o hip_allreduce_bench hip_allreduce_bench.cc $(LDFLAGS)
+
+hip_allreduce_overlap_bench: hip_allreduce_overlap_bench.cc $(HEADERS)
+	$(HIPCC) $(CPPFLAGS) $(LOCALCPPFLAGS) -I$(MPI_INCLUDE_DIR) -o hip_allreduce_overlap_bench hip_allreduce_overlap_bench.cc hip_mpitest_compute_kernel.cc $(LDFLAGS) -L$(MPI_LIB_DIR) -l$(MPI_LIBS)
 
 hip_allgather_bench: hip_allgather_bench.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) $(LOCALCPPFLAGS) -o hip_allgather_bench hip_allgather_bench.cc $(LDFLAGS)
@@ -39,4 +43,4 @@ hip_alltoall_bench: hip_alltoall_bench.cc $(HEADERS)
 clean:
 	$(RM) *.o *~
 	$(RM) hip_allreduce_bench hip_reduce_bench hip_alltoall_bench hip_bcast_bench
-	$(RM) hip_allgather_bench
+	$(RM) hip_allgather_bench hip_allreduce_overlap_bench
