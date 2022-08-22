@@ -67,7 +67,7 @@ Makefile.defs
 autom4te.cache/
 config.log
 config.status
-run_all_impl.sh
+scripts/run_all_impl.sh
 src/hip_mpitest_config.h
 src/Makefile
 benchmarks/Makefile
