@@ -22,6 +22,7 @@ To compile and run all tests in the testsuite
 ```
 ./configure CXX=mpiCC --with-rocm=/opt/rocm
 make
+cd scripts/
 ./run_all.sh
 ```
 
