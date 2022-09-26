@@ -30,6 +30,6 @@ Compiling and running a benchmark can be done for example using the following co
 
 ```
 make bench
-mpirun --mca pml ucx -x UCX_RNDV_THRESH=128 -x UCX_RNDV_SCHEME=put_zcopy -np 16 ./benchmarks/hip_allreduce_bench -s D -r D -n 1048576
+mpirun --mca pml ucx -x UCX_RNDV_THRESH=128 -np 16 ./benchmarks/hip_allreduce_bench -s D -r D -n 1048576
 ```
 Note: performance tuning might be necessary depending on the operation executed, message length, and platform. This can include selecting components used for the operation (e.g. ucc, tuned, han, etc.) as well as setting parameters of the component, and environment variable for tuning UCX performance.
