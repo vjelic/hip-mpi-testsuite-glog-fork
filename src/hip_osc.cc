@@ -196,6 +196,13 @@ int type_osc_test (void *sbuf, void *rbuf, int count,
         return ret;
     }
 #endif
-    
+
+#ifdef HIP_MPITEST_OSC_LOCK
+    ret = MPI_Barrier(comm);
+    if (MPI_SUCCESS != ret) {
+        return ret;
+    }
+#endif
+
     return MPI_SUCCESS;
 }
