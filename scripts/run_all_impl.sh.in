@@ -46,6 +46,8 @@ ExecTest "hip_type_struct_short"  "2" "32"         "D H M O R"
 ExecTest "hip_type_struct_long"   "2" "32"         "D H M O R"
 ExecTest "hip_osc_put_fence"      "2" "32 1048576" "D H"
 ExecTest "hip_osc_get_fence"      "2" "32 1048576" "D H"
+ExecTest "hip_osc_acc_fence"      "2" "32 1048576" "D H"
+ExecTest "hip_osc_acc_lock"       "2" "32 1048576" "D H"
 ExecTest "hip_osc_put_lock"       "2" "32 1048576" "D H"
 ExecTest "hip_osc_get_lock"       "2" "32 1048576" "D H"
 if [ "@HIP_UCC_SUPPORT@" = "0" ] ; then 

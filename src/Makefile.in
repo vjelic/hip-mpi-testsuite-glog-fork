@@ -30,6 +30,8 @@ EXECS = hip_pt2pt_nb           \
 	hip_gatherv            \
 	hip_osc_put_fence      \
 	hip_osc_get_fence      \
+	hip_osc_acc_fence      \
+	hip_osc_acc_lock       \
 	hip_osc_put_lock       \
 	hip_osc_get_lock @HIP_QUERY_TEST@
 
@@ -93,6 +95,12 @@ hip_osc_put_fence: hip_osc.cc $(HEADERS)
 hip_osc_get_fence: hip_osc.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_osc_get_fence hip_osc.cc -DHIP_MPITEST_OSC_GET -DHIP_MPITEST_OSC_FENCE $(LDFLAGS)
 
+hip_osc_acc_fence: hip_osc_accumulate.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_osc_acc_fence hip_osc_accumulate.cc -DHIP_MPITEST_OSC_ACCUMULATE_FENCE $(LDFLAGS)
+
+hip_osc_acc_lock: hip_osc_accumulate.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_osc_acc_lock hip_osc_accumulate.cc -DHIP_MPITEST_OSC_ACCUMULATE_LOCK $(LDFLAGS)
+
 hip_osc_put_lock: hip_osc.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_osc_put_lock hip_osc.cc -DHIP_MPITEST_OSC_PUT -DHIP_MPITEST_OSC_LOCK $(LDFLAGS)
 
@@ -124,5 +132,5 @@ clean:
 	$(RM) hip_allgather hip_allgatherv hip_gather hip_gatherv
 	$(RM) hip_type_resized_short hip_type_struct_short
 	$(RM) hip_type_resized_long hip_type_struct_long
-	$(RM) hip_osc_put_fence hip_osc_get_fence hip_osc_put_lock hip_osc_get_lock
+	$(RM) hip_osc_put_fence hip_osc_get_fence hip_osc_acc_fence hip_osc_acc_lock hip_osc_put_lock hip_osc_get_lock
 	$(RM) hip_query_test
