@@ -62,6 +62,8 @@ hip_type_struct_long
 hip_type_struct_short
 hip_file_write
 hip_file_iwrite
+hip_file_read
+hip_file_iread
 
 hip_allreduce_bench
 hip_allreduce_overlap_bench

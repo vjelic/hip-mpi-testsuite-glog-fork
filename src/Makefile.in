@@ -38,6 +38,8 @@ EXECS = hip_pt2pt_nb           \
 	hip_osc_put_lock       \
 	hip_file_write         \
 	hip_file_iwrite        \
+	hip_file_read          \
+	hip_file_iread         \
 	hip_osc_get_lock @HIP_QUERY_TEST@
 
 
@@ -139,6 +141,12 @@ hip_file_write: hip_file_write.cc $(HEADERS)
 hip_file_iwrite: hip_file_write.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_file_iwrite hip_file_write.cc -DHIP_MPITEST_FILE_IWRITE $(LDFLAGS)
 
+hip_file_read: hip_file_read.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_file_read hip_file_read.cc $(LDFLAGS)
+
+hip_file_iread: hip_file_read.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_file_iread hip_file_read.cc -DHIP_MPITEST_FILE_IREAD $(LDFLAGS)
+
 ifeq ( $(HAVE_mpix_query_rocm), 1 )
 hip_query_test: hip_query_test.cc
 	$(CXX) $(CPPFLAGS) -o hip_query_test hip_query_test.cc $(LDFLAGS)
@@ -153,4 +161,4 @@ clean:
 	$(RM) hip_type_resized_short hip_type_struct_short
 	$(RM) hip_type_resized_long hip_type_struct_long
 	$(RM) hip_osc_put_fence hip_osc_get_fence hip_osc_acc_fence hip_osc_acc_lock hip_osc_put_lock hip_osc_get_lock
-	$(RM) hip_query_test hip_file_write hip_file_iwrite
+	$(RM) hip_query_test hip_file_write hip_file_iwrite hip_file_read hip_file_iread
