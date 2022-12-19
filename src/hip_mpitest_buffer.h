@@ -105,9 +105,9 @@ class hip_mpitest_buffer_device: public hip_mpitest_buffer {
     }
 
     hipError_t Free () {
-	hipFree(buffer);
+	hipError_t err = hipFree(buffer);
 	buffer = NULL;
-	return hipSuccess;
+	return err;
     }
 
     hipError_t CopyTo(void *src, size_t nBytes) {
@@ -137,9 +137,9 @@ class hip_mpitest_buffer_managed: public hip_mpitest_buffer {
     }
 
     hipError_t Free() {
-	hipFree(buffer);
+	hipError_t err = hipFree(buffer);
 	buffer = NULL;
-	return hipSuccess;
+	return err;
     }
 
     hipError_t CopyTo(void *src, size_t nBytes) {
@@ -168,9 +168,9 @@ class hip_mpitest_buffer_hostmalloc: public hip_mpitest_buffer {
     }
 
     hipError_t Free() {
-	hipFree(buffer);
+	hipError_t err = hipFree(buffer);
 	buffer = NULL;
-	return hipSuccess;
+	return err;
     }
 
     hipError_t CopyTo(void *src, size_t nBytes) {
@@ -261,7 +261,7 @@ class hip_mpitest_buffer_hostregister: public hip_mpitest_buffer {
     if (_buf->NeedsStagingBuffer() ){ \
        free (_tmp_buf);               \
     }                                 \
-    _buf->Free();                     \
+    HIP_CHECK(_buf->Free());          \
 }
 
 #endif // __HIP_MPITEST_BUFFER__
