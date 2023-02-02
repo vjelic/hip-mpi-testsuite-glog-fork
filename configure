@@ -3301,8 +3301,9 @@ elif test "$compiler_vendor" = "intel" ; then
   CXXFLAGS="$CXXFLAGS -std=c++17"
 fi
 
-# Extract the first word of "$CXX", so it can be a program name with args.
-set dummy $CXX; ac_word=$2
+c_xx="$(basename "${CXX}")"
+# Extract the first word of "$c_xx", so it can be a program name with args.
+set dummy $c_xx; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
 if ${ac_cv_path_MPICC+:} false; then :
@@ -3343,8 +3344,8 @@ fi
 
 
 if  test "$MPICC" = "notfound"  ; then
-   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $CXX not found." >&5
-$as_echo "$as_me: WARNING: $CXX not found." >&2;}
+   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $c_xx not found." >&5
+$as_echo "$as_me: WARNING: $c_xx not found." >&2;}
    as_fn_error $? "Aborting." "$LINENO" 5
 fi
 mpi_dir="$(dirname "${MPICC}")"
@@ -3970,14 +3971,14 @@ else
 # 1 is the command
 # 2 is actions to do if success
 # 3 is actions to do if fail
-echo "configure:3973: check_package_pkgconfig_run_results=`${PKG_CONFIG} --exists ${check_package_cv_rocm_pcfilename} 2>&1`" >&5
+echo "configure:3974: check_package_pkgconfig_run_results=`${PKG_CONFIG} --exists ${check_package_cv_rocm_pcfilename} 2>&1`" >&5
 check_package_pkgconfig_run_results=`${PKG_CONFIG} --exists ${check_package_cv_rocm_pcfilename} 2>&1` 1>&5 2>&1
 pmix_status=$?
 
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:3980: \$? = $pmix_status" >&5
+    echo "configure:3981: \$? = $pmix_status" >&5
 else
     echo \$? = $pmix_status >&5
 fi
@@ -3993,7 +3994,7 @@ fi
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:3996: pkg-config output: ${check_package_pkgconfig_run_results}" >&5
+    echo "configure:3997: pkg-config output: ${check_package_pkgconfig_run_results}" >&5
 else
     echo pkg-config output: ${check_package_pkgconfig_run_results} >&5
 fi
@@ -4027,14 +4028,14 @@ else
 # 1 is the command
 # 2 is actions to do if success
 # 3 is actions to do if fail
-echo "configure:4030: check_package_pkgconfig_run_results=`${PKG_CONFIG} --cflags ${check_package_cv_rocm_pcfilename} 2>&1`" >&5
+echo "configure:4031: check_package_pkgconfig_run_results=`${PKG_CONFIG} --cflags ${check_package_cv_rocm_pcfilename} 2>&1`" >&5
 check_package_pkgconfig_run_results=`${PKG_CONFIG} --cflags ${check_package_cv_rocm_pcfilename} 2>&1` 1>&5 2>&1
 pmix_status=$?
 
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4037: \$? = $pmix_status" >&5
+    echo "configure:4038: \$? = $pmix_status" >&5
 else
     echo \$? = $pmix_status >&5
 fi
@@ -4050,7 +4051,7 @@ fi
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4053: pkg-config output: ${check_package_pkgconfig_run_results}" >&5
+    echo "configure:4054: pkg-config output: ${check_package_pkgconfig_run_results}" >&5
 else
     echo pkg-config output: ${check_package_pkgconfig_run_results} >&5
 fi
@@ -4082,14 +4083,14 @@ else
 # 1 is the command
 # 2 is actions to do if success
 # 3 is actions to do if fail
-echo "configure:4085: check_package_pkgconfig_run_results=`${PKG_CONFIG} --libs-only-L --libs-only-other ${check_package_cv_rocm_pcfilename} 2>&1`" >&5
+echo "configure:4086: check_package_pkgconfig_run_results=`${PKG_CONFIG} --libs-only-L --libs-only-other ${check_package_cv_rocm_pcfilename} 2>&1`" >&5
 check_package_pkgconfig_run_results=`${PKG_CONFIG} --libs-only-L --libs-only-other ${check_package_cv_rocm_pcfilename} 2>&1` 1>&5 2>&1
 pmix_status=$?
 
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4092: \$? = $pmix_status" >&5
+    echo "configure:4093: \$? = $pmix_status" >&5
 else
     echo \$? = $pmix_status >&5
 fi
@@ -4105,7 +4106,7 @@ fi
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4108: pkg-config output: ${check_package_pkgconfig_run_results}" >&5
+    echo "configure:4109: pkg-config output: ${check_package_pkgconfig_run_results}" >&5
 else
     echo pkg-config output: ${check_package_pkgconfig_run_results} >&5
 fi
@@ -4137,14 +4138,14 @@ else
 # 1 is the command
 # 2 is actions to do if success
 # 3 is actions to do if fail
-echo "configure:4140: check_package_pkgconfig_run_results=`${PKG_CONFIG} --static --libs-only-L --libs-only-other ${check_package_cv_rocm_pcfilename} 2>&1`" >&5
+echo "configure:4141: check_package_pkgconfig_run_results=`${PKG_CONFIG} --static --libs-only-L --libs-only-other ${check_package_cv_rocm_pcfilename} 2>&1`" >&5
 check_package_pkgconfig_run_results=`${PKG_CONFIG} --static --libs-only-L --libs-only-other ${check_package_cv_rocm_pcfilename} 2>&1` 1>&5 2>&1
 pmix_status=$?
 
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4147: \$? = $pmix_status" >&5
+    echo "configure:4148: \$? = $pmix_status" >&5
 else
     echo \$? = $pmix_status >&5
 fi
@@ -4160,7 +4161,7 @@ fi
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4163: pkg-config output: ${check_package_pkgconfig_run_results}" >&5
+    echo "configure:4164: pkg-config output: ${check_package_pkgconfig_run_results}" >&5
 else
     echo pkg-config output: ${check_package_pkgconfig_run_results} >&5
 fi
@@ -4192,14 +4193,14 @@ else
 # 1 is the command
 # 2 is actions to do if success
 # 3 is actions to do if fail
-echo "configure:4195: check_package_pkgconfig_run_results=`${PKG_CONFIG} --libs-only-l ${check_package_cv_rocm_pcfilename} 2>&1`" >&5
+echo "configure:4196: check_package_pkgconfig_run_results=`${PKG_CONFIG} --libs-only-l ${check_package_cv_rocm_pcfilename} 2>&1`" >&5
 check_package_pkgconfig_run_results=`${PKG_CONFIG} --libs-only-l ${check_package_cv_rocm_pcfilename} 2>&1` 1>&5 2>&1
 pmix_status=$?
 
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4202: \$? = $pmix_status" >&5
+    echo "configure:4203: \$? = $pmix_status" >&5
 else
     echo \$? = $pmix_status >&5
 fi
@@ -4215,7 +4216,7 @@ fi
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4218: pkg-config output: ${check_package_pkgconfig_run_results}" >&5
+    echo "configure:4219: pkg-config output: ${check_package_pkgconfig_run_results}" >&5
 else
     echo pkg-config output: ${check_package_pkgconfig_run_results} >&5
 fi
@@ -4247,14 +4248,14 @@ else
 # 1 is the command
 # 2 is actions to do if success
 # 3 is actions to do if fail
-echo "configure:4250: check_package_pkgconfig_run_results=`${PKG_CONFIG} --static --libs-only-l ${check_package_cv_rocm_pcfilename} 2>&1`" >&5
+echo "configure:4251: check_package_pkgconfig_run_results=`${PKG_CONFIG} --static --libs-only-l ${check_package_cv_rocm_pcfilename} 2>&1`" >&5
 check_package_pkgconfig_run_results=`${PKG_CONFIG} --static --libs-only-l ${check_package_cv_rocm_pcfilename} 2>&1` 1>&5 2>&1
 pmix_status=$?
 
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4257: \$? = $pmix_status" >&5
+    echo "configure:4258: \$? = $pmix_status" >&5
 else
     echo \$? = $pmix_status >&5
 fi
@@ -4270,7 +4271,7 @@ fi
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4273: pkg-config output: ${check_package_pkgconfig_run_results}" >&5
+    echo "configure:4274: pkg-config output: ${check_package_pkgconfig_run_results}" >&5
 else
     echo pkg-config output: ${check_package_pkgconfig_run_results} >&5
 fi
@@ -4331,14 +4332,14 @@ else
 # 1 is the command
 # 2 is actions to do if success
 # 3 is actions to do if fail
-echo "configure:4334: check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:version 2>&1`" >&5
+echo "configure:4335: check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:version 2>&1`" >&5
 check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:version 2>&1` 1>&5 2>&1
 pmix_status=$?
 
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4341: \$? = $pmix_status" >&5
+    echo "configure:4342: \$? = $pmix_status" >&5
 else
     echo \$? = $pmix_status >&5
 fi
@@ -4354,7 +4355,7 @@ fi
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4357: wrapper output: ${check_package_wrapper_run_results}" >&5
+    echo "configure:4358: wrapper output: ${check_package_wrapper_run_results}" >&5
 else
     echo wrapper output: ${check_package_wrapper_run_results} >&5
 fi
@@ -4378,14 +4379,14 @@ else
 # 1 is the command
 # 2 is actions to do if success
 # 3 is actions to do if fail
-echo "configure:4381: check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:incdirs 2>&1`" >&5
+echo "configure:4382: check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:incdirs 2>&1`" >&5
 check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:incdirs 2>&1` 1>&5 2>&1
 pmix_status=$?
 
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4388: \$? = $pmix_status" >&5
+    echo "configure:4389: \$? = $pmix_status" >&5
 else
     echo \$? = $pmix_status >&5
 fi
@@ -4411,7 +4412,7 @@ fi
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4414: wrapper output: ${check_package_wrapper_run_results}" >&5
+    echo "configure:4415: wrapper output: ${check_package_wrapper_run_results}" >&5
 else
     echo wrapper output: ${check_package_wrapper_run_results} >&5
 fi
@@ -4432,14 +4433,14 @@ else
 # 1 is the command
 # 2 is actions to do if success
 # 3 is actions to do if fail
-echo "configure:4435: check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:libdirs 2>&1`" >&5
+echo "configure:4436: check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:libdirs 2>&1`" >&5
 check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:libdirs 2>&1` 1>&5 2>&1
 pmix_status=$?
 
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4442: \$? = $pmix_status" >&5
+    echo "configure:4443: \$? = $pmix_status" >&5
 else
     echo \$? = $pmix_status >&5
 fi
@@ -4465,7 +4466,7 @@ fi
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4468: wrapper output: ${check_package_wrapper_run_results}" >&5
+    echo "configure:4469: wrapper output: ${check_package_wrapper_run_results}" >&5
 else
     echo wrapper output: ${check_package_wrapper_run_results} >&5
 fi
@@ -4486,14 +4487,14 @@ else
 # 1 is the command
 # 2 is actions to do if success
 # 3 is actions to do if fail
-echo "configure:4489: check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:libdirs_static 2>&1`" >&5
+echo "configure:4490: check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:libdirs_static 2>&1`" >&5
 check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:libdirs_static 2>&1` 1>&5 2>&1
 pmix_status=$?
 
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4496: \$? = $pmix_status" >&5
+    echo "configure:4497: \$? = $pmix_status" >&5
 else
     echo \$? = $pmix_status >&5
 fi
@@ -4519,7 +4520,7 @@ fi
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4522: wrapper output: ${check_package_wrapper_run_results}" >&5
+    echo "configure:4523: wrapper output: ${check_package_wrapper_run_results}" >&5
 else
     echo wrapper output: ${check_package_wrapper_run_results} >&5
 fi
@@ -4540,14 +4541,14 @@ else
 # 1 is the command
 # 2 is actions to do if success
 # 3 is actions to do if fail
-echo "configure:4543: check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:libs 2>&1`" >&5
+echo "configure:4544: check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:libs 2>&1`" >&5
 check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:libs 2>&1` 1>&5 2>&1
 pmix_status=$?
 
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4550: \$? = $pmix_status" >&5
+    echo "configure:4551: \$? = $pmix_status" >&5
 else
     echo \$? = $pmix_status >&5
 fi
@@ -4573,7 +4574,7 @@ fi
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4576: wrapper output: ${check_package_wrapper_run_results}" >&5
+    echo "configure:4577: wrapper output: ${check_package_wrapper_run_results}" >&5
 else
     echo wrapper output: ${check_package_wrapper_run_results} >&5
 fi
@@ -4594,14 +4595,14 @@ else
 # 1 is the command
 # 2 is actions to do if success
 # 3 is actions to do if fail
-echo "configure:4597: check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:libs_static 2>&1`" >&5
+echo "configure:4598: check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:libs_static 2>&1`" >&5
 check_package_wrapper_run_results=`${check_package_cv_rocm_wrapper_compiler} --showme:libs_static 2>&1` 1>&5 2>&1
 pmix_status=$?
 
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4604: \$? = $pmix_status" >&5
+    echo "configure:4605: \$? = $pmix_status" >&5
 else
     echo \$? = $pmix_status >&5
 fi
@@ -4627,7 +4628,7 @@ fi
 # 1 is the message
 # 2 is whether to put a prefix or not
 if test -n "1"; then
-    echo "configure:4630: wrapper output: ${check_package_wrapper_run_results}" >&5
+    echo "configure:4631: wrapper output: ${check_package_wrapper_run_results}" >&5
 else
     echo wrapper output: ${check_package_wrapper_run_results} >&5
 fi
