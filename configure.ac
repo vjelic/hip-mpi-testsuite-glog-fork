@@ -41,9 +41,10 @@ elif test "$compiler_vendor" = "intel" ; then
   CXXFLAGS="$CXXFLAGS -std=c++17"
 fi
 
-AC_PATH_PROG([MPICC], [$CXX], [notfound], [$PATH])
+c_xx="$(basename "${CXX}")"
+AC_PATH_PROG([MPICC], [$c_xx], [notfound], [$PATH])
 if [ test "$MPICC" = "notfound" ] ; then
-   AC_MSG_WARN([$CXX not found.])
+   AC_MSG_WARN([$c_xx not found.])
    AC_MSG_ERROR([Aborting.])
 fi
 mpi_dir="$(dirname "${MPICC}")"
