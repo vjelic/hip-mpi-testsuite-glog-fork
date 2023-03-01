@@ -71,4 +71,5 @@ ExecTest "hip_scatter"            "4" "1024"       "D H"
 ExecTest "hip_scatterv"           "4" "1024"       "D H"
 ExecTest "hip_reduce_scatter"     "4" "1024"       "D H"
 ExecTest "hip_pt2pt_nb_stress"    "2" "32 1048576" "D H M O R"
+ExecTest "hip_sendtoself_stress"  "1" "32 1048576" "D H M O R"
 printf "\n Executed %d Tests (%d passed %d failed)\n" $COUNTER $SUCCESS $FAILED
