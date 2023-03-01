@@ -134,12 +134,14 @@ int type_p2p_nb_stress_test (int *sbuf, int *rbuf, int count, MPI_Comm comm)
     }
     for (int j=0; j<NUM_NB_ITERATIONS; j++) {
         for (int i=0; i<size; i++) {
+#ifndef HIP_MPITEST_SENDTOSELF
             if (i == rank) {
                 // No send-to-self for the moment
                 reqs[2*i+2*size*j]   = MPI_REQUEST_NULL;
                 reqs[2*i+2*size*j+1] = MPI_REQUEST_NULL;
                 continue;
             }
+#endif
             recvbuf = &rbuf[i*count+j*count*size];
             ret = MPI_Irecv (recvbuf, count, MPI_INT, i, tag, comm, &reqs[2*i+2*size*j]);
             if (MPI_SUCCESS != ret) {

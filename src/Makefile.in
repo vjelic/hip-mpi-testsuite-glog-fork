@@ -17,6 +17,7 @@ EXECS = hip_pt2pt_nb           \
 	hip_scatterv           \
 	hip_reduce_scatter     \
 	hip_sendtoself         \
+	hip_sendtoself_stress  \
 	hip_pack               \
 	hip_unpack             \
 	hip_type_struct_short  \
@@ -76,6 +77,9 @@ hip_pt2pt_persistent: hip_pt2pt_nb.cc $(HEADERS)
 
 hip_sendtoself: hip_sendtoself.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_sendtoself hip_sendtoself.cc $(LDFLAGS)
+
+hip_sendtoself_stress: hip_pt2pt_nb_stress.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_sendtoself_stress hip_pt2pt_nb_stress.cc -DHIP_MPITEST_SENDTOSELF $(LDFLAGS)
 
 hip_pack: hip_packunpack.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_pack hip_packunpack.cc -DHIP_TYPE_STRUCT -DA_WIDTH=1024 $(LDFLAGS)
@@ -163,7 +167,8 @@ endif
 clean:
 	$(RM) *.o *~
 	$(RM) hip_scatter hip_scatterv hip_reduce_scatter
-	$(RM) hip_pt2pt_nb hip_pt2pt_nb_mpi_testall hip_pt2pt_nb_stress hip_pt2pt_bl hip_sendtoself hip_pack hip_unpack hip_pt2pt_persistent hip_pt2pt_bsend
+	$(RM) hip_pt2pt_nb hip_pt2pt_nb_mpi_testall hip_pt2pt_nb_stress hip_pt2pt_bl
+	$(RM) hip_sendtoself hip_sendtoself_stress hip_pack hip_unpack hip_pt2pt_persistent hip_pt2pt_bsend
 	$(RM) hip_allreduce hip_reduce hip_iallreduce hip_ireduce hip_alltoall hip_alltoallv
 	$(RM) hip_allgather hip_allgatherv hip_gather hip_gatherv
 	$(RM) hip_type_resized_short hip_type_struct_short

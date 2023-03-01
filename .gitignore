@@ -58,6 +58,7 @@ hip_pt2pt_bsend
 hip_pt2pt_persistent
 hip_query_test
 hip_sendtoself
+hip_sendtoself_stress
 hip_type_resized_long
 hip_type_resized_short
 hip_type_struct_long
