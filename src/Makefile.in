@@ -12,7 +12,7 @@ EXECS = hip_pt2pt_nb           \
 	hip_pt2pt_nb_mpi_testall   \
 	hip_pt2pt_nb_stress        \
 	hip_pt2pt_bsend            \
-	hip_pt2pt_ssend            \ 
+	hip_pt2pt_ssend            \
 	hip_pt2pt_persistent       \
 	hip_scatter                \
 	hip_scatterv               \
