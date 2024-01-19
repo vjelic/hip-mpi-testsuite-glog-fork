@@ -3,11 +3,7 @@
 # Copyright (c) 2022      Advanced Micro Devices, Inc. All rights reserved.
 #
 
-if [ "@HIP_UCC_SUPPORT@" = "0" ] ; then 
-    OPTIONS="--mca coll ^hcoll --mca pml ucx --mca osc ucx --mca btl ^openib"
-else
-    OPTIONS="--mca coll ^hcoll --mca coll_ucc_enable 1 --mca coll_ucc_priority 100 --mca pml ucx --mca osc ucx --mca btl ^openib"
-fi
+OPTIONS="--mca coll ^hcoll --mca pml ^ucx --mca osc ^ucx --mca btl ^openib,uct"
 
 ExecTest() {
 
@@ -31,7 +27,7 @@ let COUNTER=0
 let SUCCESS=0
 let FAILED=0
 
-if [ "@HAVE_MPIX_QUERY_ROCM@"  = "1" ] ; then
+if [ "1"  = "1" ] ; then
     ExecTest "hip_query_test"         "1" "1"          "D"
 fi
 ExecTest "hip_pt2pt_bl"             "2" "32 1048576" "D H M O R"
@@ -47,33 +43,16 @@ ExecTest "hip_type_resized_short"   "2" "32"         "D H M O R"
 ExecTest "hip_type_resized_long"    "2" "32"         "D H M O R"
 ExecTest "hip_type_struct_short"    "2" "32"         "D H M O R"
 ExecTest "hip_type_struct_long"     "2" "32"         "D H M O R"
-ExecTest "hip_osc_put_fence"        "2" "32 1048576" "D H"
-ExecTest "hip_osc_get_fence"        "2" "32 1048576" "D H"
-ExecTest "hip_osc_acc_fence"        "2" "32 1048576" "D H"
-ExecTest "hip_osc_acc_lock"         "2" "32 1048576" "D H"
-ExecTest "hip_osc_put_lock"         "2" "32 1048576" "D H"
-ExecTest "hip_osc_get_lock"         "2" "32 1048576" "D H"
-if [ "@HIP_UCC_SUPPORT@" = "0" ] ; then 
-    ExecTest "hip_allreduce"        "4" "32" "D"
-    ExecTest "hip_reduce"           "4" "32" "D"
-    ExecTest "hip_gather"           "4" "1024"       "D H"
-    ExecTest "hip_gatherv"          "4" "1024"       "D H"
-    ExecTest "hip_scatter"          "4" "1024"       "D H"
-    ExecTest "hip_scatterv"         "4" "1024"       "D H"
-else
-    ExecTest "hip_allreduce"        "4" "32 1048576" "D"
-    ExecTest "hip_reduce"           "4" "32 1048576" "D"
-    ExecTest "hip_iallreduce"       "4" "32 1048576" "D"
-    ExecTest "hip_ireduce"          "4" "32 1048576" "D"
-    ExecTest "hip_gather"           "4" "1024"       "D"
-    ExecTest "hip_gatherv"          "4" "1024"       "D"
-    ExecTest "hip_scatter"          "4" "1024"       "D"
-    ExecTest "hip_scatterv"         "4" "1024"       "D"
-fi
+ExecTest "hip_allreduce"            "4" "32 1048576" "D"
+ExecTest "hip_reduce"               "4" "32 1048576" "D"
 ExecTest "hip_alltoall"             "4" "1024"       "D H"
 ExecTest "hip_alltoallv"            "4" "1024"       "D H"
 ExecTest "hip_allgather"            "4" "1024"       "D H"
 ExecTest "hip_allgatherv"           "4" "1024"       "D H"
+ExecTest "hip_gather"               "4" "1024"       "D H"
+ExecTest "hip_gatherv"              "4" "1024"       "D H"
+ExecTest "hip_scatter"              "4" "1024"       "D H"
+ExecTest "hip_scatterv"             "4" "1024"       "D H"
 ExecTest "hip_reduce_scatter"       "4" "1024"       "D H"
 ExecTest "hip_reduce_scatter_block" "4" "1024"       "D H"
 ExecTest "hip_pt2pt_nb_stress"      "2" "32 1048576" "D H M O R"
