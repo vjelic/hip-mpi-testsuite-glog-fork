@@ -3,7 +3,7 @@
 # Copyright (c) 2022      Advanced Micro Devices, Inc. All rights reserved.
 #
 
-OPTIONS="--mca coll ^hcoll --mca pml ^ucx --mca osc ^ucx --mca btl ^openib,uct"
+OPTIONS=" --mca coll ^hcoll --mca pml ^ucx --mca osc ^ucx --mca btl ^openib,uct "
 
 ExecTest() {
 
@@ -58,4 +58,5 @@ ExecTest "hip_reduce_scatter_block" "4" "1024"       "D H"
 ExecTest "hip_pt2pt_nb_stress"      "2" "32 1048576" "D H M O R"
 ExecTest "hip_sendtoself_stress"    "1" "32 1048576" "D H M O R"
 ExecTest "hip_pt2pt_bl"             "2" "10 876 19680 980571" "D H"
+ExecTest "hip_pt2pt_bl_mult"        "2" "1024" "D H"
 printf "\n Executed %d Tests (%d passed %d failed)\n" $COUNTER $SUCCESS $FAILED

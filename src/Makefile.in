@@ -9,6 +9,7 @@ HEADERS = hip_mpitest_utils.h hip_mpitest_buffer.h hip_mpitest_datatype.h
 
 EXECS = hip_pt2pt_nb           \
         hip_pt2pt_bl           \
+        hip_pt2pt_bl_mult      \
 	hip_pt2pt_nb_testall   \
 	hip_pt2pt_nb_stress        \
 	hip_pt2pt_bsend            \
@@ -64,6 +65,9 @@ hip_reduce_scatter_block: hip_reduce_scatter.cc $(HEADERS)
 
 hip_pt2pt_bl: hip_pt2pt_bl.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_pt2pt_bl hip_pt2pt_bl.cc $(LDFLAGS)
+
+hip_pt2pt_bl_mult: hip_pt2pt_bl_mult.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_pt2pt_bl_mult hip_pt2pt_bl_mult.cc $(LDFLAGS)
 
 hip_pt2pt_bsend: hip_pt2pt_bl.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_pt2pt_bsend hip_pt2pt_bl.cc -DHIP_MPITEST_BSEND $(LDFLAGS)
@@ -175,7 +179,7 @@ endif
 clean:
 	$(RM) *.o *~
 	$(RM) hip_scatter hip_scatterv hip_reduce_scatter hip_reduce_scatter_block
-	$(RM) hip_pt2pt_nb hip_pt2pt_nb_testall hip_pt2pt_nb_stress hip_pt2pt_bl hip_pt2pt_ssend
+	$(RM) hip_pt2pt_nb hip_pt2pt_nb_testall hip_pt2pt_nb_stress hip_pt2pt_bl hip_pt2pt_bl_mult hip_pt2pt_ssend
 	$(RM) hip_sendtoself hip_sendtoself_stress hip_pack hip_unpack hip_pt2pt_persistent hip_pt2pt_bsend
 	$(RM) hip_allreduce hip_reduce hip_iallreduce hip_ireduce hip_alltoall hip_alltoallv
 	$(RM) hip_allgather hip_allgatherv hip_gather hip_gatherv

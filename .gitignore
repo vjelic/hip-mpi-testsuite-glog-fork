@@ -55,6 +55,7 @@ hip_pt2pt_nb
 hip_pt2pt_nb_stress
 hip_pt2pt_nb_testall
 hip_pt2pt_bl
+hip_pt2pt_bl_mult
 hip_pt2pt_bsend
 hip_pt2pt_ssend
 hip_pt2pt_persistent
