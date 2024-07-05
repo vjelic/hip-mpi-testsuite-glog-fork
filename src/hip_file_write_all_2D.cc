@@ -20,12 +20,21 @@ int elements=64*1024*1024;
 hip_mpitest_buffer *sendbuf=NULL;
 hip_mpitest_buffer *recvbuf=NULL;
 
+static int coord[2];
+static int procs_per_dim;
+static int nelem_per_dim;
+
 static void SL_read ( int hdl, void *buf, size_t num);
 
 static void init_sendbuf (long *sendbuf, int count, int unused)
 {
-    for (long i = 0; i < count; i++) {
-        sendbuf[i] = i+1;
+    long c = 0;
+    for (long i = 0; i < nelem_per_dim; i++) {
+        for (long j = 0; j < nelem_per_dim; j++) {
+            sendbuf[c] = (coord[0] * procs_per_dim * nelem_per_dim * nelem_per_dim) +
+                         (coord[1] * nelem_per_dim) + (i*procs_per_dim * nelem_per_dim) + j+1;
+            c++;
+        }
     }
 }
 
@@ -36,24 +45,25 @@ static void init_recvbuf (long *recvbuf, int count)
     }
 }
 
-static bool check_recvbuf(long *recvbuf, int nprocs_unused, int rank_unused, int count)
+static bool check_recvbuf(long *recvbuf, int nprocs, int rank_unused, int count)
 {
     bool res=true;
 
-    for (long i=0; i<count; i++) {
+    for (long i=0; i<count*nprocs; i++) {
         if (recvbuf[i] != i+1) {
             res = false;
 #ifdef VERBOSE
             printf("recvbuf[%d] = %ld\n", i, recvbuf[i]);
 #endif
+            break;
         }
     }
 
     return res;
 }
 
-int file_write_test (void *sendbuf, int count,
-                     MPI_Datatype datatype, MPI_File fh);
+int file_write_all_test (void *sendbuf, int count,
+                         MPI_Datatype datatype, MPI_File fh);
 
 int main (int argc, char *argv[])
 {
@@ -67,30 +77,60 @@ int main (int argc, char *argv[])
     MPI_Comm_size (MPI_COMM_WORLD, &size);
     MPI_Comm_rank (MPI_COMM_WORLD, &rank);
 
-    if (size > 1){
-        printf("%s only works for 1 process. Aborting\n", argv[0]);
-        MPI_Abort (MPI_COMM_WORLD, 1);
-        return 1;
-    }
-
     parse_args(argc, argv, MPI_COMM_WORLD);
+
+    // Verify that the number of processes is a perfect square
+    procs_per_dim = sqrt(size);
+    assert ((procs_per_dim *procs_per_dim) == size);
+
+    // Verify that the number of elements is a perfect square
+    nelem_per_dim = sqrt(elements);
+    assert ((nelem_per_dim*nelem_per_dim) == elements);
+
+    // Create 2D cartesian topology
+    MPI_Comm gridComm;
+    int dim[2] = {procs_per_dim, procs_per_dim};
+    int period[2] = {0, 0};
+    int reorder = 0;
+
+    MPI_Cart_create(MPI_COMM_WORLD, 2, dim, period, reorder, &gridComm);
+    MPI_Cart_coords(gridComm, rank, 2, coord);
 
     long *tmp_sendbuf=NULL, *tmp_recvbuf=NULL;
     // Initialise send buffer
     ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, long, elements, sizeof(long),
                         rank, MPI_COMM_WORLD, init_sendbuf);
 
-    // Initialize recv buffer
-    ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, long, elements, sizeof(long),
-                        rank, MPI_COMM_WORLD, init_recvbuf);
+    if (rank == 0) {
+        // Initialize recv buffer
+        ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, long, elements*size, sizeof(long),
+                            rank, MPI_COMM_WORLD, init_recvbuf);
+    }
+
+    // open file and set file view
+    MPI_Datatype fview;
+    int startV[2] = {coord[0]*nelem_per_dim, coord[1]*nelem_per_dim};
+    int arrsizeV[2] = {dim[0]*nelem_per_dim, dim[1]*nelem_per_dim};
+    int gridsizeV[2] = {nelem_per_dim, nelem_per_dim};
+
+#ifdef DEBUG
+    printf("%d: coords[%d][%d] start[%d][%d] size[%d][%d] gridsize[%d][%d]\n", rank,
+           coord[0], coord[1], coord[0]*nelem_per_dim, coord[1]*nelem_per_dim,
+           dim[0]*nelem_per_dim, dim[1]*nelem_per_dim, nelem_per_dim, nelem_per_dim);
+#endif
+
+    MPI_Type_create_subarray(2, arrsizeV, gridsizeV, startV, MPI_ORDER_C, MPI_LONG, &fview);
+    MPI_Type_commit (&fview);
+
+    MPI_File_open(gridComm, "testout.out", MPI_MODE_CREATE|MPI_MODE_WRONLY,
+                  MPI_INFO_NULL, &fh);
+    MPI_File_set_view (fh, 0, MPI_LONG, fview, "native", MPI_INFO_NULL);
 
     // execute file_write test
-    MPI_File_open(MPI_COMM_SELF, "testout.out", MPI_MODE_CREATE|MPI_MODE_WRONLY,
-                  MPI_INFO_NULL, &fh);
     MPI_Barrier(MPI_COMM_WORLD);
     auto t1s = std::chrono::high_resolution_clock::now();
-    res = file_write_test (sendbuf->get_buffer(), elements,
-                           MPI_LONG, fh);
+    res = file_write_all_test (sendbuf->get_buffer(), elements,
+                               MPI_LONG, fh);
     if (MPI_SUCCESS != res) {
         fprintf(stderr, "Error in file_write_test. Aborting\n");
         MPI_Abort (MPI_COMM_WORLD, 1);
@@ -102,10 +142,12 @@ int main (int argc, char *argv[])
 
     // verify results
     bool ret = true;
-    int fd = open ("testout.out", O_RDONLY );
-    if ( -1 != fd ) {
-        SL_read(fd, tmp_recvbuf, elements * sizeof(long));
-        ret = check_recvbuf(tmp_recvbuf, size, rank, elements);
+    if (rank == 0) {
+        int fd = open ("testout.out", O_RDONLY );
+        if ( -1 != fd ) {
+            SL_read(fd, tmp_recvbuf, elements * size * sizeof(long));
+            ret = check_recvbuf(tmp_recvbuf, size, rank, elements);
+        }
     }
 
     bool fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(),
@@ -115,45 +157,25 @@ int main (int argc, char *argv[])
 
     //Free buffers
     FREE_BUFFER(sendbuf, tmp_sendbuf);
-    FREE_BUFFER(recvbuf, tmp_recvbuf);
-
     delete (sendbuf);
-    delete (recvbuf);
 
-    unlink("testout.out");
+    if (rank == 0) {
+        FREE_BUFFER(recvbuf, tmp_recvbuf);
+        delete (recvbuf);
+        unlink("testout.out");
+    }
+
+    MPI_Type_free(&fview);
+
     MPI_Finalize ();
     return fret ? 0 : 1;
 }
 
-int file_write_test (void *sendbuf, int count, MPI_Datatype datatype, MPI_File fh )
+int file_write_all_test (void *sendbuf, int count, MPI_Datatype datatype, MPI_File fh )
 {
     int ret;
 
-#ifdef HIP_MPITEST_FILE_IWRITE
-    MPI_Request *req;
-    int i;
-
-    req = (MPI_Request *) malloc (NBLOCKS * sizeof(MPI_Request));
-    if (NULL == req) {
-        fprintf(stderr, "Error allocating memory. Aborting\n");
-        MPI_Abort (MPI_COMM_WORLD, 1);
-        return 1;
-    }
-
-    long *sbuf = (long *)sendbuf;
-    int ncount = count / NBLOCKS;
-    assert ( (count % NBLOCKS) == 0);
-
-    for (i=0; i<NBLOCKS; i++) {
-        ret = MPI_File_iwrite(fh, sbuf, ncount, datatype, &req[i]);
-        sbuf += ncount;
-    }
-
-    MPI_Waitall (NBLOCKS, req, MPI_STATUS_IGNORE);
-    free (req);
-#else
-    ret = MPI_File_write (fh, sendbuf, count, datatype, MPI_STATUS_IGNORE);
-#endif
+    ret = MPI_File_write_all (fh, sendbuf, count, datatype, MPI_STATUS_IGNORE);
     return ret;
 }
 
