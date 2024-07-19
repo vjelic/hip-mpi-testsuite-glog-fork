@@ -109,9 +109,11 @@ int main (int argc, char *argv[])
 
     SL_write(fd, sendbuf->get_buffer(), elements*sizeof(long));
     close (fd);
+    rename ("testout.out", "testin.in");
+    MPI_Barrier(MPI_COMM_WORLD);
 
     // execute file_read test
-    MPI_File_open(MPI_COMM_SELF, "testout.out", MPI_MODE_RDONLY,
+    MPI_File_open(MPI_COMM_SELF, "testin.in", MPI_MODE_RDONLY,
                   MPI_INFO_NULL, &fh);
     MPI_Barrier(MPI_COMM_WORLD);
     auto t1s = std::chrono::high_resolution_clock::now();
@@ -152,7 +154,7 @@ int main (int argc, char *argv[])
     delete (sendbuf);
     delete (recvbuf);
 
-    unlink("testout.out");
+    unlink("testin.in");
     MPI_Finalize ();
     return fret ? 0 : 1;
 }

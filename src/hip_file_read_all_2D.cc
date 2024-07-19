@@ -129,7 +129,9 @@ int main (int argc, char *argv[])
 
         SL_write(fd, sendbuf->get_buffer(), elements*size*sizeof(long));
         close (fd);
+        rename ("testout.out", "testin.in");
     }
+    MPI_Barrier(MPI_COMM_WORLD);
 
     // open file and set file view
     MPI_Datatype fview;
@@ -145,7 +147,7 @@ int main (int argc, char *argv[])
     MPI_Type_create_subarray(2, arrsizeV, gridsizeV, startV, MPI_ORDER_C, MPI_LONG, &fview);
     MPI_Type_commit (&fview);
 
-    MPI_File_open(gridComm, "testout.out", MPI_MODE_RDONLY,
+    MPI_File_open(gridComm, "testin.in", MPI_MODE_RDONLY,
                   MPI_INFO_NULL, &fh);
     MPI_File_set_view (fh, 0, MPI_LONG, fview, "native", MPI_INFO_NULL);
 
@@ -181,7 +183,7 @@ int main (int argc, char *argv[])
     if (rank == 0) {
         FREE_BUFFER(sendbuf, tmp_sendbuf);
         delete (sendbuf);
-        unlink("testout.out");
+        unlink("testin.in");
     }
 
     FREE_BUFFER(recvbuf, tmp_recvbuf);
