@@ -56,6 +56,10 @@ static bool check_recvbuf(long *recvbuf, int nprocs_unused, int rank_unused, int
 int file_read_test (void *sendbuf, int count,
                     MPI_Datatype datatype, MPI_File fh);
 
+#ifndef NREP
+#define NREP 1
+#endif
+
 int main (int argc, char *argv[])
 {
     int res, fd, old_mask, perm;
@@ -111,12 +115,16 @@ int main (int argc, char *argv[])
                   MPI_INFO_NULL, &fh);
     MPI_Barrier(MPI_COMM_WORLD);
     auto t1s = std::chrono::high_resolution_clock::now();
-    res = file_read_test (recvbuf->get_buffer(), elements,
-                          MPI_LONG, fh);
-    if (MPI_SUCCESS != res) {
-        fprintf(stderr, "Error in file_read_test. Aborting\n");
-        MPI_Abort (MPI_COMM_WORLD, 1);
-        return 1;
+    for (int i=0; i<NREP; i++) {
+        /* Reset file pointer to the beginning of the file */
+        MPI_File_seek(fh, 0, MPI_SEEK_SET);
+        res = file_read_test (recvbuf->get_buffer(), elements,
+                              MPI_LONG, fh);
+        if (MPI_SUCCESS != res) {
+            fprintf(stderr, "Error in file_read_test. Aborting\n");
+            MPI_Abort (MPI_COMM_WORLD, 1);
+            return 1;
+        }
     }
     MPI_File_close (&fh);
     auto t1e = std::chrono::high_resolution_clock::now();
@@ -135,7 +143,7 @@ int main (int argc, char *argv[])
     bool fret = report_testresult(argv[0], MPI_COMM_WORLD, '-', recvbuf->get_memchar(),
                                   ret);
     report_performance (argv[0], MPI_COMM_WORLD, '-', recvbuf->get_memchar(),
-                        elements, (size_t)(elements * sizeof(long)), 1, t1);
+                        elements, (size_t)(elements * sizeof(long) * NREP), 1, t1);
 
     //Free buffers
     FREE_BUFFER(sendbuf, tmp_sendbuf);
