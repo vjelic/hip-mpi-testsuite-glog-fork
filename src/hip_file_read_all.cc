@@ -101,10 +101,12 @@ int main (int argc, char *argv[])
 
         SL_write(fd, sendbuf->get_buffer(), elements*size*sizeof(long));
         close (fd);
+        rename ("testout.out", "testin.in");
     }
+    MPI_Barrier(MPI_COMM_WORLD);
 
     // execute file_read test
-    MPI_File_open(MPI_COMM_WORLD, "testout.out", MPI_MODE_RDONLY,
+    MPI_File_open(MPI_COMM_WORLD, "testin.in", MPI_MODE_RDONLY,
                   MPI_INFO_NULL, &fh);
 
     MPI_Datatype tmptype, fview;
@@ -150,7 +152,7 @@ int main (int argc, char *argv[])
     if (rank == 0) {
         FREE_BUFFER(sendbuf, tmp_sendbuf);
         delete (sendbuf);
-        unlink("testout.out");
+        unlink("testin.in");
     }
 
     FREE_BUFFER(recvbuf, tmp_recvbuf);
