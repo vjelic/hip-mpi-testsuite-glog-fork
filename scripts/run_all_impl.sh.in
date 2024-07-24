@@ -53,6 +53,8 @@ ExecTest "hip_osc_acc_fence"        "2" "32 1048576" "D H"
 ExecTest "hip_osc_acc_lock"         "2" "32 1048576" "D H"
 ExecTest "hip_osc_put_lock"         "2" "32 1048576" "D H"
 ExecTest "hip_osc_get_lock"         "2" "32 1048576" "D H"
+ExecTest "hip_osc_rput_lock"        "2" "32 1048576" "D H"
+ExecTest "hip_osc_rget_lock"        "2" "32 1048576" "D H"
 if [ "@HIP_UCC_SUPPORT@" = "0" ] ; then 
     ExecTest "hip_allreduce"        "4" "32" "D"
     ExecTest "hip_reduce"           "4" "32" "D"
