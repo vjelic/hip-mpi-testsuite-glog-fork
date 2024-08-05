@@ -141,7 +141,7 @@ int type_osc_test (void *sbuf, void *rbuf, int count,
     }
 #endif
 
-#ifdef HIP_MPITEST_OSC_GET
+#if defined HIP_MPITEST_OSC_GET || defined HIP_MPITEST_OSC_RGET
     if (rank == root ) {
         char *r = (char *)rbuf;
         for (int i = 0; i < size; i ++) {
@@ -152,10 +152,22 @@ int type_osc_test (void *sbuf, void *rbuf, int count,
                     return ret;
                 }                
 #endif
+#if defined HIP_MPITEST_OSC_GET
                 ret = MPI_Get (r, count, datatype, i, 0, count, datatype, win);
                 if (MPI_SUCCESS != ret) {
                     return ret;
                 }
+#elif defined HIP_MPITEST_OSC_RGET
+                MPI_Request req;
+                ret = MPI_Rget (r, count, datatype, i, 0, count, datatype, win, &req);
+                if (MPI_SUCCESS != ret) {
+                    return ret;
+                }
+                ret = MPI_Wait (&req, MPI_STATUS_IGNORE);
+                if (MPI_SUCCESS != ret) {
+                    return ret;
+                }
+#endif
 #ifdef HIP_MPITEST_OSC_LOCK
                 ret = MPI_Win_unlock(i, win);
                 if (MPI_SUCCESS != ret) {
@@ -166,7 +178,8 @@ int type_osc_test (void *sbuf, void *rbuf, int count,
             r +=count*tsize;
         }
     }
-#elif defined HIP_MPITEST_OSC_PUT
+
+#elif defined HIP_MPITEST_OSC_PUT || defined HIP_MPITEST_OSC_RPUT
     if (rank != root) {
         MPI_Aint disp = rank * count;
 #ifdef HIP_MPITEST_OSC_LOCK
@@ -175,11 +188,22 @@ int type_osc_test (void *sbuf, void *rbuf, int count,
             return ret;
         }                
 #endif
+#if defined HIP_MPITEST_OSC_PUT
         ret = MPI_Put(sbuf, count, datatype, root, disp, count, datatype, win);
         if (MPI_SUCCESS != ret) {
             return ret;
         }
-
+#elif defined HIP_MPITEST_OSC_RPUT
+        MPI_Request req;
+        ret = MPI_Rput(sbuf, count, datatype, root, disp, count, datatype, win, &req);
+        if (MPI_SUCCESS != ret) {
+            return ret;
+        }
+        ret = MPI_Wait (&req, MPI_STATUS_IGNORE);
+        if (MPI_SUCCESS != ret) {
+            return ret;
+        }
+#endif
 #ifdef HIP_MPITEST_OSC_LOCK
         ret = MPI_Win_unlock(root, win);
         if (MPI_SUCCESS != ret) {

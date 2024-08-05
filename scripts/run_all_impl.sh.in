@@ -27,6 +27,23 @@ ExecTest() {
     done
 }
 
+ExecTestSingle() {
+
+    for NUMELEMS in $3 ; do
+	for MEM in $4 ; do
+	    let COUNTER=COUNTER+1
+	    mpirun $OPTIONS -np $2 ../src/$1 -s $MEM  -n $NUMELEMS
+	    if [ $? -eq 0 ]
+	    then
+		let SUCCESS=SUCCESS+1
+	    else
+		let FAILED=FAILED+1
+	    fi
+	done
+    done
+}
+
+
 let COUNTER=0
 let SUCCESS=0
 let FAILED=0
@@ -53,6 +70,8 @@ ExecTest "hip_osc_acc_fence"        "2" "32 1048576" "D H"
 ExecTest "hip_osc_acc_lock"         "2" "32 1048576" "D H"
 ExecTest "hip_osc_put_lock"         "2" "32 1048576" "D H"
 ExecTest "hip_osc_get_lock"         "2" "32 1048576" "D H"
+ExecTest "hip_osc_rput_lock"        "2" "32 1048576" "D H"
+ExecTest "hip_osc_rget_lock"        "2" "32 1048576" "D H"
 if [ "@HIP_UCC_SUPPORT@" = "0" ] ; then 
     ExecTest "hip_allreduce"        "4" "32" "D"
     ExecTest "hip_reduce"           "4" "32" "D"
@@ -78,6 +97,8 @@ ExecTest "hip_reduce_scatter"       "4" "1024"       "D H"
 ExecTest "hip_reduce_scatter_block" "4" "1024"       "D H"
 ExecTest "hip_pt2pt_nb_stress"      "2" "32 1048576" "D H M O R"
 ExecTest "hip_sendtoself_stress"    "1" "32 1048576" "D H M O R"
+ExecTestSingle "hip_osc_rget_stress"  "4" "1024" "D H"
+ExecTestSingle "hip_osc_rput_stress"  "4" "1024" "D H"
 ExecTest "hip_pt2pt_bl"             "2" "10 876 19680 980571" "D H"
 ExecTest "hip_pt2pt_bl_mult"        "2" "1024" "D H"
 printf "\n Executed %d Tests (%d passed %d failed)\n" $COUNTER $SUCCESS $FAILED

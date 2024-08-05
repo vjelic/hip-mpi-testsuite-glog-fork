@@ -42,6 +42,11 @@ EXECS = hip_pt2pt_nb           \
 	hip_osc_acc_fence          \
 	hip_osc_acc_lock           \
 	hip_osc_put_lock           \
+	hip_osc_get_lock           \
+	hip_osc_rput_lock          \
+	hip_osc_rget_lock          \
+	hip_osc_rget_stress        \
+	hip_osc_rput_stress        \
 	hip_file_write             \
 	hip_file_iwrite            \
 	hip_file_iwrite_mult       \
@@ -51,8 +56,7 @@ EXECS = hip_pt2pt_nb           \
 	hip_file_iread             \
 	hip_file_iread_mult        \
 	hip_file_read_all          \
-	hip_file_read_all_2D       \
-	hip_osc_get_lock @HIP_QUERY_TEST@
+	hip_file_read_all_2D  @HIP_QUERY_TEST@
 
 
 all:	$(EXECS)
@@ -153,6 +157,18 @@ hip_osc_put_lock: hip_osc.cc $(HEADERS)
 hip_osc_get_lock: hip_osc.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_osc_get_lock hip_osc.cc -DHIP_MPITEST_OSC_GET -DHIP_MPITEST_OSC_LOCK $(LDFLAGS)
 
+hip_osc_rput_lock: hip_osc.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_osc_rput_lock hip_osc.cc -DHIP_MPITEST_OSC_RPUT -DHIP_MPITEST_OSC_LOCK $(LDFLAGS)
+
+hip_osc_rget_lock: hip_osc.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_osc_rget_lock hip_osc.cc -DHIP_MPITEST_OSC_RGET -DHIP_MPITEST_OSC_LOCK $(LDFLAGS)
+
+hip_osc_rget_stress: hip_osc_stress.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_osc_rget_stress hip_osc_stress.cc -DHIP_MPITEST_OSC_RGET $(LDFLAGS)
+
+hip_osc_rput_stress: hip_osc_stress.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_osc_rput_stress hip_osc_stress.cc -DHIP_MPITEST_OSC_RPUT $(LDFLAGS)
+
 hip_type_resized_short: hip_ddt.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_type_resized_short hip_ddt.cc -DHIP_TYPE_RESIZED -DA_WIDTH=32 $(LDFLAGS)
 
@@ -210,6 +226,7 @@ clean:
 	$(RM) hip_type_resized_short hip_type_struct_short
 	$(RM) hip_type_resized_long hip_type_struct_long
 	$(RM) hip_osc_put_fence hip_osc_get_fence hip_osc_acc_fence hip_osc_acc_lock hip_osc_put_lock hip_osc_get_lock
+	$(RM) hip_osc_rput_lock hip_osc_rget_lock hip_osc_rput_stress hip_osc_rget_stress
 	$(RM) hip_query_test
 	$(RM) hip_file_write hip_file_iwrite hip_file_iwrite_mult hip_file_write_all hip_file_write_all_2D
 	$(RM) hip_file_read hip_file_iread hip_file_iread_mult hip_file_read_all hip_file_read_all_2D
