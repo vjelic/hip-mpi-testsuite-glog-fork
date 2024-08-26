@@ -93,8 +93,15 @@ int main(int argc, char *argv[])
         int *sbuf = NULL;
 
         if (rank == 0) {
-            sbuf = (int *)sendbuf->get_buffer();        
-            init_sendbuf (sbuf, elements, i+1);
+            if (sendbuf->NeedsStagingBuffer()) {
+                init_sendbuf(tmp_sendbuf, elements, i+1);
+                HIP_CHECK(sendbuf->CopyTo(tmp_sendbuf, elements * sizeof(int)));
+                sbuf = (int *)sendbuf->get_buffer();
+            }
+            else {
+                sbuf = (int *)sendbuf->get_buffer();
+                init_sendbuf(sbuf, elements, i+1);
+            }
         } else if (rank == 1){
             rbuf = (int *)recvbuf->get_buffer() + i*elements;
         }
