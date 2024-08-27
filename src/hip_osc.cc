@@ -1,7 +1,25 @@
 /* -*- Mode: C; c-basic-offset:4 ; indent-tabs-mode:nil -*- */
-/*
-** Copyright (c) 2022 Advanced Micro Devices, Inc. All rights reserved.
-*/
+/******************************************************************************
+ * Copyright (c) 2024 Advanced Micro Devices, Inc. All rights reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ *****************************************************************************/
 
 #include <stdio.h>
 #include "mpi.h"
@@ -55,7 +73,7 @@ int main (int argc, char *argv[])
     int rank, nProcs, status;
     int root = 0; //checkbuff will not work for any other root value right now
     MPI_Win win;
-    
+
     bind_device();
 
     MPI_Init      (&argc, &argv);
@@ -96,7 +114,7 @@ int main (int argc, char *argv[])
         return 1;
     }
 
-    // verify results 
+    // verify results
     bool ret=true;
     if (rank == 0) {
         if (recvbuf->NeedsStagingBuffer()) {
@@ -150,7 +168,7 @@ int type_osc_test (void *sbuf, void *rbuf, int count,
                 ret = MPI_Win_lock(MPI_LOCK_EXCLUSIVE, i, 0, win);
                 if (MPI_SUCCESS != ret) {
                     return ret;
-                }                
+                }
 #endif
 #if defined HIP_MPITEST_OSC_GET
                 ret = MPI_Get (r, count, datatype, i, 0, count, datatype, win);
@@ -172,7 +190,7 @@ int type_osc_test (void *sbuf, void *rbuf, int count,
                 ret = MPI_Win_unlock(i, win);
                 if (MPI_SUCCESS != ret) {
                     return ret;
-                }                
+                }
 #endif
             }
             r +=count*tsize;
@@ -186,7 +204,7 @@ int type_osc_test (void *sbuf, void *rbuf, int count,
         ret = MPI_Win_lock(MPI_LOCK_EXCLUSIVE, root, 0, win);
         if (MPI_SUCCESS != ret) {
             return ret;
-        }                
+        }
 #endif
 #if defined HIP_MPITEST_OSC_PUT
         ret = MPI_Put(sbuf, count, datatype, root, disp, count, datatype, win);
@@ -208,7 +226,7 @@ int type_osc_test (void *sbuf, void *rbuf, int count,
         ret = MPI_Win_unlock(root, win);
         if (MPI_SUCCESS != ret) {
             return ret;
-        }                
+        }
 #endif
     }
 #endif
