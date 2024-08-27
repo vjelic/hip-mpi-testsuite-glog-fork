@@ -1,11 +1,29 @@
 /* -*- Mode: C; c-basic-offset:4 ; indent-tabs-mode:nil -*- */
-/*
-** Copyright (c) 2022 Advanced Micro Devices, Inc. All rights reserved.
-*/
+/******************************************************************************
+ * Copyright (c) 2024 Advanced Micro Devices, Inc. All rights reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ *****************************************************************************/
 
 
 /*
-** Testcase for multi-process point-to-point 
+** Testcase for multi-process point-to-point
 ** communication operations
 */
 
@@ -60,19 +78,19 @@ int main (int argc, char *argv[])
 {
     int rank, nProcs;
     int root = 0;
-    
+
     bind_device();
 
     MPI_Init      (&argc, &argv);
     MPI_Comm_size (MPI_COMM_WORLD, &nProcs);
     MPI_Comm_rank (MPI_COMM_WORLD, &rank);
-    
+
     parse_args(argc, argv, MPI_COMM_WORLD);
 
     int *tmp_sendbuf=NULL, *tmp_recvbuf=NULL;
     // Initialise send buffer
     ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, int, elements, sizeof(int), rank, MPI_COMM_WORLD, init_sendbuf);
-    
+
     // Initialize recv buffer
     ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, int, elements, sizeof(int), rank, MPI_COMM_WORLD, init_recvbuf);
 
@@ -96,7 +114,7 @@ int main (int argc, char *argv[])
     bool fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), ret);
     report_performance (argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), elements,
                         (size_t)(elements *sizeof(int)), 0, 0.0);
-                                
+
     //Cleanup dynamic buffers
     FREE_BUFFER(sendbuf, tmp_sendbuf);
     FREE_BUFFER(recvbuf, tmp_recvbuf);
@@ -104,7 +122,7 @@ int main (int argc, char *argv[])
     delete (sendbuf);
     delete (recvbuf);
 
-    MPI_Finalize ();    
+    MPI_Finalize ();
     return fret ? 0 : 1;
 }
 
@@ -114,7 +132,7 @@ int type_p2p_nb_test (int *sendbuf, int *recvbuf, int count, MPI_Comm comm)
     int size, rank, ret;
     int tag=251;
     MPI_Request *reqs=NULL;
-    
+
     MPI_Comm_size (comm, &size);
     MPI_Comm_rank (comm, &rank);
 

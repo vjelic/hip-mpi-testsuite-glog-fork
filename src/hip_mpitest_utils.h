@@ -1,7 +1,25 @@
 /* -*- Mode: C; c-basic-offset:4 ; indent-tabs-mode:nil -*- */
-/*
-** Copyright (c) 2022 Advanced Micro Devices, Inc. All rights reserved.
-*/
+/******************************************************************************
+ * Copyright (c) 2024 Advanced Micro Devices, Inc. All rights reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
+ *****************************************************************************/
 
 #ifndef __HIP_MPITEST_UTILS__
 #define __HIP_MPITEST_UTILS__
@@ -94,7 +112,7 @@ static void parse_args ( int argc, char **argv, MPI_Comm comm )
 
         if (c == -1)
             break;
-        
+
         switch(c) {
         case 'h' :
             print_help(argc, argv);
@@ -120,7 +138,7 @@ static void parse_args ( int argc, char **argv, MPI_Comm comm )
         default :
             print_help(argc, argv);
             MPI_Finalize();
-            exit(0);        
+            exit(0);
         }
     }
 
@@ -174,7 +192,7 @@ static void report_performance (char *exec, MPI_Comm comm, char sendtype, char r
     int rank, size;
     double t1_sum=0.0;
     size_t nBytesKB = nBytes/1024;
-    size_t nBytesMB = nBytes/(1024*1024); 
+    size_t nBytesMB = nBytes/(1024*1024);
 
     MPI_Comm_rank (comm, &rank);
     MPI_Comm_size (comm, &size);
@@ -195,7 +213,7 @@ static void report_performance (char *exec, MPI_Comm comm, char sendtype, char r
     }
 
     if ( time != 0.0 ) {
-        MPI_Reduce(&time, &t1_sum, 1, MPI_DOUBLE, MPI_SUM, 0, comm);    
+        MPI_Reduce(&time, &t1_sum, 1, MPI_DOUBLE, MPI_SUM, 0, comm);
         if ( rank == 0) {
             printf("Avg. time %lf\n", t1_sum/(size*niter));
         }
