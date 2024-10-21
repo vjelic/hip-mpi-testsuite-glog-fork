@@ -116,6 +116,11 @@ int main (int argc, char *argv[])
                                MPI_LONG, fh);
         if (MPI_SUCCESS != res) {
             fprintf(stderr, "Error in file_write_test. Aborting\n");
+            FREE_BUFFER(sendbuf, tmp_sendbuf);
+            FREE_BUFFER(recvbuf, tmp_recvbuf);
+            delete (sendbuf);
+            delete (recvbuf);
+
             MPI_Abort (MPI_COMM_WORLD, 1);
             return 1;
         }
@@ -130,6 +135,7 @@ int main (int argc, char *argv[])
     if ( -1 != fd ) {
         SL_read(fd, tmp_recvbuf, elements * sizeof(long));
         ret = check_recvbuf(tmp_recvbuf, size, rank, elements);
+        close (fd);
     }
 
     bool fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(),

@@ -141,6 +141,11 @@ int main (int argc, char *argv[])
         fd = open ("testout.out", O_CREAT|O_WRONLY, perm );
         if (-1 == fd) {
             fprintf(stderr, "Error in creating input file. Aborting\n");
+            FREE_BUFFER(sendbuf, tmp_sendbuf);
+            FREE_BUFFER(recvbuf, tmp_recvbuf);
+            delete (sendbuf);
+            delete (recvbuf);
+
             MPI_Abort (MPI_COMM_WORLD, 1);
             return 1;
         }
@@ -175,6 +180,13 @@ int main (int argc, char *argv[])
                               MPI_LONG, fh);
     if (MPI_SUCCESS != res) {
         fprintf(stderr, "Error in file_read_test. Aborting\n");
+        if (rank == 0) {
+            FREE_BUFFER(sendbuf, tmp_sendbuf);
+            delete (sendbuf);
+        }
+        FREE_BUFFER(recvbuf, tmp_recvbuf);
+        delete (recvbuf);
+
         MPI_Abort (MPI_COMM_WORLD, 1);
         return 1;
     }

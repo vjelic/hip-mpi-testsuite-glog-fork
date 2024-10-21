@@ -103,6 +103,11 @@ int main (int argc, char *argv[])
                           MPI_DOUBLE, MPI_COMM_WORLD, 1);
     if (MPI_SUCCESS != res ) {
         fprintf(stderr, "Error in allgather_test. Aborting\n");
+        FREE_BUFFER(sendbuf, tmp_sendbuf);
+        FREE_BUFFER(recvbuf, tmp_recvbuf);
+        delete (sendbuf);
+        delete (recvbuf);
+
         MPI_Abort (MPI_COMM_WORLD, 1);
         return 1;
     }
@@ -114,6 +119,11 @@ int main (int argc, char *argv[])
                           MPI_DOUBLE, MPI_COMM_WORLD, NITER);
     if (MPI_SUCCESS != res) {
         fprintf(stderr, "Error in allgather_test. Aborting\n");
+        FREE_BUFFER(sendbuf, tmp_sendbuf);
+        FREE_BUFFER(recvbuf, tmp_recvbuf);
+        delete (sendbuf);
+        delete (recvbuf);
+
         MPI_Abort (MPI_COMM_WORLD, 1);
         return 1;
     }
@@ -143,7 +153,6 @@ int main (int argc, char *argv[])
     //Free buffers
     FREE_BUFFER(sendbuf, tmp_sendbuf);
     FREE_BUFFER(recvbuf, tmp_recvbuf);
-
     delete (sendbuf);
     delete (recvbuf);
 
@@ -164,9 +173,14 @@ int allgather_test (void *sendbuf, void *recvbuf, int count,
     MPI_Comm_size (comm, &size);
 
     rcounts = (int*)malloc(size *sizeof(int));
-    rdispls = (int*)malloc(size *sizeof(int));
-    if (NULL==rcounts || NULL==rdispls) {
+    if (NULL == rcounts) {
         printf("(All)gatherv test: Could not allocate memory\n");
+        return MPI_ERR_OTHER;
+    }
+    rdispls = (int*)malloc(size *sizeof(int));
+    if (NULL == rdispls) {
+        printf("(All)gatherv test: Could not allocate memory\n");
+        free (rcounts);
         return MPI_ERR_OTHER;
     }
 
@@ -187,9 +201,17 @@ int allgather_test (void *sendbuf, void *recvbuf, int count,
         ret = MPI_Allgather (sendbuf, count, datatype, recvbuf, count, datatype, comm);
 #endif
         if (MPI_SUCCESS != ret) {
+#if defined HIP_MPITEST_ALLGATHERV || defined HIP_MPITEST_GATHERV
+            free (rcounts);
+            free (rdispls);
+#endif
             return ret;
         }
     }
 
+#if defined HIP_MPITEST_ALLGATHERV || defined HIP_MPITEST_GATHERV
+    free (rcounts);
+    free (rdispls);
+#endif
     return MPI_SUCCESS;
 }

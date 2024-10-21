@@ -242,37 +242,67 @@ class hip_mpitest_buffer_hostregister: public hip_mpitest_buffer {
 
 // Some convinience macros
 #define ALLOCATE_SENDBUFFER(_sendbuf, _tmp_sendbuf, _type, _elements, _extent, _rank, _comm, _init) { \
-    if (_sendbuf->NeedsStagingBuffer() ) {                                                            \
+    if (_sendbuf == nullptr) MPI_Abort(_comm, 1);                                                     \
+    else {                                                                                            \
+      if (_sendbuf->NeedsStagingBuffer() ) {                                                          \
         _tmp_sendbuf = (_type *) malloc (_elements * _extent);                                        \
         if (NULL == _tmp_sendbuf) {                                                                   \
+            delete (_sendbuf);                                                                        \
             MPI_Abort(_comm,1);                                                                       \
         }                                                                                             \
         _init(_tmp_sendbuf, _elements, _rank);                                                        \
-	HIP_CHECK(_sendbuf->Allocate(_elements * _extent));                                           \
-        HIP_CHECK(_sendbuf->CopyTo(_tmp_sendbuf, _elements * _extent));                               \
-    }                                                                                                 \
-    else {                                                                                            \
-        HIP_CHECK(_sendbuf->Allocate(_elements * _extent));                                           \
+	if (_sendbuf->Allocate(_elements * _extent) != hipSuccess) {                                  \
+            free (_tmp_sendbuf);                                                                      \
+            delete (_sendbuf);                                                                        \
+            MPI_Abort (_comm, 1);                                                                     \
+        }                                                                                             \
+        if (_sendbuf->CopyTo(_tmp_sendbuf, _elements * _extent) != hipSuccess) {                      \
+            free (_tmp_sendbuf);                                                                      \
+            delete (_sendbuf);                                                                        \
+            MPI_Abort (_comm, 1);                                                                     \
+        }                                                                                             \
+      }                                                                                               \
+      else {                                                                                          \
+        if (_sendbuf->Allocate(_elements * _extent) != hipSuccess) {                                  \
+            delete (_sendbuf);                                                                        \
+            MPI_Abort (_comm, 1);                                                                     \
+        }                                                                                             \
         _init((_type *)_sendbuf->get_buffer(), _elements, _rank);                                     \
+      }                                                                                               \
+      report_buffertype(_comm, "Sendbuf", sendbuf);                                                   \
     }                                                                                                 \
-    report_buffertype(_comm, "Sendbuf", sendbuf);                                                     \
 }
 
 #define ALLOCATE_RECVBUFFER(_recvbuf, _tmp_recvbuf, _type, _elements, _extent, _rank, _comm, _init) { \
-    if (_recvbuf->NeedsStagingBuffer() ) {                                                            \
+    if (_recvbuf == nullptr) MPI_Abort(_comm, 1);                                                     \
+    else {                                                                                            \
+      if (_recvbuf->NeedsStagingBuffer() ) {                                                          \
         _tmp_recvbuf = (_type *) malloc (_elements * _extent);                                        \
         if (NULL == _tmp_recvbuf) {                                                                   \
+            delete (_recvbuf);                                                                        \
             MPI_Abort(_comm,1);                                                                       \
         }                                                                                             \
         _init(_tmp_recvbuf, _elements);                                                               \
-        HIP_CHECK(_recvbuf->Allocate(_elements * _extent));                                           \
-        HIP_CHECK(_recvbuf->CopyTo(_tmp_recvbuf, _elements * _extent));                               \
-    }                                                                                                 \
-    else {                                                                                            \
-        HIP_CHECK(_recvbuf->Allocate(_elements * _extent));                                           \
+        if (_recvbuf->Allocate(_elements * _extent) != hipSuccess) {                                  \
+            free (_tmp_recvbuf);                                                                      \
+            delete (_recvbuf);                                                                        \
+            MPI_Abort(_comm, 1);                                                                      \
+        }                                                                                             \
+        if (_recvbuf->CopyTo(_tmp_recvbuf, _elements * _extent) != hipSuccess) {                      \
+            free (_tmp_recvbuf);                                                                      \
+            delete (_recvbuf);                                                                        \
+            MPI_Abort(_comm, 1);                                                                      \
+        }                                                                                             \
+      }                                                                                               \
+      else {                                                                                          \
+        if(_recvbuf->Allocate(_elements * _extent) != hipSuccess) {                                   \
+            delete (_recvbuf);                                                                        \
+            MPI_Abort(_comm, 1);                                                                      \
+        }                                                                                             \
         _init((_type*)_recvbuf->get_buffer(), _elements);	                                      \
+      }                                                                                               \
+      report_buffertype(_comm, "Recvbuf", _recvbuf);                                                  \
     }                                                                                                 \
-    report_buffertype(_comm, "Recvbuf", _recvbuf);                                                    \
 }
 
 #define FREE_BUFFER(_buf, _tmp_buf) { \

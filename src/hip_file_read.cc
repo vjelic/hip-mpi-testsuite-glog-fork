@@ -142,6 +142,11 @@ int main (int argc, char *argv[])
                               MPI_LONG, fh);
         if (MPI_SUCCESS != res) {
             fprintf(stderr, "Error in file_read_test. Aborting\n");
+            FREE_BUFFER(sendbuf, tmp_sendbuf);
+            FREE_BUFFER(recvbuf, tmp_recvbuf);
+            delete (sendbuf);
+            delete (recvbuf);
+
             MPI_Abort (MPI_COMM_WORLD, 1);
             return 1;
         }

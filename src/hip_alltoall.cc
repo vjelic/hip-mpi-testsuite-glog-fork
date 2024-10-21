@@ -101,6 +101,11 @@ int main (int argc, char *argv[])
                          MPI_DOUBLE, MPI_COMM_WORLD, 1);
     if (MPI_SUCCESS != res ) {
         fprintf(stderr, "Error in alltoall_test. Aborting\n");
+        FREE_BUFFER(sendbuf, tmp_sendbuf);
+        FREE_BUFFER(recvbuf, tmp_recvbuf);
+        delete (sendbuf);
+        delete (recvbuf);
+
         MPI_Abort (MPI_COMM_WORLD, 1);
         return 1;
     }
@@ -112,6 +117,11 @@ int main (int argc, char *argv[])
                          MPI_DOUBLE, MPI_COMM_WORLD, NITER);
     if (MPI_SUCCESS != res) {
         fprintf(stderr, "Error in alltoall_test. Aborting\n");
+        FREE_BUFFER(sendbuf, tmp_sendbuf);
+        FREE_BUFFER(recvbuf, tmp_recvbuf);
+        delete (sendbuf);
+        delete (recvbuf);
+
         MPI_Abort (MPI_COMM_WORLD, 1);
         return 1;
     }
@@ -157,11 +167,29 @@ int alltoall_test ( void *sendbuf, void *recvbuf, int count,
     MPI_Comm_size (comm, &size);
 
     scounts = (int*)malloc(size *sizeof(int));
-    rcounts = (int*)malloc(size *sizeof(int));
-    sdispls = (int*)malloc(size *sizeof(int));
-    rdispls = (int*)malloc(size *sizeof(int));
-    if (NULL==scounts || NULL==rcounts || NULL==sdispls || NULL==rdispls) {
+    if (NULL==scounts) {
         printf("Alltoallv test: Could not allocate memory\n");
+        return MPI_ERR_OTHER;
+    }
+    rcounts = (int*)malloc(size *sizeof(int));
+    if (NULL==rcounts) {
+        printf("Alltoallv test: Could not allocate memory\n");
+        free (scounts);
+        return MPI_ERR_OTHER;
+    }
+    sdispls = (int*)malloc(size *sizeof(int));
+    if (NULL==sdispls) {
+        printf("Alltoallv test: Could not allocate memory\n");
+        free (scounts);
+        free (rcounts);
+        return MPI_ERR_OTHER;
+    }
+    rdispls = (int*)malloc(size *sizeof(int));
+    if (NULL==rdispls) {
+        printf("Alltoallv test: Could not allocate memory\n");
+        free (scounts);
+        free (rcounts);
+        free (sdispls);
         return MPI_ERR_OTHER;
     }
 
@@ -181,6 +209,12 @@ int alltoall_test ( void *sendbuf, void *recvbuf, int count,
         ret = MPI_Alltoall(sendbuf, count, datatype, recvbuf, count, datatype, comm);
 #endif
         if (MPI_SUCCESS != ret) {
+#ifdef HIP_MPITEST_ALLTOALLV
+            free (scounts);
+            free (rcounts);
+            free (sdispls);
+            free (rdispls);
+#endif
             return ret;
         }
     }

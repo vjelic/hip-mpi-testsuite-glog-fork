@@ -174,7 +174,7 @@ int type_p2p_bl_mult_test(int *sbuf, int *rbuf, int count, MPI_Comm comm)
     MPI_Comm_rank(comm, &rank);
 
     if (rank == 0) {
-        ret = MPI_Send(sbuf, count, MPI_INT, 1, tag, comm);
+        ret = MPI_Ssend(sbuf, count, MPI_INT, 1, tag, comm);
         if (MPI_SUCCESS != ret) {
             return ret;
         }

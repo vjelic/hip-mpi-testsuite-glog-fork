@@ -98,6 +98,11 @@ int main (int argc, char *argv[])
     int res = type_p2p_nb_test ((int *)sendbuf->get_buffer(), (int *)recvbuf->get_buffer(), elements, MPI_COMM_WORLD);
     if (MPI_SUCCESS != res) {
         printf("Error in type_p2p_nb_test. Aborting\n");
+        FREE_BUFFER(sendbuf, tmp_sendbuf);
+        FREE_BUFFER(recvbuf, tmp_recvbuf);
+        delete (sendbuf);
+        delete (recvbuf);
+
         MPI_Abort (MPI_COMM_WORLD, 1);
         return 1;
     }

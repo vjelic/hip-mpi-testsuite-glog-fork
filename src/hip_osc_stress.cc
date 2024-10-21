@@ -99,6 +99,10 @@ int main (int argc, char *argv[])
     status = MPI_Win_create (sendbuf->get_buffer(), 2*nProcs*elements*sizeof(int), sizeof(int), MPI_INFO_NULL,
                              MPI_COMM_WORLD, &win);
     if (MPI_SUCCESS != status) {
+        FREE_BUFFER(sendbuf, tmpbuf);
+        delete (sendbuf);
+
+        MPI_Abort (MPI_COMM_WORLD, 1);
         return status;
     }
 
@@ -106,6 +110,9 @@ int main (int argc, char *argv[])
     int res = type_osc_stress_test ((int *)sendbuf->get_buffer(), elements, MPI_COMM_WORLD, win);
     if (MPI_SUCCESS != res) {
         printf("Error in type_osc_stress_test. Aborting\n");
+        FREE_BUFFER(sendbuf, tmpbuf);
+        delete (sendbuf);
+
         MPI_Abort (MPI_COMM_WORLD, 1);
         return 1;
     }

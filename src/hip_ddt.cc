@@ -70,6 +70,11 @@ int main (int argc, char *argv[])
                             dat->get_mpi_type(), comm, 1);
     if (MPI_SUCCESS != res ) {
         fprintf(stderr, "Error in type_p2p_test. Aborting\n");
+        FREE_BUFFER(sendbuf, tmp_sendbuf);
+        FREE_BUFFER(recvbuf, tmp_recvbuf);
+        delete (sendbuf);
+        delete (recvbuf);
+
         MPI_Abort (comm, 1);
         return 1;
     }
@@ -81,6 +86,11 @@ int main (int argc, char *argv[])
                            dat->get_mpi_type(), comm, NITER);
     if (MPI_SUCCESS != res) {
         fprintf(stderr, "Error in type_p2p_test. Aborting\n");
+        FREE_BUFFER(sendbuf, tmp_sendbuf);
+        FREE_BUFFER(recvbuf, tmp_recvbuf);
+        delete (sendbuf);
+        delete (recvbuf);
+
         MPI_Abort (comm, 1);
         return 1;
     }

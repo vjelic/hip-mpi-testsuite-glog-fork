@@ -92,6 +92,12 @@ int main (int argc, char *argv[])
         status = MPI_Win_create (recvbuf->get_buffer(), elements*sizeof(int), sizeof(int), MPI_INFO_NULL,
                                  MPI_COMM_WORLD, &win);
     if (MPI_SUCCESS != status) {
+        FREE_BUFFER(sendbuf, tmp_sendbuf);
+        FREE_BUFFER(recvbuf, tmp_recvbuf);
+        delete (sendbuf);
+        delete (recvbuf);
+
+        MPI_Abort (MPI_COMM_WORLD, 1);
         return status;
     }
 
@@ -100,6 +106,11 @@ int main (int argc, char *argv[])
                              elements, MPI_INT, MPI_COMM_WORLD, win);
     if (MPI_SUCCESS != res) {
         printf("Error in type_osc_accumulate_test. Aborting\n");
+        FREE_BUFFER(sendbuf, tmp_sendbuf);
+        FREE_BUFFER(recvbuf, tmp_recvbuf);
+        delete (sendbuf);
+        delete (recvbuf);
+
         MPI_Abort (MPI_COMM_WORLD, 1);
         return 1;
     }

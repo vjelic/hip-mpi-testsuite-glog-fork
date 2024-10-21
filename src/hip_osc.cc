@@ -101,6 +101,12 @@ int main (int argc, char *argv[])
                                  MPI_COMM_WORLD, &win);
     }
     if (MPI_SUCCESS != status) {
+        FREE_BUFFER(sendbuf, tmp_sendbuf);
+        FREE_BUFFER(recvbuf, tmp_recvbuf);
+        delete (sendbuf);
+        delete (recvbuf);
+
+        MPI_Abort (MPI_COMM_WORLD, 1);
         return status;
     }
 
@@ -110,6 +116,11 @@ int main (int argc, char *argv[])
                              elements, MPI_INT, root, MPI_COMM_WORLD, win);
     if (MPI_SUCCESS != res) {
         printf("Error in type_osc_test. Aborting\n");
+        FREE_BUFFER(sendbuf, tmp_sendbuf);
+        FREE_BUFFER(recvbuf, tmp_recvbuf);
+        delete (sendbuf);
+        delete (recvbuf);
+
         MPI_Abort (MPI_COMM_WORLD, 1);
         return 1;
     }
