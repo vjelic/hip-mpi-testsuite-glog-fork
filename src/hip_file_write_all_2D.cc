@@ -85,9 +85,11 @@ int file_write_all_test (void *sendbuf, int count,
 
 int main (int argc, char *argv[])
 {
-    int res;
+    int ret;
     int rank, size;
     MPI_File fh;
+    double t1;
+    std::chrono::high_resolution_clock::time_point t1s, t1e;
 
     bind_device();
 
@@ -117,19 +119,27 @@ int main (int argc, char *argv[])
     long *tmp_sendbuf=NULL, *tmp_recvbuf=NULL;
     // Initialise send buffer
     ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, long, elements, sizeof(long),
-                        rank, MPI_COMM_WORLD, init_sendbuf);
+                        rank, MPI_COMM_WORLD, init_sendbuf, out);
 
     if (rank == 0) {
         // Initialize recv buffer
         ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, long, elements*size, sizeof(long),
-                            rank, MPI_COMM_WORLD, init_recvbuf);
+                            rank, MPI_COMM_WORLD, init_recvbuf, out);
     }
 
     // open file and set file view
     MPI_Datatype fview;
-    int startV[2] = {coord[0]*nelem_per_dim, coord[1]*nelem_per_dim};
-    int arrsizeV[2] = {dim[0]*nelem_per_dim, dim[1]*nelem_per_dim};
-    int gridsizeV[2] = {nelem_per_dim, nelem_per_dim};
+    int startV[2];
+    startV[0] = coord[0]*nelem_per_dim;
+    startV[1] = coord[1]*nelem_per_dim;
+
+    int arrsizeV[2];
+    arrsizeV[0] = dim[0]*nelem_per_dim;
+    arrsizeV[1] = dim[1]*nelem_per_dim;
+
+    int gridsizeV[2];
+    gridsizeV[0] = nelem_per_dim;
+    gridsizeV[1] = nelem_per_dim;
 
 #ifdef DEBUG
     printf("%d: coords[%d][%d] start[%d][%d] size[%d][%d] gridsize[%d][%d]\n", rank,
@@ -146,41 +156,36 @@ int main (int argc, char *argv[])
 
     // execute file_write test
     MPI_Barrier(MPI_COMM_WORLD);
-    auto t1s = std::chrono::high_resolution_clock::now();
-    res = file_write_all_test (sendbuf->get_buffer(), elements,
+    t1s = std::chrono::high_resolution_clock::now();
+    ret = file_write_all_test (sendbuf->get_buffer(), elements,
                                MPI_LONG, fh);
-    if (MPI_SUCCESS != res) {
+    if (MPI_SUCCESS != ret) {
         fprintf(stderr, "Error in file_write_test. Aborting\n");
-        FREE_BUFFER(sendbuf, tmp_sendbuf);
-        delete (sendbuf);
-        if (rank == 0) {
-            FREE_BUFFER(recvbuf, tmp_recvbuf);
-            delete (recvbuf);
-        }
-
-        MPI_Abort (MPI_COMM_WORLD, 1);
-        return 1;
+        goto out;
     }
     MPI_File_close (&fh);
-    auto t1e = std::chrono::high_resolution_clock::now();
-    double t1 = std::chrono::duration<double>(t1e-t1s).count();
+    t1e = std::chrono::high_resolution_clock::now();
+    t1 = std::chrono::duration<double>(t1e-t1s).count();
 
     // verify results
-    bool ret = true;
+    bool res, fret;
+    res = true;
     if (rank == 0) {
-        int fd = open ("testout.out", O_RDONLY );
+        int fd;
+        fd = open ("testout.out", O_RDONLY );
         if ( -1 != fd ) {
             SL_read(fd, tmp_recvbuf, elements * size * sizeof(long));
-            ret = check_recvbuf(tmp_recvbuf, size, rank, elements);
+            res = check_recvbuf(tmp_recvbuf, size, rank, elements);
             close (fd);
         }
     }
 
-    bool fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(),
-                                  '-', ret);
+    fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(),
+                             '-', res);
     report_performance (argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), '-',
                         elements, (size_t)(elements * sizeof(long)), 1, t1);
 
+ out:
     //Free buffers
     FREE_BUFFER(sendbuf, tmp_sendbuf);
     delete (sendbuf);
@@ -193,6 +198,10 @@ int main (int argc, char *argv[])
 
     MPI_Type_free(&fview);
 
+    if (MPI_SUCCESS != ret) {
+        MPI_Abort (MPI_COMM_WORLD, 1);
+        return 1;
+    }
     MPI_Finalize ();
     return fret ? 0 : 1;
 }

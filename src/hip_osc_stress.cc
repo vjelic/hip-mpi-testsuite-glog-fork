@@ -78,9 +78,9 @@ int type_osc_stress_test (int *buf, int count,  MPI_Comm comm, MPI_Win win);
 
 int main (int argc, char *argv[])
 {
-    int rank, nProcs, status;
+    int rank, nProcs, ret;
     int root = 0;
-    MPI_Win win;
+    MPI_Win win = MPI_WIN_NULL;
 
     bind_device();
 
@@ -93,47 +93,48 @@ int main (int argc, char *argv[])
     int *tmpbuf=NULL;
     // Initialise global buffer
     ALLOCATE_SENDBUFFER(sendbuf, tmpbuf, int, 2*nProcs*elements*NUM_NB_ITERATIONS, sizeof(int),
-                        rank, MPI_COMM_WORLD, init_buf);
+                        rank, MPI_COMM_WORLD, init_buf, out);
 
     //Create window
-    status = MPI_Win_create (sendbuf->get_buffer(), 2*nProcs*elements*sizeof(int), sizeof(int), MPI_INFO_NULL,
-                             MPI_COMM_WORLD, &win);
-    if (MPI_SUCCESS != status) {
-        FREE_BUFFER(sendbuf, tmpbuf);
-        delete (sendbuf);
-
-        MPI_Abort (MPI_COMM_WORLD, 1);
-        return status;
+    ret = MPI_Win_create (sendbuf->get_buffer(), 2*nProcs*elements*sizeof(int), sizeof(int), MPI_INFO_NULL,
+                          MPI_COMM_WORLD, &win);
+    if (MPI_SUCCESS != ret) {
+        goto out;
     }
 
     //execute osc stress test
-    int res = type_osc_stress_test ((int *)sendbuf->get_buffer(), elements, MPI_COMM_WORLD, win);
-    if (MPI_SUCCESS != res) {
+    ret = type_osc_stress_test ((int *)sendbuf->get_buffer(), elements, MPI_COMM_WORLD, win);
+    if (MPI_SUCCESS != ret) {
         printf("Error in type_osc_stress_test. Aborting\n");
-        FREE_BUFFER(sendbuf, tmpbuf);
-        delete (sendbuf);
-
-        MPI_Abort (MPI_COMM_WORLD, 1);
-        return 1;
+        goto out;
     }
 
     // verify results
-    bool ret;
+    bool res, fret;
+    res = true;
     if (sendbuf->NeedsStagingBuffer()) {
         HIP_CHECK(sendbuf->CopyFrom(tmpbuf, 2*nProcs*elements*NUM_NB_ITERATIONS*sizeof(int)));
-        ret = check_recvbuf(tmpbuf, nProcs, rank, elements);
+        res = check_recvbuf(tmpbuf, nProcs, rank, elements);
     }
     else {
-        ret = check_recvbuf((int*) sendbuf->get_buffer(), nProcs, rank, elements);
+        res = check_recvbuf((int*) sendbuf->get_buffer(), nProcs, rank, elements);
     }
-    bool fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), '-', ret);
+    fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), '-', res);
     report_performance (argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), '-', elements,
                         (size_t)(elements *sizeof(int)), 0, 0.0);
 
+ out:
     //Cleanup dynamic buffers
+    if (MPI_WIN_NULL != win) {
+        MPI_Win_free (&win);
+    }
     FREE_BUFFER(sendbuf, tmpbuf);
     delete (sendbuf);
 
+    if (MPI_SUCCESS != ret ) {
+        MPI_Abort (MPI_COMM_WORLD, 1);
+        return 1;
+    }    
     MPI_Finalize ();
     return fret ? 0 : 1;
 }
@@ -152,14 +153,14 @@ int type_osc_stress_test (int *sbuf, int count, MPI_Comm comm, MPI_Win win)
     reqs = (MPI_Request*)malloc (size*NUM_NB_ITERATIONS*sizeof(MPI_Request));
     if (NULL == reqs) {
         printf("4. Could not allocate memory. Aborting\n");
-        MPI_Abort(comm, 1);
+        return MPI_ERR_OTHER;
     }
 
     int datadisp = count * size * NUM_NB_ITERATIONS;
 
     ret = MPI_Win_lock_all(MPI_MODE_NOCHECK, win);
     if (MPI_SUCCESS != ret) {
-        return ret;
+        goto out;
     }
     for (int j=0; j<NUM_NB_ITERATIONS; j++) {
         for (int i=0; i<size; i++) {
@@ -181,21 +182,21 @@ int type_osc_stress_test (int *sbuf, int count, MPI_Comm comm, MPI_Win win)
             ret = MPI_Rput (tbuf, count, MPI_INT, i, rdisp, count, MPI_INT, win, &reqs[size*j+i]);
 #endif
             if (MPI_SUCCESS != ret) {
-                return ret;
+                goto out;
             }
         }
     }
     ret = MPI_Waitall (size*NUM_NB_ITERATIONS, reqs, MPI_STATUSES_IGNORE);
     if (MPI_SUCCESS != ret) {
-        return ret;
+        goto out;
     }
 
     ret = MPI_Win_unlock_all(win);
     if (MPI_SUCCESS != ret) {
-        return ret;
+        goto out;
     }
+ out:
     free (reqs);
-
-    return MPI_SUCCESS;
+    return ret;
 }
 

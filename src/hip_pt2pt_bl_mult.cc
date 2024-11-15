@@ -78,6 +78,7 @@ int main(int argc, char *argv[])
     int rank, nProcs;
     int root = 0;
     int nIter = 10;
+    int ret;
 
     bind_device();
 
@@ -96,13 +97,13 @@ int main(int argc, char *argv[])
     // Initialise send buffer
     if (rank == 0) {
         ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, int, elements, sizeof(int),
-                            rank, MPI_COMM_WORLD, init_sendbuf);
+                            rank, MPI_COMM_WORLD, init_sendbuf, out);
     }
 
     // Initialize recv buffer
     if (rank == 1) {
         ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, int, nIter *elements, sizeof(int),
-                            rank, MPI_COMM_WORLD, init_recvbuf);
+                            rank, MPI_COMM_WORLD, init_recvbuf, out);
     }
 
     // execute point-to-point operations
@@ -124,16 +125,16 @@ int main(int argc, char *argv[])
             rbuf = (int *)recvbuf->get_buffer() + i*elements;
         }
 
-        int res = type_p2p_bl_mult_test(sbuf, rbuf, elements, MPI_COMM_WORLD);
-        if (MPI_SUCCESS != res) {
+        ret = type_p2p_bl_mult_test(sbuf, rbuf, elements, MPI_COMM_WORLD);
+        if (MPI_SUCCESS != ret) {
             printf("Error in type_p2p_bl_mult_test. Aborting\n");
-            MPI_Abort(MPI_COMM_WORLD, 1);
-            return 1;
+            goto out;
         }
     }
 
     // verify results
-    bool ret = true;
+    bool res, fret;
+    res = true;
     if (rank == 1) {
         int *rbuf_base = (int *)recvbuf->get_buffer();
         if (recvbuf->NeedsStagingBuffer()) {
@@ -142,14 +143,15 @@ int main(int argc, char *argv[])
         }
         for (int i = 0; i <nIter; i++) {
             int *rbuf = rbuf_base + i * elements;
-            ret = check_recvbuf(rbuf, i+1, elements);
-            if (ret != true) {
+            res = check_recvbuf(rbuf, i+1, elements);
+            if (res != true) {
                 break;
             }
         }
     }
-    bool fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), ret);
+    fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), res);
 
+ out:
     // Cleanup dynamic buffers
     if (rank == 0) {
         FREE_BUFFER(sendbuf, tmp_sendbuf);
@@ -159,7 +161,11 @@ int main(int argc, char *argv[])
         FREE_BUFFER(recvbuf, tmp_recvbuf);
         delete (recvbuf);
     }
-
+    if (MPI_SUCCESS != ret) {
+        MPI_Abort (MPI_COMM_WORLD, 1);
+        return 1;
+    }
+    
     MPI_Finalize();
     return fret ? 0 : 1;
 }

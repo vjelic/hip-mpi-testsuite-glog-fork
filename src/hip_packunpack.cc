@@ -85,8 +85,10 @@ static int packunpack_test (void *sendbuf, void *recvbuf, int count,
 
 int main (int argc, char *argv[])
 {
-    int res, rank, size;
+    int ret, rank, size;
     MPI_Comm comm = MPI_COMM_WORLD;
+    std::chrono::high_resolution_clock::time_point t1s, t1e;
+    double t1;
 
     bind_device();
 
@@ -102,77 +104,65 @@ int main (int argc, char *argv[])
     // Initialise send buffer
 #ifdef HIP_MPITEST_UNPACK
     ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, int, dat->get_num_elements()*elements, sizeof(int),
-                        rank, comm, init_contg_sendbuf);
+                        rank, comm, init_contg_sendbuf, out);
 #else
     ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, int, elements, dat->get_extent(),
-                        rank, comm, dat->init_sendbuf);
+                        rank, comm, dat->init_sendbuf, out);
 #endif
 
     // Initialize recv buffer
 #ifdef HIP_MPITEST_UNPACK
     ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, int, elements, dat->get_extent(),
-                        rank, comm, dat->init_recvbuf);
+                        rank, comm, dat->init_recvbuf, out);
 #else
     ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, int, dat->get_num_elements()*elements, sizeof(int),
-                        rank, comm, init_contg_recvbuf);
+                        rank, comm, init_contg_recvbuf, out);
 #endif
     //Warmup
-    res = packunpack_test (sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
+    ret = packunpack_test (sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
                            dat->get_mpi_type(), comm, 1);
-    if (MPI_SUCCESS != res ) {
+    if (MPI_SUCCESS != ret ) {
         fprintf(stderr, "Error in packunpack_test. Aborting\n");
-        FREE_BUFFER(sendbuf, tmp_sendbuf);
-        FREE_BUFFER(recvbuf, tmp_recvbuf);
-        delete (sendbuf);
-        delete (recvbuf);
-        delete (dat);
-
-        MPI_Abort (comm, 1);
-        return 1;
+        goto out;
     }
 
     // execute the point-to-point tests
     MPI_Barrier(comm);
-    auto t1s = std::chrono::high_resolution_clock::now();
-    res = packunpack_test(sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
+    t1s = std::chrono::high_resolution_clock::now();
+    ret = packunpack_test(sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
                           dat->get_mpi_type(), comm, NITER);
-    if (MPI_SUCCESS != res) {
+    if (MPI_SUCCESS != ret) {
         fprintf(stderr, "Error in packunpack_test. Aborting\n");
-        FREE_BUFFER(sendbuf, tmp_sendbuf);
-        FREE_BUFFER(recvbuf, tmp_recvbuf);
-        delete (sendbuf);
-        delete (recvbuf);
-        delete (dat);
-
-        MPI_Abort (comm, 1);
-        return 1;
+        goto out;
     }
-    auto t1e = std::chrono::high_resolution_clock::now();
-    double t1 = std::chrono::duration<double>(t1e-t1s).count();
+    t1e = std::chrono::high_resolution_clock::now();
+    t1 = std::chrono::duration<double>(t1e-t1s).count();
 
     // verify results
-    bool ret = true;
+    bool res, fret;
+    res = true;
     if (recvbuf->NeedsStagingBuffer()) {
 #ifdef HIP_MPITEST_UNPACK
         HIP_CHECK(recvbuf->CopyFrom(tmp_recvbuf, elements*dat->get_extent()));
-        ret = dat->check_recvbuf(tmp_recvbuf, size, rank+1, elements);
+        res = dat->check_recvbuf(tmp_recvbuf, size, rank+1, elements);
 #else
         HIP_CHECK(recvbuf->CopyFrom(tmp_recvbuf, elements*dat->get_num_elements()*sizeof(int)));
-        ret = check_contg_recvbuf(tmp_recvbuf, 1, rank, dat->get_num_elements()*elements);
+        res = check_contg_recvbuf(tmp_recvbuf, 1, rank, dat->get_num_elements()*elements);
 #endif
     }
     else {
 #ifdef HIP_MPITEST_UNPACK
-        ret = dat->check_recvbuf(recvbuf->get_buffer(), size, rank+1, elements);
+        res = dat->check_recvbuf(recvbuf->get_buffer(), size, rank+1, elements);
 #else
-        ret = check_contg_recvbuf(recvbuf->get_buffer(), 1, rank, dat->get_num_elements()*elements);
+        res = check_contg_recvbuf(recvbuf->get_buffer(), 1, rank, dat->get_num_elements()*elements);
 #endif
     }
 
-    bool fret = report_testresult(argv[0], comm, sendbuf->get_memchar(), recvbuf->get_memchar(), ret);
+    fret = report_testresult(argv[0], comm, sendbuf->get_memchar(), recvbuf->get_memchar(), res);
     report_performance (argv[0], comm, sendbuf->get_memchar(), recvbuf->get_memchar(), elements,
                         (size_t)(elements * dat->get_size()), NITER, t1);
 
+ out:
     //Free buffers
     FREE_BUFFER(sendbuf, tmp_sendbuf);
     FREE_BUFFER(recvbuf, tmp_recvbuf);
@@ -181,6 +171,10 @@ int main (int argc, char *argv[])
     delete (recvbuf);
     delete (dat);
 
+    if (MPI_SUCCESS != ret ) {
+        MPI_Abort (MPI_COMM_WORLD, 1);
+        return 1;
+    }    
     MPI_Finalize ();
     return fret ? 0 : 1;
 }

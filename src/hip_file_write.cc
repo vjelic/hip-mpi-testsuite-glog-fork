@@ -79,9 +79,11 @@ int file_write_test (void *sendbuf, int count,
 
 int main (int argc, char *argv[])
 {
-    int res;
+    int ret;
     int rank, size;
     MPI_File fh;
+    double t1;
+    std::chrono::high_resolution_clock::time_point t1s, t1e;
 
     bind_device();
 
@@ -100,49 +102,46 @@ int main (int argc, char *argv[])
     long *tmp_sendbuf=NULL, *tmp_recvbuf=NULL;
     // Initialise send buffer
     ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, long, elements, sizeof(long),
-                        rank, MPI_COMM_WORLD, init_sendbuf);
+                        rank, MPI_COMM_WORLD, init_sendbuf, out);
 
     // Initialize recv buffer
     ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, long, elements, sizeof(long),
-                        rank, MPI_COMM_WORLD, init_recvbuf);
+                        rank, MPI_COMM_WORLD, init_recvbuf, out);
 
     // execute file_write test
     MPI_File_open(MPI_COMM_SELF, "testout.out", MPI_MODE_CREATE|MPI_MODE_WRONLY,
                   MPI_INFO_NULL, &fh);
     MPI_Barrier(MPI_COMM_WORLD);
-    auto t1s = std::chrono::high_resolution_clock::now();
+    t1s = std::chrono::high_resolution_clock::now();
     for (int i=0; i < NREP; i++) {
-        res = file_write_test (sendbuf->get_buffer(), elements,
+        ret = file_write_test (sendbuf->get_buffer(), elements,
                                MPI_LONG, fh);
-        if (MPI_SUCCESS != res) {
+        if (MPI_SUCCESS != ret) {
             fprintf(stderr, "Error in file_write_test. Aborting\n");
-            FREE_BUFFER(sendbuf, tmp_sendbuf);
-            FREE_BUFFER(recvbuf, tmp_recvbuf);
-            delete (sendbuf);
-            delete (recvbuf);
-
-            MPI_Abort (MPI_COMM_WORLD, 1);
-            return 1;
+            goto out;
         }
     }
     MPI_File_close (&fh);
-    auto t1e = std::chrono::high_resolution_clock::now();
-    double t1 = std::chrono::duration<double>(t1e-t1s).count();
+    t1e = std::chrono::high_resolution_clock::now();
+    t1 = std::chrono::duration<double>(t1e-t1s).count();
 
     // verify results
-    bool ret = true;
-    int fd = open ("testout.out", O_RDONLY );
+    bool res, fret;
+    res = true;
+    int fd;
+    fd = open ("testout.out", O_RDONLY );
     if ( -1 != fd ) {
         SL_read(fd, tmp_recvbuf, elements * sizeof(long));
-        ret = check_recvbuf(tmp_recvbuf, size, rank, elements);
+        res = check_recvbuf(tmp_recvbuf, size, rank, elements);
         close (fd);
     }
 
-    bool fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(),
-                                  '-', ret);
+    fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(),
+                                  '-', res);
     report_performance (argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), '-',
                         elements, (size_t)(elements * sizeof(long) * NREP), 1, t1);
 
+ out:
     //Free buffers
     FREE_BUFFER(sendbuf, tmp_sendbuf);
     FREE_BUFFER(recvbuf, tmp_recvbuf);
@@ -151,6 +150,10 @@ int main (int argc, char *argv[])
     delete (recvbuf);
 
     unlink("testout.out");
+    if (MPI_SUCCESS != ret) {
+        MPI_Abort (MPI_COMM_WORLD, 1);
+        return 1;
+    }
     MPI_Finalize ();
     return fret ? 0 : 1;
 }
@@ -166,8 +169,7 @@ int file_write_test (void *sendbuf, int count, MPI_Datatype datatype, MPI_File f
     req = (MPI_Request *) malloc (NBLOCKS * sizeof(MPI_Request));
     if (NULL == req) {
         fprintf(stderr, "Error allocating memory. Aborting\n");
-        MPI_Abort (MPI_COMM_WORLD, 1);
-        return 1;
+        return MPI_ERR_OTHER;
     }
 
     long *sbuf = (long *)sendbuf;
@@ -176,13 +178,20 @@ int file_write_test (void *sendbuf, int count, MPI_Datatype datatype, MPI_File f
 
     for (i=0; i<NBLOCKS; i++) {
         ret = MPI_File_iwrite(fh, sbuf, ncount, datatype, &req[i]);
+        if (MPI_SUCCESS != ret) {
+            goto out;
+        }
         sbuf += ncount;
     }
 
     MPI_Waitall (NBLOCKS, req, MPI_STATUS_IGNORE);
-    free (req);
 #else
     ret = MPI_File_write (fh, sendbuf, count, datatype, MPI_STATUS_IGNORE);
+#endif
+
+ out:
+#ifdef HIP_MPITEST_FILE_IWRITE
+    free (req);
 #endif
     return ret;
 }

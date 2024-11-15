@@ -75,8 +75,10 @@ int alltoall_test (void *sendbuf, void *recvbuf, int count,
 
 int main (int argc, char *argv[])
 {
-    int res;
+    int ret;
     int rank, size;
+    double t1;
+    std::chrono::high_resolution_clock::time_point t1s, t1e;
 
     bind_device();
 
@@ -90,58 +92,48 @@ int main (int argc, char *argv[])
 
     // Initialise send buffer
     ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, double, size*elements, sizeof(double),
-                        rank, MPI_COMM_WORLD, init_sendbuf);
+                        rank, MPI_COMM_WORLD, init_sendbuf, out);
 
     // Initialize recv buffer
     ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, double, size*elements, sizeof(double),
-                        rank, MPI_COMM_WORLD, init_recvbuf);
+                        rank, MPI_COMM_WORLD, init_recvbuf, out);
 
     //Warmup
-    res = alltoall_test (sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
+    ret = alltoall_test (sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
                          MPI_DOUBLE, MPI_COMM_WORLD, 1);
-    if (MPI_SUCCESS != res ) {
+    if (MPI_SUCCESS != ret) {
         fprintf(stderr, "Error in alltoall_test. Aborting\n");
-        FREE_BUFFER(sendbuf, tmp_sendbuf);
-        FREE_BUFFER(recvbuf, tmp_recvbuf);
-        delete (sendbuf);
-        delete (recvbuf);
-
-        MPI_Abort (MPI_COMM_WORLD, 1);
-        return 1;
+        goto out;
     }
 
     // execute the allreduce test
     MPI_Barrier(MPI_COMM_WORLD);
-    auto t1s = std::chrono::high_resolution_clock::now();
-    res = alltoall_test (sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
+    t1s = std::chrono::high_resolution_clock::now();
+    ret = alltoall_test (sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
                          MPI_DOUBLE, MPI_COMM_WORLD, NITER);
-    if (MPI_SUCCESS != res) {
+    if (MPI_SUCCESS != ret) {
         fprintf(stderr, "Error in alltoall_test. Aborting\n");
-        FREE_BUFFER(sendbuf, tmp_sendbuf);
-        FREE_BUFFER(recvbuf, tmp_recvbuf);
-        delete (sendbuf);
-        delete (recvbuf);
-
-        MPI_Abort (MPI_COMM_WORLD, 1);
-        return 1;
+        goto out;
     }
-    auto t1e = std::chrono::high_resolution_clock::now();
-    double t1 = std::chrono::duration<double>(t1e-t1s).count();
+    t1e = std::chrono::high_resolution_clock::now();
+    t1 = std::chrono::duration<double>(t1e-t1s).count();
 
     // verify results
-    bool ret = true;
+    bool res, fret;
+    res = true;
     if (recvbuf->NeedsStagingBuffer()) {
         HIP_CHECK(recvbuf->CopyFrom(tmp_recvbuf, elements*size*sizeof(double)));
-        ret = check_recvbuf(tmp_recvbuf, size, rank, elements);
+        res = check_recvbuf(tmp_recvbuf, size, rank, elements);
     }
     else {
-        ret = check_recvbuf((double*) recvbuf->get_buffer(), size, rank, elements);
+        res = check_recvbuf((double*) recvbuf->get_buffer(), size, rank, elements);
     }
 
-    bool fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), ret);
+    fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), res);
     report_performance (argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(),
                         elements, (size_t)(elements * sizeof(double)), NITER, t1);
 
+ out:
     //Free buffers
     FREE_BUFFER(sendbuf, tmp_sendbuf);
     FREE_BUFFER(recvbuf, tmp_recvbuf);
@@ -149,6 +141,10 @@ int main (int argc, char *argv[])
     delete (sendbuf);
     delete (recvbuf);
 
+    if (MPI_SUCCESS != ret) {
+        MPI_Abort (MPI_COMM_WORLD, 1);
+        return 1;
+    }
     MPI_Finalize ();
     return fret ? 0 : 1;
 }
@@ -174,23 +170,20 @@ int alltoall_test ( void *sendbuf, void *recvbuf, int count,
     rcounts = (int*)malloc(size *sizeof(int));
     if (NULL==rcounts) {
         printf("Alltoallv test: Could not allocate memory\n");
-        free (scounts);
-        return MPI_ERR_OTHER;
+        ret = MPI_ERR_OTHER;
+        goto out;
     }
     sdispls = (int*)malloc(size *sizeof(int));
     if (NULL==sdispls) {
         printf("Alltoallv test: Could not allocate memory\n");
-        free (scounts);
-        free (rcounts);
-        return MPI_ERR_OTHER;
+        ret = MPI_ERR_OTHER;
+        goto out;
     }
     rdispls = (int*)malloc(size *sizeof(int));
     if (NULL==rdispls) {
         printf("Alltoallv test: Could not allocate memory\n");
-        free (scounts);
-        free (rcounts);
-        free (sdispls);
-        return MPI_ERR_OTHER;
+        ret = MPI_ERR_OTHER;
+        goto out;
     }
 
     for (int i=0; i<size; i++) {
@@ -209,16 +202,11 @@ int alltoall_test ( void *sendbuf, void *recvbuf, int count,
         ret = MPI_Alltoall(sendbuf, count, datatype, recvbuf, count, datatype, comm);
 #endif
         if (MPI_SUCCESS != ret) {
-#ifdef HIP_MPITEST_ALLTOALLV
-            free (scounts);
-            free (rcounts);
-            free (sdispls);
-            free (rdispls);
-#endif
-            return ret;
+            goto out;
         }
     }
 
+ out:
 #ifdef HIP_MPITEST_ALLTOALLV
     free (scounts);
     free (rcounts);
@@ -226,5 +214,5 @@ int alltoall_test ( void *sendbuf, void *recvbuf, int count,
     free (rdispls);
 #endif
 
-    return MPI_SUCCESS;
+    return ret;
 }
