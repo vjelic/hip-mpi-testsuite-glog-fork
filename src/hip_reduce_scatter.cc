@@ -83,9 +83,11 @@ int reduce_scatter_block_test(void *sendbuf, void *recvbuf, int blockcount,
 
 int main(int argc, char *argv[])
 {
-    int res;
+    int ret;
     int rank, size;
     int root = 0;
+    double t1;
+    std::chrono::high_resolution_clock::time_point t1s, t1e;
 
     bind_device();
 
@@ -99,61 +101,59 @@ int main(int argc, char *argv[])
 
     // Initialise send buffer
     ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, double, size *elements, sizeof(double),
-                        rank, MPI_COMM_WORLD, init_sendbuf);
+                        rank, MPI_COMM_WORLD, init_sendbuf, out);
 
     // Initialize recv buffer
     ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, double, size *elements, sizeof(double),
-                        rank, MPI_COMM_WORLD, init_recvbuf);
+                        rank, MPI_COMM_WORLD, init_recvbuf, out);
 
 #ifdef HIP_MPITEST_REDUCE_SCATTER_BLOCK
-    res = reduce_scatter_block_test(sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
-                                        MPI_DOUBLE, MPI_COMM_WORLD, 1);
-    if (res != MPI_SUCCESS) {
+    ret = reduce_scatter_block_test(sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
+                                    MPI_DOUBLE, MPI_COMM_WORLD, 1);
+    if (ret != MPI_SUCCESS) {
         fprintf(stderr, "Error in reduce_scatter_block_test. Aborting\n");
-        MPI_Abort(MPI_COMM_WORLD, 1);
-        return 1;
+        goto out;
     }
 #else
     // Warmup
-    res = reduce_scatter_test(sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
+    ret = reduce_scatter_test(sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
                               MPI_DOUBLE, MPI_COMM_WORLD, 1);
-    if (MPI_SUCCESS != res) {
+    if (MPI_SUCCESS != ret) {
         fprintf(stderr, "Error in reduce_scatter_test. Aborting\n");
-        MPI_Abort(MPI_COMM_WORLD, 1);
-        return 1;
+        goto out;
     }
 
     // execute the reduce_scatter test
     MPI_Barrier(MPI_COMM_WORLD);
-    auto t1s = std::chrono::high_resolution_clock::now();
-    res = reduce_scatter_test(sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
+    t1s = std::chrono::high_resolution_clock::now();
+    ret = reduce_scatter_test(sendbuf->get_buffer(), recvbuf->get_buffer(), elements,
                               MPI_DOUBLE, MPI_COMM_WORLD, NITER);
-    if (MPI_SUCCESS != res) {
+    if (MPI_SUCCESS != ret) {
         fprintf(stderr, "Error in reduce_scatter_test. Aborting\n");
-        MPI_Abort(MPI_COMM_WORLD, 1);
-        return 1;
+        goto out;
     }
-    auto t1e = std::chrono::high_resolution_clock::now();
-    double t1 = std::chrono::duration<double>(t1e - t1s).count();
+    t1e = std::chrono::high_resolution_clock::now();
+    t1 = std::chrono::duration<double>(t1e - t1s).count();
 #endif
 
     // verify results
-    bool ret = true;
+    bool res, fret;
+    res = true;
     if (recvbuf->NeedsStagingBuffer()) {
         HIP_CHECK(recvbuf->CopyFrom(tmp_recvbuf, elements * size * sizeof(double)));
-        ret = check_recvbuf(tmp_recvbuf, size, rank, elements);
+        res = check_recvbuf(tmp_recvbuf, size, rank, elements);
     }
     else {
-        ret = check_recvbuf((double *)recvbuf->get_buffer(), size, rank, elements);
+        res = check_recvbuf((double *)recvbuf->get_buffer(), size, rank, elements);
     }
-
-    bool fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), ret);
+    fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), res);
 
 #ifndef HIP_MPITEST_REDUCE_SCATTER_BLOCK
     report_performance(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(),
                        elements, (size_t)(elements * sizeof(double)), NITER, t1);
 #endif
 
+ out:
     // Free buffers
     FREE_BUFFER(sendbuf, tmp_sendbuf);
     FREE_BUFFER(recvbuf, tmp_recvbuf);
@@ -161,6 +161,10 @@ int main(int argc, char *argv[])
     delete (sendbuf);
     delete (recvbuf);
 
+    if (MPI_SUCCESS != ret) {
+        MPI_Abort (MPI_COMM_WORLD, 1);
+        return 1;
+    }
     MPI_Finalize();
     return fret ? 0 : 1;
 }
@@ -170,7 +174,7 @@ int reduce_scatter_test(void *sendbuf, void *recvbuf, int count,
                         int niterations)
 {
     int ret;
-    int *recv_counts;
+    int *recv_counts = NULL;
     int size;
 
     MPI_Comm_size(comm, &size);
@@ -187,13 +191,14 @@ int reduce_scatter_test(void *sendbuf, void *recvbuf, int count,
 
     for (int i = 0; i < niterations; i++) {
         ret = MPI_Reduce_scatter(sendbuf, recvbuf, recv_counts, datatype, MPI_SUM, comm);
-
         if (MPI_SUCCESS != ret) {
-            return ret;
+            goto out;
         }
     }
 
-    return MPI_SUCCESS;
+ out:
+    free (recv_counts);
+    return ret;
 }
 
 int reduce_scatter_block_test(void *sendbuf, void *recvbuf, int blockcount,

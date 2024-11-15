@@ -70,9 +70,10 @@ static int type_osc_test ( void *sendbuf, void *recvbuf, int count,
 
 int main (int argc, char *argv[])
 {
-    int rank, nProcs, status;
+    int rank, nProcs;
     int root = 0; //checkbuff will not work for any other root value right now
-    MPI_Win win;
+    MPI_Win win = MPI_WIN_NULL;
+    int ret;
 
     bind_device();
 
@@ -85,58 +86,64 @@ int main (int argc, char *argv[])
     int *tmp_sendbuf=NULL, *tmp_recvbuf=NULL;
     // Initialise send buffer
     ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, int, elements, sizeof(int),
-                        rank, MPI_COMM_WORLD, init_sendbuf);
+                        rank, MPI_COMM_WORLD, init_sendbuf, out);
 
     // Initialize recv buffer
     ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, int, nProcs*elements, sizeof(int),
-                        rank, MPI_COMM_WORLD, init_recvbuf);
+                        rank, MPI_COMM_WORLD, init_recvbuf, out);
 
     //Create window
     if (rank == root) {
-        status = MPI_Win_create (recvbuf->get_buffer(), nProcs*elements*sizeof(int), sizeof(int), MPI_INFO_NULL,
-                                 MPI_COMM_WORLD, &win);
+        ret = MPI_Win_create (recvbuf->get_buffer(), nProcs*elements*sizeof(int), sizeof(int), MPI_INFO_NULL,
+                              MPI_COMM_WORLD, &win);
     }
     else {
-        status = MPI_Win_create (sendbuf->get_buffer(), elements*sizeof(int), sizeof(int), MPI_INFO_NULL,
-                                 MPI_COMM_WORLD, &win);
+        ret = MPI_Win_create (sendbuf->get_buffer(), elements*sizeof(int), sizeof(int), MPI_INFO_NULL,
+                              MPI_COMM_WORLD, &win);
     }
-    if (MPI_SUCCESS != status) {
-        return status;
+    if (MPI_SUCCESS != ret) {
+        goto out;
     }
-
 
     //execute one-sided operations
-    int res = type_osc_test (sendbuf->get_buffer(), recvbuf->get_buffer(),
-                             elements, MPI_INT, root, MPI_COMM_WORLD, win);
-    if (MPI_SUCCESS != res) {
+    ret = type_osc_test (sendbuf->get_buffer(), recvbuf->get_buffer(),
+                         elements, MPI_INT, root, MPI_COMM_WORLD, win);
+    if (MPI_SUCCESS != ret) {
         printf("Error in type_osc_test. Aborting\n");
-        MPI_Abort (MPI_COMM_WORLD, 1);
-        return 1;
+        goto out;
     }
 
     // verify results
-    bool ret=true;
+    bool res, fret;
+    res=true;
     if (rank == 0) {
         if (recvbuf->NeedsStagingBuffer()) {
             HIP_CHECK(recvbuf->CopyFrom(tmp_recvbuf, nProcs*elements*sizeof(int)));
-            ret = check_recvbuf(tmp_recvbuf, nProcs, rank, elements);
+            res = check_recvbuf(tmp_recvbuf, nProcs, rank, elements);
         }
         else {
-            ret = check_recvbuf((int*) recvbuf->get_buffer(), nProcs, rank, elements);
+            res = check_recvbuf((int*) recvbuf->get_buffer(), nProcs, rank, elements);
         }
     }
-    bool fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), ret);
+    fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), res);
     report_performance (argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), elements,
                         (size_t)(elements *sizeof(int)), 0, 0.0);
 
+ out:
     //Cleanup dynamic buffers
-    MPI_Win_free (&win);
+    if (MPI_WIN_NULL != win) {
+        MPI_Win_free (&win);
+    }
     FREE_BUFFER(sendbuf, tmp_sendbuf);
     FREE_BUFFER(recvbuf, tmp_recvbuf);
 
     delete (sendbuf);
     delete (recvbuf);
 
+    if (MPI_SUCCESS != ret ) {
+        MPI_Abort (MPI_COMM_WORLD, 1);
+        return 1;
+    }    
     MPI_Finalize ();
     return fret ? 0 : 1;
 }

@@ -80,9 +80,11 @@ int file_read_test (void *sendbuf, int count,
 
 int main (int argc, char *argv[])
 {
-    int res, fd, old_mask, perm;
+    int ret, fd, old_mask, perm;
     int rank, size;
     MPI_File fh;
+    double t1;
+    std::chrono::high_resolution_clock::time_point t1s, t1e;
 
     bind_device();
 
@@ -107,11 +109,11 @@ int main (int argc, char *argv[])
 
     sendbuf = new hip_mpitest_buffer_host;
     ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, long, elements, sizeof(long),
-                        rank, MPI_COMM_WORLD, init_sendbuf);
+                        rank, MPI_COMM_WORLD, init_sendbuf, out);
 
     // Initialize recv buffer
     ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, long, elements, sizeof(long),
-                        rank, MPI_COMM_WORLD, init_recvbuf);
+                        rank, MPI_COMM_WORLD, init_recvbuf, out);
 
     // Create input file
     old_mask = umask(022);
@@ -121,8 +123,8 @@ int main (int argc, char *argv[])
     fd = open ("testout.out", O_CREAT|O_WRONLY, perm );
     if (-1 == fd) {
         fprintf(stderr, "Error in creating input file. Aborting\n");
-        MPI_Abort (MPI_COMM_WORLD, 1);
-        return 1;
+        ret = MPI_ERR_OTHER;
+        goto out;
     }
 
     SL_write(fd, sendbuf->get_buffer(), elements*sizeof(long));
@@ -134,45 +136,49 @@ int main (int argc, char *argv[])
     MPI_File_open(MPI_COMM_SELF, "testin.in", MPI_MODE_RDONLY,
                   MPI_INFO_NULL, &fh);
     MPI_Barrier(MPI_COMM_WORLD);
-    auto t1s = std::chrono::high_resolution_clock::now();
+    t1s = std::chrono::high_resolution_clock::now();
     for (int i=0; i<NREP; i++) {
         /* Reset file pointer to the beginning of the file */
         MPI_File_seek(fh, 0, MPI_SEEK_SET);
-        res = file_read_test (recvbuf->get_buffer(), elements,
+        ret = file_read_test (recvbuf->get_buffer(), elements,
                               MPI_LONG, fh);
-        if (MPI_SUCCESS != res) {
+        if (MPI_SUCCESS != ret) {
             fprintf(stderr, "Error in file_read_test. Aborting\n");
-            MPI_Abort (MPI_COMM_WORLD, 1);
-            return 1;
+            goto out;
         }
     }
     MPI_File_close (&fh);
-    auto t1e = std::chrono::high_resolution_clock::now();
-    double t1 = std::chrono::duration<double>(t1e-t1s).count();
+    t1e = std::chrono::high_resolution_clock::now();
+    t1 = std::chrono::duration<double>(t1e-t1s).count();
 
     // verify results
-    bool ret;
+    bool res, fret;
+    res = true;
     if (recvbuf->NeedsStagingBuffer()) {
         HIP_CHECK(recvbuf->CopyFrom(tmp_recvbuf, elements*sizeof(long)));
-        ret = check_recvbuf(tmp_recvbuf, size, rank, elements);
+        res = check_recvbuf(tmp_recvbuf, size, rank, elements);
     }
     else {
-        ret = check_recvbuf((long*) recvbuf->get_buffer(), size, rank, elements);
+        res = check_recvbuf((long*) recvbuf->get_buffer(), size, rank, elements);
     }
 
-    bool fret = report_testresult(argv[0], MPI_COMM_WORLD, '-', recvbuf->get_memchar(),
-                                  ret);
+    fret = report_testresult(argv[0], MPI_COMM_WORLD, '-', recvbuf->get_memchar(), res);
     report_performance (argv[0], MPI_COMM_WORLD, '-', recvbuf->get_memchar(),
                         elements, (size_t)(elements * sizeof(long) * NREP), 1, t1);
 
+ out:
     //Free buffers
     FREE_BUFFER(sendbuf, tmp_sendbuf);
     FREE_BUFFER(recvbuf, tmp_recvbuf);
 
     delete (sendbuf);
     delete (recvbuf);
-
     unlink("testin.in");
+
+    if (MPI_SUCCESS != ret) {
+        MPI_Abort (MPI_COMM_WORLD, 1);
+        return 1;
+    }
     MPI_Finalize ();
     return fret ? 0 : 1;
 }
@@ -188,8 +194,7 @@ int file_read_test (void *recvbuf, int count, MPI_Datatype datatype, MPI_File fh
     req = (MPI_Request *) malloc (NBLOCKS * sizeof(MPI_Request));
     if (NULL == req) {
         fprintf(stderr, "Error allocating memory. Aborting\n");
-        MPI_Abort (MPI_COMM_WORLD, 1);
-        return 1;
+        return MPI_ERR_OTHER;
     }
 
     long *rbuf = (long *)recvbuf;
@@ -198,13 +203,20 @@ int file_read_test (void *recvbuf, int count, MPI_Datatype datatype, MPI_File fh
 
     for (i=0; i<NBLOCKS; i++) {
         ret = MPI_File_iread(fh, rbuf, ncount, datatype, &req[i]);
+        if (MPI_SUCCESS != ret) {
+            goto out;
+        }
         rbuf += ncount;
     }
 
     MPI_Waitall (NBLOCKS, req, MPI_STATUS_IGNORE);
-    free (req);
 #else
     ret = MPI_File_read (fh, recvbuf, count, datatype, MPI_STATUS_IGNORE);
+#endif
+
+ out:
+#ifdef HIP_MPITEST_FILE_IREAD
+    free (req);
 #endif
     return ret;
 }

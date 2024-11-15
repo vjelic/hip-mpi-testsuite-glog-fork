@@ -78,6 +78,7 @@ int main (int argc, char *argv[])
 {
     int rank, nProcs;
     int root = 0;
+    int ret;
 
     bind_device();
 
@@ -89,32 +90,34 @@ int main (int argc, char *argv[])
 
     int *tmp_sendbuf=NULL, *tmp_recvbuf=NULL;
     // Initialise send buffer
-    ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, int, elements, sizeof(int), rank, MPI_COMM_WORLD, init_sendbuf);
+    ALLOCATE_SENDBUFFER(sendbuf, tmp_sendbuf, int, elements, sizeof(int), rank, MPI_COMM_WORLD,
+                        init_sendbuf, out);
 
     // Initialize recv buffer
-    ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, int, elements, sizeof(int), rank, MPI_COMM_WORLD, init_recvbuf);
+    ALLOCATE_RECVBUFFER(recvbuf, tmp_recvbuf, int, elements, sizeof(int), rank, MPI_COMM_WORLD,
+                        init_recvbuf, out);
 
     //execute point-to-point operations
-    int res = type_p2p_nb_test ((int *)sendbuf->get_buffer(), (int *)recvbuf->get_buffer(), elements, MPI_COMM_WORLD);
-    if (MPI_SUCCESS != res) {
+    ret = type_p2p_nb_test ((int *)sendbuf->get_buffer(), (int *)recvbuf->get_buffer(), elements, MPI_COMM_WORLD);
+    if (MPI_SUCCESS != ret) {
         printf("Error in type_p2p_nb_test. Aborting\n");
-        MPI_Abort (MPI_COMM_WORLD, 1);
-        return 1;
+        goto out;
     }
 
     // verify results
-    bool ret;
+    bool res, fret;
     if (recvbuf->NeedsStagingBuffer()) {
         HIP_CHECK(recvbuf->CopyFrom(tmp_recvbuf, elements*sizeof(int)));
-        ret = check_recvbuf(tmp_recvbuf, nProcs, rank, elements);
+        res = check_recvbuf(tmp_recvbuf, nProcs, rank, elements);
     }
     else {
-        ret = check_recvbuf((int*) recvbuf->get_buffer(), nProcs, rank, elements);
+        res = check_recvbuf((int*) recvbuf->get_buffer(), nProcs, rank, elements);
     }
-    bool fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), ret);
+    fret = report_testresult(argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), res);
     report_performance (argv[0], MPI_COMM_WORLD, sendbuf->get_memchar(), recvbuf->get_memchar(), elements,
                         (size_t)(elements *sizeof(int)), 0, 0.0);
 
+ out:
     //Cleanup dynamic buffers
     FREE_BUFFER(sendbuf, tmp_sendbuf);
     FREE_BUFFER(recvbuf, tmp_recvbuf);
@@ -122,6 +125,10 @@ int main (int argc, char *argv[])
     delete (sendbuf);
     delete (recvbuf);
 
+    if (MPI_SUCCESS != ret ) {
+        MPI_Abort (MPI_COMM_WORLD, 1);
+        return 1;
+    }    
     MPI_Finalize ();
     return fret ? 0 : 1;
 }
@@ -139,24 +146,26 @@ int type_p2p_nb_test (int *sendbuf, int *recvbuf, int count, MPI_Comm comm)
     reqs = (MPI_Request*)malloc (2*sizeof(MPI_Request));
     if (NULL == reqs) {
         printf("4. Could not allocate memory. Aborting\n");
-        MPI_Abort(comm, 1);
+        return MPI_ERR_OTHER;
     }
 
     ret = MPI_Irecv (recvbuf, count, MPI_INT, rank, tag, comm, &reqs[0]);
     if (MPI_SUCCESS != ret) {
-        return ret;
+        goto out;
     }
 
     ret = MPI_Isend (sendbuf, count, MPI_INT, rank, tag, comm, &reqs[1]);
     if (MPI_SUCCESS != ret) {
-        return ret;
+        goto out;
     }
 
     ret = MPI_Waitall (2, reqs, MPI_STATUSES_IGNORE);
     if (MPI_SUCCESS != ret) {
-        return ret;
+        goto out;
     }
+
+ out:
     free (reqs);
 
-    return MPI_SUCCESS;
+    return ret;
 }

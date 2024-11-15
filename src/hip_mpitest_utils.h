@@ -36,11 +36,11 @@
 #include "hip_mpitest_buffer.h"
 #include "mpi.h"
 
-#define HIP_CHECK(condition) {                                            \
-        hipError_t error = condition;                                     \
-        if(error != hipSuccess){                                          \
-            fprintf(stderr,"HIP error: %d line: %d\n", error,  __LINE__); \
-            MPI_Abort(MPI_COMM_WORLD, error);                             \
+#define HIP_CHECK(cond) {                                                 \
+        if(cond != hipSuccess){                                           \
+            fprintf(stderr,"HIP error: %d line: %d\n", cond,  __LINE__);  \
+            ret = cond;                                                   \
+            goto out;                                                     \
         }                                                                 \
     }
 
@@ -160,15 +160,20 @@ static void parse_args ( int argc, char **argv, MPI_Comm comm )
 static void bind_device()
 {
     int num_devices;
+    int ret;
+    char *local_rank = NULL;
+
     HIP_CHECK(hipGetDeviceCount(&num_devices));
 
-    char *local_rank = NULL;
     local_rank = getenv("OMPI_COMM_WORLD_LOCAL_RANK");
     if (local_rank != NULL) {
         int lrank  = atoi(local_rank);
 	int device = lrank % num_devices;
 	HIP_CHECK(hipSetDevice(device));
     }
+
+ out:
+    return;
 }
 
 static void report_buffertype (MPI_Comm comm, const char *name, hip_mpitest_buffer *buf)
