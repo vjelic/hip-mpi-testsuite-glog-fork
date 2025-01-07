@@ -129,10 +129,18 @@ class hip_mpitest_buffer_device: public hip_mpitest_buffer {
     }
 
     hipError_t CopyTo(void *src, size_t nBytes) {
-	return hipMemcpy(buffer, src, nBytes, hipMemcpyDefault);
+	hipError_t err = hipMemcpy(buffer, src, nBytes, hipMemcpyDefault);
+        if (err != hipSuccess) {
+            return err;
+        }
+        return hipStreamSynchronize(0);
     }
     hipError_t CopyFrom(void *dst, size_t nBytes) {
-	return hipMemcpy(dst, buffer, nBytes, hipMemcpyDefault);
+	hipError_t err = hipMemcpy(dst, buffer, nBytes, hipMemcpyDefault);
+        if (err != hipSuccess) {
+            return err;
+        }
+        return hipStreamSynchronize(0);
     }
 
 };
@@ -161,11 +169,19 @@ class hip_mpitest_buffer_managed: public hip_mpitest_buffer {
     }
 
     hipError_t CopyTo(void *src, size_t nBytes) {
-	return hipMemcpy(buffer, src, nBytes, hipMemcpyDefault);
+	hipError_t err = hipMemcpy(buffer, src, nBytes, hipMemcpyDefault);
+        if (err != hipSuccess) {
+            return err;
+        }
+        return hipStreamSynchronize(0);
     }
 
     hipError_t CopyFrom(void *dst, size_t nBytes) {
-	return hipMemcpy(dst, buffer, nBytes, hipMemcpyDefault);
+	hipError_t err = hipMemcpy(dst, buffer, nBytes, hipMemcpyDefault);
+        if (err != hipSuccess) {
+            return err;
+        }
+        return hipStreamSynchronize(0);
     }
 };
 
@@ -192,11 +208,19 @@ class hip_mpitest_buffer_hostmalloc: public hip_mpitest_buffer {
     }
 
     hipError_t CopyTo(void *src, size_t nBytes) {
-	return hipMemcpy(buffer, src, nBytes, hipMemcpyDefault);
+	hipError_t err = hipMemcpy(buffer, src, nBytes, hipMemcpyDefault);
+        if (err != hipSuccess) {
+            return err;
+        }
+        return hipStreamSynchronize(0);
     }
 
     hipError_t CopyFrom(void *dst, size_t nBytes) {
-	return hipMemcpy(dst, buffer, nBytes, hipMemcpyDefault);
+	hipError_t err = hipMemcpy(dst, buffer, nBytes, hipMemcpyDefault);
+        if (err != hipSuccess) {
+            return err;
+        }
+        return hipStreamSynchronize(0);
     }
 };
 
