@@ -21,8 +21,8 @@
 # IN THE SOFTWARE.
 ###############################################################################
 
-OPTIONS1A=" --mca smsc_accelerator_priority 80 --mca mpi_accelerator_rocm_memcpy_async 1 --mca coll ^hcoll --mca pml ^ucx --mca osc ^ucx --mca btl ^openib,uct "
-OPTIONS1B=" --mca smsc_accelerator_priority 80 --mca mpi_accelerator_rocm_memcpy_async 0 --mca coll ^hcoll --mca pml ^ucx --mca osc ^ucx --mca btl ^openib,uct "
+OPTIONS1A=" --mca smsc_accelerator_priority 80 --mca mpi_accelerator_rocm_memcpy_async 0 --mca coll ^hcoll --mca pml ^ucx --mca osc ^ucx --mca btl ^openib,uct "
+OPTIONS1B=" --mca smsc_accelerator_priority 80 --mca mpi_accelerator_rocm_memcpy_async 1 --mca coll ^hcoll --mca pml ^ucx --mca osc ^ucx --mca btl ^openib,uct "
 OPTIONS2A=" --mca btl smcuda,tcp,self --mca mpi_accelerator_use_sync_memops true --mca coll ^hcoll --mca pml ^ucx --mca osc ^ucx "
 OPTIONS2B=" --mca btl smcuda,tcp,self --mca mpi_accelerator_use_sync_memops false --mca coll ^hcoll --mca pml ^ucx --mca osc ^ucx "
 
@@ -103,10 +103,10 @@ let COUNTER=0
 let SUCCESS=0
 let FAILED=0
 
-#Run tests using btl/sm + smsc/accelerator + async. hipMemcpy
+#Run tests using btl/sm + smsc/accelerator + sync. hipMemcpy
 #Note: this is expected to be the default configuration used
 #      hence the more extensive testing
-printf "\n Running tests with btl/sm + smsc/accelerator and rocm_memcpy_async = true\n"
+printf "\n Running tests with btl/sm + smsc/accelerator and rocm_memcpy_async = false\n"
 ExecTestSm1A "hip_pt2pt_bl"             "2" "32 1048576" "D H M O R"
 ExecTestSm1A "hip_pt2pt_bsend"          "2" "32 1048576" "D H M O R"
 ExecTestSm1A "hip_pt2pt_ssend"          "2" "32 1048576" "D H M O R"
@@ -132,13 +132,15 @@ ExecTestSm1A "hip_scatter"              "4" "1024"       "D H"
 ExecTestSm1A "hip_scatterv"             "4" "1024"       "D H"
 ExecTestSm1A "hip_reduce_scatter"       "4" "1024"       "D H"
 ExecTestSm1A "hip_reduce_scatter_block" "4" "1024"       "D H"
+ExecTestSm1A "hip_scan"                 "4" "1024"       "D H"
+ExecTestSm1A "hip_exscan"               "4" "1024"       "D H"
 ExecTestSm1A "hip_pt2pt_nb_stress"      "2" "32 1048576" "D H"
 ExecTestSm1A "hip_sendtoself_stress"    "1" "32 1048576" "D H"
 ExecTestSm1A "hip_pt2pt_bl"             "2" "10 876 19680 980571" "D H"
 ExecTestSm1A "hip_pt2pt_bl_mult"        "2" "1024" "D H"
 
-#Run tests using btl/sm + smsc/accelerator + sync. hipMemcpy
-printf "\n Running tests with btl/sm + smsc/accelerator and rocm_memcpy_async = false\n"
+#Run tests using btl/sm + smsc/accelerator + async. hipMemcpy
+printf "\n Running tests with btl/sm + smsc/accelerator and rocm_memcpy_async = true\n"
 ExecTestSm1B "hip_pt2pt_bl"             "2" "32 1048576" "D H M O R"
 ExecTestSm1B "hip_pt2pt_nb"             "2" "32 1048576" "D H M O R"
 ExecTestSm1B "hip_pt2pt_nb_stress"      "2" "32 1048576" "D H"
