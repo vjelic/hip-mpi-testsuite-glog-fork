@@ -67,6 +67,7 @@ EXECS = hip_pt2pt_nb           \
 	hip_osc_rget_lock          \
 	hip_osc_rget_stress        \
 	hip_osc_rput_stress        \
+	hip_memkind                \
 	hip_file_write             \
 	hip_file_iwrite            \
 	hip_file_iwrite_mult       \
@@ -122,6 +123,9 @@ hip_sendtoself: hip_sendtoself.cc $(HEADERS)
 
 hip_sendtoself_stress: hip_pt2pt_nb_stress.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_sendtoself_stress hip_pt2pt_nb_stress.cc -DHIP_MPITEST_SENDTOSELF $(LDFLAGS)
+
+hip_memkind: hip_memkind.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_memkind hip_memkind.cc $(LDFLAGS)
 
 hip_pack: hip_packunpack.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_pack hip_packunpack.cc -DHIP_TYPE_STRUCT -DA_WIDTH=1024 $(LDFLAGS)
