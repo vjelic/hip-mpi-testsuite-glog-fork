@@ -21,4 +21,4 @@
 # IN THE SOFTWARE.
 ###############################################################################
 
-source run_all_impl.sh
+source run_all_ucx_impl.sh
