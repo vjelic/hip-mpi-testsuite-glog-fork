@@ -176,6 +176,81 @@ static int check_file_memkind_info (MPI_File file, MPI_Comm comm, const char *fi
   return globalret;
 }
 
+#ifdef HIP_MPITEST_SESSIONS
+static int check_session_memkind_info (MPI_Session session, const char *session_name,
+				       bool expected_found, const char *expected_val)
+{
+  MPI_Info info;
+  int len = 0, flag = 0;
+  int ret = 0;
+  char *val=NULL, *valptr=NULL;
+
+  MPI_Session_get_info(session, &info);
+  MPI_Info_get_string(info, "mpi_memory_alloc_kinds",
+		      &len, NULL, &flag);
+
+  if (flag) {
+    val = valptr = (char *) malloc(len);
+    if (NULL == val) return 1;
+
+    MPI_Info_get_string(info, "mpi_memory_alloc_kinds",	&len, val, &flag);
+    ret = strncmp (val, expected_val, len);
+  } else {
+    if (expected_found) ret = 1;
+  }
+
+  printf("Session: %-45.45s \t %s\n", session_name, ret == 0 ? "SUCCESS" : "FAILURE");
+  if (ret != 0) printf("expected %s got %s\n", expected_val, val);
+
+  free(valptr);
+  return ret;
+}
+
+int main (int argc, char **argv)
+{
+  int rank, size;
+  int ret = 0;
+  MPI_Session session;
+  MPI_Group wgroup;
+
+  MPI_Info info;
+  MPI_Info_create (&info);
+  char key[] = "mpi_memory_alloc_kinds";
+  char value[] = "rocm,system,mpi";
+  MPI_Info_set (info, key, value);
+
+  MPI_Info info_assert;
+  MPI_Info_create (&info_assert);
+  char assert_key[] = "mpi_assert_memory_alloc_kinds";
+  char assert_value[] = "mpi";
+  MPI_Info_set (info_assert, assert_key, assert_value);
+
+  MPI_Session_init(info, MPI_ERRORS_ARE_FATAL, &session);
+  MPI_Info_free(&info);
+
+  ret += check_session_memkind_info(session, "Session init with info set",
+				    true, info_val_system_mpi_rocm);
+
+  MPI_Group_from_session_pset(session, "mpi://WORLD" , &wgroup);
+
+  MPI_Comm comm;
+  MPI_Comm_create_from_group(wgroup, "mem-alloc-kind-example",
+                             MPI_INFO_NULL, MPI_ERRORS_ABORT, &comm);
+  ret += check_comm_memkind_info (comm, "Comm_create_from_group with INFO_NULL",
+				  "mpi_memory_alloc_kinds", true, info_val_system_mpi_rocm);
+  MPI_Comm_free (&comm);
+
+  MPI_Comm_create_from_group(wgroup, "mem-alloc-kind-example-assert",
+                             info_assert, MPI_ERRORS_ABORT, &comm);
+
+  ret += check_comm_memkind_info (comm, "Comm_create_from_group with info_assert",
+				  "mpi_memory_alloc_kinds", true, info_val_mpi);
+  MPI_Comm_free (&comm);
+
+  MPI_Session_finalize (&session);
+  return ret;
+}
+#else
 int main (int argc, char **argv)
 {
   int rank, size;
@@ -341,3 +416,4 @@ int main (int argc, char **argv)
 
   return ret;
 }
+#endif

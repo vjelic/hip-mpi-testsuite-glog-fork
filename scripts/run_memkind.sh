@@ -49,5 +49,6 @@ ExecTest "hip_memkind"  "2" "$OPTIONS1" "1"
 ExecTest "hip_memkind"  "2" "$OPTIONS2" "2"
 ExecTest "hip_memkind"  "2" "$OPTIONS3" "3"
 ExecTest "hip_memkind"  "2" "$OPTIONS4" "4"
+ExecTest "hip_memkind_sessions"  "2" "$OPTIONS0" "0"
 
 printf "\n Executed %d Tests (%d passed %d failed)\n" $COUNTER $SUCCESS $FAILED

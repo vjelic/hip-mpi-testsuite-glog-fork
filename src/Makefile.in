@@ -68,6 +68,7 @@ EXECS = hip_pt2pt_nb           \
 	hip_osc_rget_stress        \
 	hip_osc_rput_stress        \
 	hip_memkind                \
+	hip_memkind_sessions       \
 	hip_file_write             \
 	hip_file_iwrite            \
 	hip_file_iwrite_mult       \
@@ -126,6 +127,9 @@ hip_sendtoself_stress: hip_pt2pt_nb_stress.cc $(HEADERS)
 
 hip_memkind: hip_memkind.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_memkind hip_memkind.cc $(LDFLAGS)
+
+hip_memkind_sessions: hip_memkind.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_memkind_sessions hip_memkind.cc -DHIP_MPITEST_SESSIONS $(LDFLAGS)
 
 hip_pack: hip_packunpack.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_pack hip_packunpack.cc -DHIP_TYPE_STRUCT -DA_WIDTH=1024 $(LDFLAGS)
@@ -260,3 +264,4 @@ clean:
 	$(RM) hip_query_test
 	$(RM) hip_file_write hip_file_iwrite hip_file_iwrite_mult hip_file_write_all hip_file_write_all_2D
 	$(RM) hip_file_read hip_file_iread hip_file_iread_mult hip_file_read_all hip_file_read_all_2D
+	$(RM) hip_memkind hip_memkind_sessions
