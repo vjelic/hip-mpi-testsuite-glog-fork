@@ -49,6 +49,8 @@ EXECS = hip_pt2pt_nb           \
 	hip_reduce                 \
 	hip_iallreduce             \
 	hip_ireduce                \
+	hip_scan                   \
+	hip_exscan                 \
 	hip_alltoall               \
 	hip_alltoallv              \
 	hip_allgather              \
@@ -65,6 +67,8 @@ EXECS = hip_pt2pt_nb           \
 	hip_osc_rget_lock          \
 	hip_osc_rget_stress        \
 	hip_osc_rput_stress        \
+	hip_memkind                \
+	hip_memkind_sessions       \
 	hip_file_write             \
 	hip_file_iwrite            \
 	hip_file_iwrite_mult       \
@@ -121,6 +125,12 @@ hip_sendtoself: hip_sendtoself.cc $(HEADERS)
 hip_sendtoself_stress: hip_pt2pt_nb_stress.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_sendtoself_stress hip_pt2pt_nb_stress.cc -DHIP_MPITEST_SENDTOSELF $(LDFLAGS)
 
+hip_memkind: hip_memkind.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_memkind hip_memkind.cc $(LDFLAGS)
+
+hip_memkind_sessions: hip_memkind.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_memkind_sessions hip_memkind.cc -DHIP_MPITEST_SESSIONS $(LDFLAGS)
+
 hip_pack: hip_packunpack.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_pack hip_packunpack.cc -DHIP_TYPE_STRUCT -DA_WIDTH=1024 $(LDFLAGS)
 
@@ -138,6 +148,12 @@ hip_iallreduce: hip_iallreduce.cc $(HEADERS)
 
 hip_ireduce: hip_iallreduce.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_ireduce hip_iallreduce.cc -DHIP_MPITEST_IREDUCE $(LDFLAGS)
+
+hip_scan: hip_scan.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_scan hip_scan.cc $(LDFLAGS)
+
+hip_exscan: hip_scan.cc $(HEADERS)
+	$(CXX) $(CPPFLAGS) -o hip_exscan hip_scan.cc -DHIP_MPITEST_EXSCAN $(LDFLAGS)
 
 hip_alltoall: hip_alltoall.cc $(HEADERS)
 	$(CXX) $(CPPFLAGS) -o hip_alltoall hip_alltoall.cc $(LDFLAGS)
@@ -240,7 +256,7 @@ clean:
 	$(RM) hip_pt2pt_nb hip_pt2pt_nb_testall hip_pt2pt_nb_stress hip_pt2pt_bl hip_pt2pt_bl_mult hip_pt2pt_ssend
 	$(RM) hip_sendtoself hip_sendtoself_stress hip_pack hip_unpack hip_pt2pt_persistent hip_pt2pt_bsend
 	$(RM) hip_allreduce hip_reduce hip_iallreduce hip_ireduce hip_alltoall hip_alltoallv
-	$(RM) hip_allgather hip_allgatherv hip_gather hip_gatherv
+	$(RM) hip_allgather hip_allgatherv hip_gather hip_gatherv hip_scan hip_exscan
 	$(RM) hip_type_resized_short hip_type_struct_short
 	$(RM) hip_type_resized_long hip_type_struct_long
 	$(RM) hip_osc_put_fence hip_osc_get_fence hip_osc_acc_fence hip_osc_acc_lock hip_osc_put_lock hip_osc_get_lock
@@ -248,3 +264,4 @@ clean:
 	$(RM) hip_query_test
 	$(RM) hip_file_write hip_file_iwrite hip_file_iwrite_mult hip_file_write_all hip_file_write_all_2D
 	$(RM) hip_file_read hip_file_iread hip_file_iread_mult hip_file_read_all hip_file_read_all_2D
+	$(RM) hip_memkind hip_memkind_sessions

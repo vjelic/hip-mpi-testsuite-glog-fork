@@ -21,4 +21,34 @@
 # IN THE SOFTWARE.
 ###############################################################################
 
-source run_all_ucx_impl.sh
+OPTIONS0=" --mca coll ^hcoll"
+OPTIONS1=" --memory-alloc-kinds system,mpi --mca coll ^hcoll"
+OPTIONS2=" --memory-alloc-kinds system,mpi,rocm --mca coll ^hcoll"
+OPTIONS3=" --memory-alloc-kinds system,mpi,rocm:device --mca coll ^hcoll"
+OPTIONS4=" --memory-alloc-kinds system,mpi,rocm,nonsense:host --mca coll ^hcoll"
+
+
+ExecTest() {
+
+    let COUNTER=COUNTER+1
+    mpirun $3 -np $2 ../src/$1 $4
+    if [ $? -eq 0 ]
+    then
+	let SUCCESS=SUCCESS+1
+    else
+	let FAILED=FAILED+1
+    fi
+}
+
+let COUNTER=0
+let SUCCESS=0
+let FAILED=0
+
+ExecTest "hip_memkind"  "2" "$OPTIONS0" "0"
+ExecTest "hip_memkind"  "2" "$OPTIONS1" "1"
+ExecTest "hip_memkind"  "2" "$OPTIONS2" "2"
+ExecTest "hip_memkind"  "2" "$OPTIONS3" "3"
+ExecTest "hip_memkind"  "2" "$OPTIONS4" "4"
+ExecTest "hip_memkind_sessions"  "2" "$OPTIONS0" "0"
+
+printf "\n Executed %d Tests (%d passed %d failed)\n" $COUNTER $SUCCESS $FAILED
