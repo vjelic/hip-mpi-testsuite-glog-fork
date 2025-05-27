@@ -37,6 +37,7 @@ hip_alltoallv
 hip_gather
 hip_gatherv
 hip_reduce
+hip_reduce_local
 hip_ireduce
 hip_scatter
 hip_scatterv
