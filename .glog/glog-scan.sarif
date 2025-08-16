@@ -1,0 +1,2748 @@
+{
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Glog.AI",
+          "organization": "Glog.AI",
+          "fullName": "Glog, Making software more secure",
+          "version": "1.0.0",
+          "semanticVersion": "1.0.0",
+          "informationUri": "https://www.glog.ai",
+          "rules": [
+            {
+              "id": "glog-aed3567d-1fbf-4e48-bb36-54ae20a3123e",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-6be753f3-a212-4e08-b26b-e6066ea707b5",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-6ace1452-5d52-40b6-b68e-c0a1676ed1c6",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-df794d48-9987-4b6b-89f2-cb280a26507e",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-1a71b9dc-24d8-42f9-9ba9-cbb3e01b726b",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-57f39f0d-aa4a-4f2c-8819-96aaf68440dc",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-e27bd979-6b03-400e-ae95-7bcda32edd31",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-0dbd32d5-186e-4293-815d-4d45f7fd66ce",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-6bf33b14-1a3d-4c10-98f5-c434956f46f7",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-f1c4f584-2c35-4e8d-bff8-8bd8eedb1476",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-9cbbb92f-0f50-4544-b66e-ec0204b4d4d2",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-550dc563-fb37-4d0a-abd0-abf3777a2a4a",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-92e090c0-0a47-418b-b488-49622773021e",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-5444b6d4-0249-4647-a685-45bd969ed53e",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-f703e648-d22a-49e4-81ba-378b5394fedc",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-535a7e20-4f4b-4236-8cb8-1bb317a38bbc",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS121708"
+                ]
+              }
+            },
+            {
+              "id": "glog-fefeb84e-538a-4291-acee-386dcf4f5cf8",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS121708"
+                ]
+              }
+            },
+            {
+              "id": "glog-58143aa7-11fd-421f-8a82-f9037831fee2",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS111237"
+                ]
+              }
+            },
+            {
+              "id": "glog-80ef329a-9b9d-4929-8c08-a69c477f904e",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-fc989778-1d7f-4ad8-9a54-e2ca43bce092",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS111237"
+                ]
+              }
+            },
+            {
+              "id": "glog-376d91a9-c1ed-4810-b475-a79fbb3ec96d",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS111237"
+                ]
+              }
+            },
+            {
+              "id": "glog-db1749a1-fe68-474e-a107-7f8425b46fb1",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS111237"
+                ]
+              }
+            },
+            {
+              "id": "glog-533e260c-8863-4845-89ab-72f65d5513a0",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS121708"
+                ]
+              }
+            },
+            {
+              "id": "glog-4a6e92c4-c9a7-42d0-98b5-3d672db83616",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS121708"
+                ]
+              }
+            },
+            {
+              "id": "glog-cf8af52e-f7e7-47b1-9768-fd01d0c5b7ee",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-dbb55331-f8a1-43d6-840d-07285495cac6",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS111237"
+                ]
+              }
+            },
+            {
+              "id": "glog-09a0289d-69b1-48c4-a50c-202a358f7f55",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-8261dc46-0591-4b79-ab18-572cc0f6a918",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-c37f79aa-2e81-43a2-972f-f7193cd0cdc0",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-36bee5c7-0b8a-4d24-a91f-5a318847636d",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-6efeca5b-30d1-4d57-9782-89263e938741",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-cc2ffff7-19e6-432b-b937-979d838766cb",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-0b86eff4-4c21-4623-9e06-d575978413d8",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-4f67d419-d6d1-4019-9d13-69c7903706a3",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-09d4cb77-f55f-46e5-b545-2fd892282817",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-e57b6c39-f4bb-48d3-8319-48fba7656c84",
+              "help": {
+                "text": ""
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            }
+          ],
+          "language": "en-US",
+          "contents": [
+            "localizedData",
+            "nonLocalizedData"
+          ],
+          "isComprehensive": false
+        }
+      },
+      "language": "en-US",
+      "results": [
+        {
+          "ruleId": "glog-6be753f3-a212-4e08-b26b-e6066ea707b5",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_file_read.cc"
+                },
+                "region": {
+                  "startLine": 194,
+                  "startColumn": 26,
+                  "endLine": 194,
+                  "endColumn": 63,
+                  "charOffset": 5908,
+                  "charLength": 37,
+                  "snippet": {
+                    "text": "malloc (NBLOCKS * sizeof(MPI_Request)",
+                    "rendered": {
+                      "text": "malloc (NBLOCKS * sizeof(MPI_Request)",
+                      "markdown": "`malloc (NBLOCKS * sizeof(MPI_Request)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_file_read.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5908,
+                        "charLength": 37
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-aed3567d-1fbf-4e48-bb36-54ae20a3123e",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_pt2pt_nb.cc"
+                },
+                "region": {
+                  "startLine": 159,
+                  "startColumn": 25,
+                  "endLine": 159,
+                  "endColumn": 59,
+                  "charOffset": 5213,
+                  "charLength": 34,
+                  "snippet": {
+                    "text": "malloc (2*size*sizeof(MPI_Request)",
+                    "rendered": {
+                      "text": "malloc (2*size*sizeof(MPI_Request)",
+                      "markdown": "`malloc (2*size*sizeof(MPI_Request)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_pt2pt_nb.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5213,
+                        "charLength": 34
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-df794d48-9987-4b6b-89f2-cb280a26507e",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_pt2pt_nb.cc"
+                },
+                "region": {
+                  "startLine": 214,
+                  "startColumn": 25,
+                  "endLine": 214,
+                  "endColumn": 59,
+                  "charOffset": 6643,
+                  "charLength": 34,
+                  "snippet": {
+                    "text": "malloc (2*size*sizeof(MPI_Request)",
+                    "rendered": {
+                      "text": "malloc (2*size*sizeof(MPI_Request)",
+                      "markdown": "`malloc (2*size*sizeof(MPI_Request)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_pt2pt_nb.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 6643,
+                        "charLength": 34
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-1a71b9dc-24d8-42f9-9ba9-cbb3e01b726b",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_memkind.cc"
+                },
+                "region": {
+                  "startLine": 193,
+                  "startColumn": 28,
+                  "endLine": 193,
+                  "endColumn": 39,
+                  "charOffset": 5679,
+                  "charLength": 11,
+                  "snippet": {
+                    "text": "malloc(len)",
+                    "rendered": {
+                      "text": "malloc(len)",
+                      "markdown": "`malloc(len)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_memkind.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5679,
+                        "charLength": 11
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-57f39f0d-aa4a-4f2c-8819-96aaf68440dc",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_memkind.cc"
+                },
+                "region": {
+                  "startLine": 160,
+                  "startColumn": 28,
+                  "endLine": 160,
+                  "endColumn": 39,
+                  "charOffset": 4728,
+                  "charLength": 11,
+                  "snippet": {
+                    "text": "malloc(len)",
+                    "rendered": {
+                      "text": "malloc(len)",
+                      "markdown": "`malloc(len)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_memkind.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 4728,
+                        "charLength": 11
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-e27bd979-6b03-400e-ae95-7bcda32edd31",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_memkind.cc"
+                },
+                "region": {
+                  "startLine": 127,
+                  "startColumn": 28,
+                  "endLine": 127,
+                  "endColumn": 39,
+                  "charOffset": 3756,
+                  "charLength": 11,
+                  "snippet": {
+                    "text": "malloc(len)",
+                    "rendered": {
+                      "text": "malloc(len)",
+                      "markdown": "`malloc(len)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_memkind.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 3756,
+                        "charLength": 11
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-0dbd32d5-186e-4293-815d-4d45f7fd66ce",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_memkind.cc"
+                },
+                "region": {
+                  "startLine": 93,
+                  "startColumn": 28,
+                  "endLine": 93,
+                  "endColumn": 39,
+                  "charOffset": 2791,
+                  "charLength": 11,
+                  "snippet": {
+                    "text": "malloc(len)",
+                    "rendered": {
+                      "text": "malloc(len)",
+                      "markdown": "`malloc(len)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_memkind.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 2791,
+                        "charLength": 11
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-6bf33b14-1a3d-4c10-98f5-c434956f46f7",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_pt2pt_bl.cc"
+                },
+                "region": {
+                  "startLine": 205,
+                  "startColumn": 21,
+                  "endLine": 205,
+                  "endColumn": 39,
+                  "charOffset": 6336,
+                  "charLength": 18,
+                  "snippet": {
+                    "text": "malloc(buffersize)",
+                    "rendered": {
+                      "text": "malloc(buffersize)",
+                      "markdown": "`malloc(buffersize)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_pt2pt_bl.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 6336,
+                        "charLength": 18
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-f1c4f584-2c35-4e8d-bff8-8bd8eedb1476",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_allgather.cc"
+                },
+                "region": {
+                  "startLine": 177,
+                  "startColumn": 20,
+                  "endLine": 177,
+                  "endColumn": 44,
+                  "charOffset": 5683,
+                  "charLength": 24,
+                  "snippet": {
+                    "text": "malloc(size *sizeof(int)",
+                    "rendered": {
+                      "text": "malloc(size *sizeof(int)",
+                      "markdown": "`malloc(size *sizeof(int)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_allgather.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5683,
+                        "charLength": 24
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-9cbbb92f-0f50-4544-b66e-ec0204b4d4d2",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_allgather.cc"
+                },
+                "region": {
+                  "startLine": 172,
+                  "startColumn": 20,
+                  "endLine": 172,
+                  "endColumn": 44,
+                  "charOffset": 5507,
+                  "charLength": 24,
+                  "snippet": {
+                    "text": "malloc(size *sizeof(int)",
+                    "rendered": {
+                      "text": "malloc(size *sizeof(int)",
+                      "markdown": "`malloc(size *sizeof(int)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_allgather.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5507,
+                        "charLength": 24
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-550dc563-fb37-4d0a-abd0-abf3777a2a4a",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_scatter.cc"
+                },
+                "region": {
+                  "startLine": 176,
+                  "startColumn": 25,
+                  "endLine": 176,
+                  "endColumn": 50,
+                  "charOffset": 5731,
+                  "charLength": 25,
+                  "snippet": {
+                    "text": "malloc(size * sizeof(int)",
+                    "rendered": {
+                      "text": "malloc(size * sizeof(int)",
+                      "markdown": "`malloc(size * sizeof(int)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_scatter.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5731,
+                        "charLength": 25
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-92e090c0-0a47-418b-b488-49622773021e",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_scatter.cc"
+                },
+                "region": {
+                  "startLine": 171,
+                  "startColumn": 25,
+                  "endLine": 171,
+                  "endColumn": 50,
+                  "charOffset": 5549,
+                  "charLength": 25,
+                  "snippet": {
+                    "text": "malloc(size * sizeof(int)",
+                    "rendered": {
+                      "text": "malloc(size * sizeof(int)",
+                      "markdown": "`malloc(size * sizeof(int)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_scatter.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5549,
+                        "charLength": 25
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-5444b6d4-0249-4647-a685-45bd969ed53e",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_mpitest_buffer.h"
+                },
+                "region": {
+                  "startLine": 306,
+                  "startColumn": 33,
+                  "endLine": 306,
+                  "endColumn": 61,
+                  "charOffset": 10680,
+                  "charLength": 28,
+                  "snippet": {
+                    "text": "malloc (_elements * _extent)",
+                    "rendered": {
+                      "text": "malloc (_elements * _extent)",
+                      "markdown": "`malloc (_elements * _extent)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 10680,
+                        "charLength": 28
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-f703e648-d22a-49e4-81ba-378b5394fedc",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_mpitest_buffer.h"
+                },
+                "region": {
+                  "startLine": 274,
+                  "startColumn": 33,
+                  "endLine": 274,
+                  "endColumn": 61,
+                  "charOffset": 7541,
+                  "charLength": 28,
+                  "snippet": {
+                    "text": "malloc (_elements * _extent)",
+                    "rendered": {
+                      "text": "malloc (_elements * _extent)",
+                      "markdown": "`malloc (_elements * _extent)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 7541,
+                        "charLength": 28
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-535a7e20-4f4b-4236-8cb8-1bb317a38bbc",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_mpitest_buffer.h"
+                },
+                "region": {
+                  "startLine": 262,
+                  "startColumn": 1,
+                  "endLine": 262,
+                  "endColumn": 28,
+                  "charOffset": 6787,
+                  "charLength": 27,
+                  "snippet": {
+                    "text": "memcpy(dst, buffer, nBytes)",
+                    "rendered": {
+                      "text": "memcpy(dst, buffer, nBytes)",
+                      "markdown": "`memcpy(dst, buffer, nBytes)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "There are a number of conditions in which memcpy can introduce a vulnerability (mismatched buffer sizes, null pointers, etc.). More secure alternitives perform additional validation of the source and destination buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 6787,
+                        "charLength": 27
+                      },
+                      "insertedContent": {
+                        "text": "memcpy_s(dst, <size of dst>,  buffer,  nBytes)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-fefeb84e-538a-4291-acee-386dcf4f5cf8",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_mpitest_buffer.h"
+                },
+                "region": {
+                  "startLine": 257,
+                  "startColumn": 1,
+                  "endLine": 257,
+                  "endColumn": 28,
+                  "charOffset": 6678,
+                  "charLength": 27,
+                  "snippet": {
+                    "text": "memcpy(buffer, src, nBytes)",
+                    "rendered": {
+                      "text": "memcpy(buffer, src, nBytes)",
+                      "markdown": "`memcpy(buffer, src, nBytes)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "There are a number of conditions in which memcpy can introduce a vulnerability (mismatched buffer sizes, null pointers, etc.). More secure alternitives perform additional validation of the source and destination buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 6678,
+                        "charLength": 27
+                      },
+                      "insertedContent": {
+                        "text": "memcpy_s(buffer, <size of buffer>,  src,  nBytes)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-58143aa7-11fd-421f-8a82-f9037831fee2",
+          "kind": "fail",
+          "level": "error",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_mpitest_buffer.h"
+                },
+                "region": {
+                  "startLine": 232,
+                  "startColumn": 1,
+                  "endLine": 232,
+                  "endColumn": 41,
+                  "charOffset": 6171,
+                  "charLength": 40,
+                  "snippet": {
+                    "text": "strncpy (memname, \"hipHostRegister\", 32)",
+                    "rendered": {
+                      "text": "strncpy (memname, \"hipHostRegister\", 32)",
+                      "markdown": "`strncpy (memname, \"hipHostRegister\", 32)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "strncpy is dangerous, as if the source contains 'n' or more characters, it will not null terminate the destination."
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 6171,
+                        "charLength": 40
+                      },
+                      "insertedContent": {
+                        "text": "strcpy_s(memname,  32,  \"hipHostRegister\")"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "description": {
+                "text": "strncpy is dangerous, as if the source contains 'n' or more characters, it will not null terminate the destination."
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 6171,
+                        "charLength": 40
+                      },
+                      "insertedContent": {
+                        "text": "strlcpy(memname,  \"hipHostRegister\",  32)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "Important",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.BannedFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-80ef329a-9b9d-4929-8c08-a69c477f904e",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_mpitest_buffer.h"
+                },
+                "region": {
+                  "startLine": 241,
+                  "startColumn": 22,
+                  "endLine": 241,
+                  "endColumn": 37,
+                  "charOffset": 6381,
+                  "charLength": 15,
+                  "snippet": {
+                    "text": "malloc (nBytes)",
+                    "rendered": {
+                      "text": "malloc (nBytes)",
+                      "markdown": "`malloc (nBytes)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 6381,
+                        "charLength": 15
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-fc989778-1d7f-4ad8-9a54-e2ca43bce092",
+          "kind": "fail",
+          "level": "error",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_mpitest_buffer.h"
+                },
+                "region": {
+                  "startLine": 193,
+                  "startColumn": 1,
+                  "endLine": 193,
+                  "endColumn": 39,
+                  "charOffset": 5230,
+                  "charLength": 38,
+                  "snippet": {
+                    "text": "strncpy (memname, \"hipHostMalloc\", 32)",
+                    "rendered": {
+                      "text": "strncpy (memname, \"hipHostMalloc\", 32)",
+                      "markdown": "`strncpy (memname, \"hipHostMalloc\", 32)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "strncpy is dangerous, as if the source contains 'n' or more characters, it will not null terminate the destination."
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5230,
+                        "charLength": 38
+                      },
+                      "insertedContent": {
+                        "text": "strcpy_s(memname,  32,  \"hipHostMalloc\")"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "description": {
+                "text": "strncpy is dangerous, as if the source contains 'n' or more characters, it will not null terminate the destination."
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5230,
+                        "charLength": 38
+                      },
+                      "insertedContent": {
+                        "text": "strlcpy(memname,  \"hipHostMalloc\",  32)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "Important",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.BannedFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-376d91a9-c1ed-4810-b475-a79fbb3ec96d",
+          "kind": "fail",
+          "level": "error",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_mpitest_buffer.h"
+                },
+                "region": {
+                  "startLine": 154,
+                  "startColumn": 1,
+                  "endLine": 154,
+                  "endColumn": 42,
+                  "charOffset": 4289,
+                  "charLength": 41,
+                  "snippet": {
+                    "text": "strncpy (memname, \"hipMallocManaged\", 32)",
+                    "rendered": {
+                      "text": "strncpy (memname, \"hipMallocManaged\", 32)",
+                      "markdown": "`strncpy (memname, \"hipMallocManaged\", 32)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "strncpy is dangerous, as if the source contains 'n' or more characters, it will not null terminate the destination."
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 4289,
+                        "charLength": 41
+                      },
+                      "insertedContent": {
+                        "text": "strcpy_s(memname,  32,  \"hipMallocManaged\")"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "description": {
+                "text": "strncpy is dangerous, as if the source contains 'n' or more characters, it will not null terminate the destination."
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 4289,
+                        "charLength": 41
+                      },
+                      "insertedContent": {
+                        "text": "strlcpy(memname,  \"hipMallocManaged\",  32)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "Important",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.BannedFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-db1749a1-fe68-474e-a107-7f8425b46fb1",
+          "kind": "fail",
+          "level": "error",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_mpitest_buffer.h"
+                },
+                "region": {
+                  "startLine": 114,
+                  "startColumn": 1,
+                  "endLine": 114,
+                  "endColumn": 35,
+                  "charOffset": 3369,
+                  "charLength": 34,
+                  "snippet": {
+                    "text": "strncpy (memname, \"hipMalloc\", 32)",
+                    "rendered": {
+                      "text": "strncpy (memname, \"hipMalloc\", 32)",
+                      "markdown": "`strncpy (memname, \"hipMalloc\", 32)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "strncpy is dangerous, as if the source contains 'n' or more characters, it will not null terminate the destination."
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 3369,
+                        "charLength": 34
+                      },
+                      "insertedContent": {
+                        "text": "strcpy_s(memname,  32,  \"hipMalloc\")"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "description": {
+                "text": "strncpy is dangerous, as if the source contains 'n' or more characters, it will not null terminate the destination."
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 3369,
+                        "charLength": 34
+                      },
+                      "insertedContent": {
+                        "text": "strlcpy(memname,  \"hipMalloc\",  32)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "Important",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.BannedFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-533e260c-8863-4845-89ab-72f65d5513a0",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_mpitest_buffer.h"
+                },
+                "region": {
+                  "startLine": 104,
+                  "startColumn": 1,
+                  "endLine": 104,
+                  "endColumn": 28,
+                  "charOffset": 3149,
+                  "charLength": 27,
+                  "snippet": {
+                    "text": "memcpy(dst, buffer, nBytes)",
+                    "rendered": {
+                      "text": "memcpy(dst, buffer, nBytes)",
+                      "markdown": "`memcpy(dst, buffer, nBytes)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "There are a number of conditions in which memcpy can introduce a vulnerability (mismatched buffer sizes, null pointers, etc.). More secure alternitives perform additional validation of the source and destination buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 3149,
+                        "charLength": 27
+                      },
+                      "insertedContent": {
+                        "text": "memcpy_s(dst, <size of dst>,  buffer,  nBytes)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-4a6e92c4-c9a7-42d0-98b5-3d672db83616",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_mpitest_buffer.h"
+                },
+                "region": {
+                  "startLine": 99,
+                  "startColumn": 1,
+                  "endLine": 99,
+                  "endColumn": 28,
+                  "charOffset": 3040,
+                  "charLength": 27,
+                  "snippet": {
+                    "text": "memcpy(buffer, src, nBytes)",
+                    "rendered": {
+                      "text": "memcpy(buffer, src, nBytes)",
+                      "markdown": "`memcpy(buffer, src, nBytes)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "There are a number of conditions in which memcpy can introduce a vulnerability (mismatched buffer sizes, null pointers, etc.). More secure alternitives perform additional validation of the source and destination buffer"
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 3040,
+                        "charLength": 27
+                      },
+                      "insertedContent": {
+                        "text": "memcpy_s(buffer, <size of buffer>,  src,  nBytes)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-cf8af52e-f7e7-47b1-9768-fd01d0c5b7ee",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_mpitest_buffer.h"
+                },
+                "region": {
+                  "startLine": 84,
+                  "startColumn": 23,
+                  "endLine": 84,
+                  "endColumn": 38,
+                  "charOffset": 2802,
+                  "charLength": 15,
+                  "snippet": {
+                    "text": "malloc (nBytes)",
+                    "rendered": {
+                      "text": "malloc (nBytes)",
+                      "markdown": "`malloc (nBytes)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 2802,
+                        "charLength": 15
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-dbb55331-f8a1-43d6-840d-07285495cac6",
+          "kind": "fail",
+          "level": "error",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_mpitest_buffer.h"
+                },
+                "region": {
+                  "startLine": 75,
+                  "startColumn": 1,
+                  "endLine": 75,
+                  "endColumn": 32,
+                  "charOffset": 2599,
+                  "charLength": 31,
+                  "snippet": {
+                    "text": "strncpy (memname, \"malloc\", 32)",
+                    "rendered": {
+                      "text": "strncpy (memname, \"malloc\", 32)",
+                      "markdown": "`strncpy (memname, \"malloc\", 32)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "strncpy is dangerous, as if the source contains 'n' or more characters, it will not null terminate the destination."
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 2599,
+                        "charLength": 31
+                      },
+                      "insertedContent": {
+                        "text": "strcpy_s(memname,  32,  \"malloc\")"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "description": {
+                "text": "strncpy is dangerous, as if the source contains 'n' or more characters, it will not null terminate the destination."
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_mpitest_buffer.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 2599,
+                        "charLength": 31
+                      },
+                      "insertedContent": {
+                        "text": "strlcpy(memname,  \"malloc\",  32)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "Important",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.BannedFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-09a0289d-69b1-48c4-a50c-202a358f7f55",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_alltoall.cc"
+                },
+                "region": {
+                  "startLine": 182,
+                  "startColumn": 20,
+                  "endLine": 182,
+                  "endColumn": 44,
+                  "charOffset": 5797,
+                  "charLength": 24,
+                  "snippet": {
+                    "text": "malloc(size *sizeof(int)",
+                    "rendered": {
+                      "text": "malloc(size *sizeof(int)",
+                      "markdown": "`malloc(size *sizeof(int)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_alltoall.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5797,
+                        "charLength": 24
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-8261dc46-0591-4b79-ab18-572cc0f6a918",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_alltoall.cc"
+                },
+                "region": {
+                  "startLine": 176,
+                  "startColumn": 20,
+                  "endLine": 176,
+                  "endColumn": 44,
+                  "charOffset": 5609,
+                  "charLength": 24,
+                  "snippet": {
+                    "text": "malloc(size *sizeof(int)",
+                    "rendered": {
+                      "text": "malloc(size *sizeof(int)",
+                      "markdown": "`malloc(size *sizeof(int)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_alltoall.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5609,
+                        "charLength": 24
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-c37f79aa-2e81-43a2-972f-f7193cd0cdc0",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_alltoall.cc"
+                },
+                "region": {
+                  "startLine": 170,
+                  "startColumn": 20,
+                  "endLine": 170,
+                  "endColumn": 44,
+                  "charOffset": 5421,
+                  "charLength": 24,
+                  "snippet": {
+                    "text": "malloc(size *sizeof(int)",
+                    "rendered": {
+                      "text": "malloc(size *sizeof(int)",
+                      "markdown": "`malloc(size *sizeof(int)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_alltoall.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5421,
+                        "charLength": 24
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-36bee5c7-0b8a-4d24-a91f-5a318847636d",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_alltoall.cc"
+                },
+                "region": {
+                  "startLine": 165,
+                  "startColumn": 20,
+                  "endLine": 165,
+                  "endColumn": 44,
+                  "charOffset": 5250,
+                  "charLength": 24,
+                  "snippet": {
+                    "text": "malloc(size *sizeof(int)",
+                    "rendered": {
+                      "text": "malloc(size *sizeof(int)",
+                      "markdown": "`malloc(size *sizeof(int)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_alltoall.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5250,
+                        "charLength": 24
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-6efeca5b-30d1-4d57-9782-89263e938741",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_reduce_scatter.cc"
+                },
+                "region": {
+                  "startLine": 182,
+                  "startColumn": 25,
+                  "endLine": 182,
+                  "endColumn": 50,
+                  "charOffset": 6187,
+                  "charLength": 25,
+                  "snippet": {
+                    "text": "malloc(size * sizeof(int)",
+                    "rendered": {
+                      "text": "malloc(size * sizeof(int)",
+                      "markdown": "`malloc(size * sizeof(int)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_reduce_scatter.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 6187,
+                        "charLength": 25
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-cc2ffff7-19e6-432b-b937-979d838766cb",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_osc_stress.cc"
+                },
+                "region": {
+                  "startLine": 153,
+                  "startColumn": 25,
+                  "endLine": 153,
+                  "endColumn": 75,
+                  "charOffset": 5124,
+                  "charLength": 50,
+                  "snippet": {
+                    "text": "malloc (size*NUM_NB_ITERATIONS*sizeof(MPI_Request)",
+                    "rendered": {
+                      "text": "malloc (size*NUM_NB_ITERATIONS*sizeof(MPI_Request)",
+                      "markdown": "`malloc (size*NUM_NB_ITERATIONS*sizeof(MPI_Request)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_osc_stress.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5124,
+                        "charLength": 50
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-0b86eff4-4c21-4623-9e06-d575978413d8",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_file_write.cc"
+                },
+                "region": {
+                  "startLine": 169,
+                  "startColumn": 26,
+                  "endLine": 169,
+                  "endColumn": 63,
+                  "charOffset": 5099,
+                  "charLength": 37,
+                  "snippet": {
+                    "text": "malloc (NBLOCKS * sizeof(MPI_Request)",
+                    "rendered": {
+                      "text": "malloc (NBLOCKS * sizeof(MPI_Request)",
+                      "markdown": "`malloc (NBLOCKS * sizeof(MPI_Request)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_file_write.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5099,
+                        "charLength": 37
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-4f67d419-d6d1-4019-9d13-69c7903706a3",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "benchmarks/hip_mpitest_compute_kernel.cc"
+                },
+                "region": {
+                  "startLine": 77,
+                  "startColumn": 30,
+                  "endLine": 77,
+                  "endColumn": 63,
+                  "charOffset": 2826,
+                  "charLength": 33,
+                  "snippet": {
+                    "text": "malloc (params.N * sizeof(double)",
+                    "rendered": {
+                      "text": "malloc (params.N * sizeof(double)",
+                      "markdown": "`malloc (params.N * sizeof(double)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "benchmarks/hip_mpitest_compute_kernel.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 2826,
+                        "charLength": 33
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-09d4cb77-f55f-46e5-b545-2fd892282817",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/hip_sendtoself.cc"
+                },
+                "region": {
+                  "startLine": 146,
+                  "startColumn": 25,
+                  "endLine": 146,
+                  "endColumn": 54,
+                  "charOffset": 4520,
+                  "charLength": 29,
+                  "snippet": {
+                    "text": "malloc (2*sizeof(MPI_Request)",
+                    "rendered": {
+                      "text": "malloc (2*sizeof(MPI_Request)",
+                      "markdown": "`malloc (2*sizeof(MPI_Request)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/hip_sendtoself.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 4520,
+                        "charLength": 29
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-e57b6c39-f4bb-48d3-8319-48fba7656c84",
+          "kind": "fail",
+          "level": "note",
+          "message": {},
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "benchmarks/hip_mpitest_compute_kernel.cc"
+                },
+                "region": {
+                  "startLine": 76,
+                  "startColumn": 28,
+                  "endLine": 76,
+                  "endColumn": 59,
+                  "charOffset": 2762,
+                  "charLength": 31,
+                  "snippet": {
+                    "text": "malloc (params.N * sizeof(long)",
+                    "rendered": {
+                      "text": "malloc (params.N * sizeof(long)",
+                      "markdown": "`malloc (params.N * sizeof(long)`"
+                    }
+                  },
+                  "sourceLanguage": "cpp"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "benchmarks/hip_mpitest_compute_kernel.cc"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 2762,
+                        "charLength": 31
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        }
+      ],
+      "newlineSequences": [
+        "\r\n",
+        "\n"
+      ]
+    }
+  ]
+}
